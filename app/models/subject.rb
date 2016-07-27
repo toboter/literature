@@ -1,7 +1,7 @@
 class Subject < ApplicationRecord
-
   self.inheritance_column = :type 
-
+  has_closure_tree
+  
   def self.types
     %w(Monograph InBook Collection InCollection Proceeding InProceeding Journal Issue InJournal Reference InReference Misc)
   end
