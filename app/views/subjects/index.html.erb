@@ -1,0 +1,61 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Subjects</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Slug</th>
+      <th>Title</th>
+      <th>Subtitle</th>
+      <th>Type</th>
+      <th>Parent</th>
+      <th>First page</th>
+      <th>Last page</th>
+      <th>Page count</th>
+      <th>Volume</th>
+      <th>Published date</th>
+      <th>Abbr</th>
+      <th>Edition</th>
+      <th>Language</th>
+      <th>Publisher</th>
+      <th>Place</th>
+      <th>G volume</th>
+      <th>G canonical link</th>
+      <th>G image thumbnail</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @subjects.each do |subject| %>
+      <tr>
+        <td><%= subject.slug %></td>
+        <td><%= subject.title %></td>
+        <td><%= subject.subtitle %></td>
+        <td><%= subject.type %></td>
+        <td><%= subject.parent_id %></td>
+        <td><%= subject.first_page %></td>
+        <td><%= subject.last_page %></td>
+        <td><%= subject.page_count %></td>
+        <td><%= subject.volume %></td>
+        <td><%= subject.published_date %></td>
+        <td><%= subject.abbr %></td>
+        <td><%= subject.edition %></td>
+        <td><%= subject.language %></td>
+        <td><%= subject.publisher_id %></td>
+        <td><%= subject.place_id %></td>
+        <td><%= subject.g_volume_id %></td>
+        <td><%= subject.g_canonical_link %></td>
+        <td><%= subject.g_image_thumbnail %></td>
+        <td><%= link_to 'Show', subject %></td>
+        <td><%= link_to 'Edit', edit_subject_path(subject) %></td>
+        <td><%= link_to 'Destroy', subject, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Subject', new_subject_path %>

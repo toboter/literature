@@ -1,0 +1,107 @@
+<%= simple_form_for(subject, html: { class: 'form-horizontal' }) do |f| %>
+  <% if subject.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(subject.errors.count, "error") %> prohibited this subject from being saved:</h2>
+
+      <ul>
+      <% subject.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :slug %>
+    <%= f.text_field :slug %>
+  </div>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :subtitle %>
+    <%= f.text_field :subtitle %>
+  </div>
+
+  <div class="field">
+    <%= f.label :type %>
+    <%= f.select :type, Subject.types.map {|t| [t.humanize, t.camelcase]}, {} %>
+  </div>
+
+  <div class="field">
+    <%= f.label :parent_id %>
+    <%= f.number_field :parent_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :first_page %>
+    <%= f.text_field :first_page %>
+  </div>
+
+  <div class="field">
+    <%= f.label :last_page %>
+    <%= f.text_field :last_page %>
+  </div>
+
+  <div class="field">
+    <%= f.label :page_count %>
+    <%= f.text_field :page_count %>
+  </div>
+
+  <div class="field">
+    <%= f.label :volume %>
+    <%= f.text_field :volume %>
+  </div>
+
+  <div class="field">
+    <%= f.label :published_date %>
+    <%= f.text_field :published_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :abbr %>
+    <%= f.text_field :abbr %>
+  </div>
+
+  <div class="field">
+    <%= f.label :edition %>
+    <%= f.text_field :edition %>
+  </div>
+
+  <div class="field">
+    <%= f.label :language %>
+    <%= f.text_field :language %>
+  </div>
+
+  <div class="field">
+    <%= f.label :publisher_id %>
+    <%= f.number_field :publisher_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :place_id %>
+    <%= f.number_field :place_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :g_volume_id %>
+    <%= f.text_field :g_volume_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :g_canonical_link %>
+    <%= f.text_field :g_canonical_link %>
+  </div>
+
+  <div class="field">
+    <%= f.label :g_image_thumbnail %>
+    <%= f.text_field :g_image_thumbnail %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

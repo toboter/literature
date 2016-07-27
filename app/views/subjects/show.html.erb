@@ -1,0 +1,94 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Slug:</strong>
+  <%= @subject.slug %>
+</p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @subject.title %>
+</p>
+
+<p>
+  <strong>Subtitle:</strong>
+  <%= @subject.subtitle %>
+</p>
+
+<p>
+  <strong>Type:</strong>
+  <%= @subject.type %>
+</p>
+
+<p>
+  <strong>Parent:</strong>
+  <%= @subject.parent_id %>
+</p>
+
+<p>
+  <strong>First page:</strong>
+  <%= @subject.first_page %>
+</p>
+
+<p>
+  <strong>Last page:</strong>
+  <%= @subject.last_page %>
+</p>
+
+<p>
+  <strong>Page count:</strong>
+  <%= @subject.page_count %>
+</p>
+
+<p>
+  <strong>Volume:</strong>
+  <%= @subject.volume %>
+</p>
+
+<p>
+  <strong>Published date:</strong>
+  <%= @subject.published_date %>
+</p>
+
+<p>
+  <strong>Abbr:</strong>
+  <%= @subject.abbr %>
+</p>
+
+<p>
+  <strong>Edition:</strong>
+  <%= @subject.edition %>
+</p>
+
+<p>
+  <strong>Language:</strong>
+  <%= @subject.language %>
+</p>
+
+<p>
+  <strong>Publisher:</strong>
+  <%= @subject.publisher_id %>
+</p>
+
+<p>
+  <strong>Place:</strong>
+  <%= @subject.place_id %>
+</p>
+
+<p>
+  <strong>G volume:</strong>
+  <%= @subject.g_volume_id %>
+</p>
+
+<p>
+  <strong>G canonical link:</strong>
+  <%= @subject.g_canonical_link %>
+</p>
+
+<p>
+  <strong>G image thumbnail:</strong>
+  <%= @subject.g_image_thumbnail %>
+</p>
+
+<%= link_to 'Edit', edit_subject_path(@subject) %> |
+<%= link_to 'Back', subjects_path %>
