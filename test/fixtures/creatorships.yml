@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  creator: one
+  subject: one
+  position: 1
+  type: 
+
+two:
+  creator: two
+  subject: two
+  position: 1
+  type: 

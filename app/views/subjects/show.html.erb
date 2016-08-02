@@ -1,5 +1,13 @@
 <p id="notice"><%= notice %></p>
 
+<% title "#{@subject.cite}" %>
+
+<p>
+  <strong>Creators: </strong>
+  <%= @subject.creators.map{|c| c.name}.join(', ') %>
+  <%= @subject.creatorships.inspect %>
+</p>
+
 <p>
   <strong>Slug:</strong>
   <%= @subject.slug %>
@@ -90,5 +98,5 @@
   <%= @subject.g_image_thumbnail %>
 </p>
 
-<%= link_to 'Edit', edit_subject_path(@subject) %> |
-<%= link_to 'Back', subjects_path %>
+<%= link_to 'Edit', sti_subject_path(@subject.type, @subject, :edit) %> |
+<%= link_to 'Back', sti_subject_path(@type) %>

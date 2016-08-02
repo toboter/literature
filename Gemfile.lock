@@ -38,12 +38,14 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    acts_as_list (0.7.6)
+      activerecord (>= 3.0)
     arel (7.1.0)
     autoprefixer-rails (6.3.7)
       execjs
-    bootstrap (4.0.0.alpha3)
-      autoprefixer-rails (>= 6.0.3)
-      sass (>= 3.4.19)
+    bootstrap-sass (3.3.7)
+      autoprefixer-rails (>= 5.2.1)
+      sass (>= 3.3.4)
     builder (3.2.2)
     byebug (9.0.5)
     closure_tree (6.1.0)
@@ -61,6 +63,10 @@ GEM
     erubis (2.7.0)
     execjs (2.7.0)
     ffi (1.9.14)
+    font-awesome-rails (4.6.3.1)
+      railties (>= 3.2, < 5.1)
+    friendly_id (5.1.0)
+      activerecord (>= 4.0.0)
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     i18n (0.7.0)
@@ -131,6 +137,8 @@ GEM
       sprockets (>= 2.8, < 4.0)
       sprockets-rails (>= 2.0, < 4.0)
       tilt (>= 1.1, < 3)
+    select2-rails (4.0.3)
+      thor (~> 0.14)
     simple_form (3.2.1)
       actionpack (> 4, < 5.1)
       activemodel (> 4, < 5.1)
@@ -174,10 +182,13 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bootstrap (~> 4.0.0.alpha3)
+  acts_as_list
+  bootstrap-sass (~> 3.3.6)
   byebug
   closure_tree
   coffee-rails (~> 4.2)
+  font-awesome-rails
+  friendly_id
   jbuilder (~> 2.5)
   jquery-rails
   listen (~> 3.0.5)
@@ -185,6 +196,7 @@ DEPENDENCIES
   puma (~> 3.0)
   rails (~> 5.0.0)
   sass-rails (~> 5.0)
+  select2-rails
   simple_form
   spring
   spring-watcher-listen (~> 2.0.0)

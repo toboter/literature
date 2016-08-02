@@ -1,13 +1,22 @@
 # README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This application covers literture adminitration for the babylon project. It will hold the main bibliography alongside many small project bibliographies inside the babylon universe.
 
-Things you may want to cover:
+## Design ideas
+
+The main datamodel 'subjects' should more or less cover everything in one table. Therefore it is STI and a Tree.
+
+## API
+
+CiteAPI
+
+## Instructions
 
 * Ruby version
+2.3.1
 
 * System dependencies
+none
 
 * Configuration
 

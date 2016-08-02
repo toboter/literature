@@ -1,10 +1,11 @@
 class SubjectsController < ApplicationController
   before_action :set_subject, only: [:show, :edit, :update, :destroy]
+  before_action :set_type
 
   # GET /subjects
   # GET /subjects.json
   def index
-    @subjects = Subject.all
+    @subjects = type_class.order(published_date: :asc)
   end
 
   # GET /subjects/1
@@ -14,7 +15,7 @@ class SubjectsController < ApplicationController
 
   # GET /subjects/new
   def new
-    @subject = Subject.new
+    @subject = type_class.new
   end
 
   # GET /subjects/1/edit
@@ -28,7 +29,7 @@ class SubjectsController < ApplicationController
 
     respond_to do |format|
       if @subject.save
-        format.html { redirect_to @subject, notice: 'Subject was successfully created.' }
+        format.html { redirect_to @subject, notice: "#{type} was successfully created." }
         format.json { render :show, status: :created, location: @subject }
       else
         format.html { render :new }
@@ -42,7 +43,7 @@ class SubjectsController < ApplicationController
   def update
     respond_to do |format|
       if @subject.update(subject_params)
-        format.html { redirect_to @subject, notice: 'Subject was successfully updated.' }
+        format.html { redirect_to @subject, notice: "#{type} was successfully updated." }
         format.json { render :show, status: :ok, location: @subject }
       else
         format.html { render :edit }
@@ -62,13 +63,28 @@ class SubjectsController < ApplicationController
   end
 
   private
+    def set_type
+      @type = type
+    end
+    
+    def type
+      Subject.types.include?(params[:type]) ? params[:type] : "Subject"
+    end
+    
+    def type_class
+      type.constantize
+    end
+  
     # Use callbacks to share common setup or constraints between actions.
     def set_subject
-      @subject = Subject.find(params[:id])
+      @subject = type_class.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def subject_params
-      params.require(:subject).permit(:slug, :title, :subtitle, :type, :parent_id, :first_page, :last_page, :page_count, :volume, :published_date, :abbr, :edition, :language, :publisher_id, :place_id, :g_volume_id, :g_canonical_link, :g_image_thumbnail)
+      params.require(type.underscore.to_sym).permit(:title, :subtitle, :type, :parent_id, :first_page, :last_page, :page_count, :volume, :published_date, :abbr, :edition, :language, :publisher_id, :place_id, :g_volume_id, :g_canonical_link, :g_image_thumbnail, :creator_list => [])
     end
 end
+
+
+# creatorships_attributes: [:subject_id, :creator_id, :poistion, :type, creatorship_creators_attributes: [:fname, :lname]]

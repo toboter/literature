@@ -1,0 +1,2 @@
+class InCollection < Subject
+end

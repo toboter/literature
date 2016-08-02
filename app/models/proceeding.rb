@@ -1,0 +1,2 @@
+class Proceeding < Subject
+end

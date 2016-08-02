@@ -1,17 +1,15 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Subjects</h1>
+<% title "#{@type.pluralize}" %>
 
-<table class="table table-bordered">
+<table class="table table-bordered table-responsive">
   <thead>
     <tr>
-      <th>Slug</th>
       <th>Title</th>
       <th>Subtitle</th>
       <th>Type</th>
       <th>Parent</th>
-      <th>First page</th>
-      <th>Last page</th>
+      <th>Pages</th>
       <th>Page count</th>
       <th>Volume</th>
       <th>Published date</th>
@@ -20,23 +18,19 @@
       <th>Language</th>
       <th>Publisher</th>
       <th>Place</th>
-      <th>G volume</th>
-      <th>G canonical link</th>
-      <th>G image thumbnail</th>
-      <th colspan="3"></th>
+      <th>G Books</th>
+      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <% @subjects.each do |subject| %>
       <tr>
-        <td><%= subject.slug %></td>
-        <td><%= subject.title %></td>
+        <td><%= link_to subject.title, sti_subject_path(subject.type, subject) %></td>
         <td><%= subject.subtitle %></td>
-        <td><%= subject.type %></td>
+        <td><%= link_to subject.type.pluralize, sti_subject_path(subject.type) %> (<%= subject.slug %>)</td>
         <td><%= subject.parent_id %></td>
-        <td><%= subject.first_page %></td>
-        <td><%= subject.last_page %></td>
+        <td><%= subject.first_page %> - <%= subject.last_page %></td>
         <td><%= subject.page_count %></td>
         <td><%= subject.volume %></td>
         <td><%= subject.published_date %></td>
@@ -45,17 +39,19 @@
         <td><%= subject.language %></td>
         <td><%= subject.publisher_id %></td>
         <td><%= subject.place_id %></td>
-        <td><%= subject.g_volume_id %></td>
-        <td><%= subject.g_canonical_link %></td>
-        <td><%= subject.g_image_thumbnail %></td>
-        <td><%= link_to 'Show', subject %></td>
-        <td><%= link_to 'Edit', edit_subject_path(subject) %></td>
-        <td><%= link_to 'Destroy', subject, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td>
+          <%= subject.g_volume_id %>, 
+          <%= subject.g_canonical_link %>, 
+          <%= subject.g_image_thumbnail %>
+        </td>
+        <td>
+          <%= link_to 'Edit', sti_subject_path(subject.type, subject, :edit) %>
+          <%= link_to 'Destroy', subject, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Subject', new_subject_path %>
+<%= link_to 'See all subjects', sti_subject_path %> | 
+<%= link_to "New #{@type}", sti_subject_path(@type, nil, :new) %>

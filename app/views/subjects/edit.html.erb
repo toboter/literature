@@ -1,6 +1,6 @@
-<h1>Editing Subject</h1>
+<% title "Editing #{@type}" %>
 
 <%= render 'form', subject: @subject %>
 
-<%= link_to 'Show', @subject %> |
-<%= link_to 'Back', subjects_path %>
+<%= link_to 'Show', sti_subject_path(@type, @subject) %> |
+<%= link_to 'Back', sti_subject_path(@type) %>

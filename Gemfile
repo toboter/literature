@@ -48,9 +48,14 @@ end
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
-gem 'bootstrap', '~> 4.0.0.alpha3'
+# gem 'bootstrap'
+gem 'bootstrap-sass', '~> 3.3.6'
 gem 'simple_form'
+gem 'friendly_id'
+gem "select2-rails" # https://select2.github.io/examples.html
+gem "font-awesome-rails"
 
-gem 'closure_tree'
+gem 'acts_as_list' # https://github.com/swanandp/acts_as_list
+gem 'closure_tree' # https://github.com/mceachen/closure_tree
 
 ruby '2.3.1'

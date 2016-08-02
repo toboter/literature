@@ -1,0 +1,2 @@
+class InProceeding < Subject
+end

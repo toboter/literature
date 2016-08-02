@@ -14,4 +14,14 @@
 //= require bootstrap
 //= require jquery_ujs
 //= require turbolinks
+//= require select2-full
 //= require_tree .
+
+
+$(document).ready(function() {
+  $("#creator_names").select2({
+    tags: true,
+    tokenSeparators: [','],
+    theme: "bootstrap"
+  })
+  });

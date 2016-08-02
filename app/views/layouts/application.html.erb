@@ -9,8 +9,73 @@
   </head>
 
   <body>
-    <div class="container">
-      <%= yield %>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">literature.babylon-online.org</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><%= link_to 'Advanced Search', '' %>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Help</a></li>
+            <li><a href="#">Logout</a></li>
+          </ul>
+          <%= form_tag sti_subject_path, :method => 'get', class: "navbar-form navbar-right" do %>
+            <div class="input-group">
+              <span class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>
+              <%= search_field_tag :q, params[:q], placeholder: "Search", class: "form-control" %>
+            </div>
+            
+          <% end %>
+          
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-fluid" style="margin-top: 60px;">
+      <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+          <ul class="nav nav-sidebar">
+            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+            <li><a href="#">Analytics</a></li>
+            <%= content_tag :li, link_to('All subjects', sti_subject_path) %>
+          </ul>
+          <ul class="nav nav-sidebar">
+            <%= content_tag :li, link_to('Monographs', sti_subject_path('Monograph'), class: 'stype') %>
+            <%= content_tag :li, link_to('InBook', sti_subject_path('InBook'), class: 'stype') %>
+            <%= content_tag :li, link_to('Collection', sti_subject_path('Collection'), class: 'stype') %>
+            <%= content_tag :li, link_to('InCollection', sti_subject_path('InCollection'), class: 'stype') %>
+            <%= content_tag :li, link_to('Proceeding', sti_subject_path('Proceeding'), class: 'stype') %>
+            <%= content_tag :li, link_to('InProceeding', sti_subject_path('InProceeding'), class: 'stype') %>
+            <%= content_tag :li, link_to('Journal', sti_subject_path('Journal'), class: 'stype') %>
+            <%= content_tag :li, link_to('Issue', sti_subject_path('Issue'), class: 'stype') %>
+            <%= content_tag :li, link_to('InJournal', sti_subject_path('InJournal'), class: 'stype') %>
+            <%= content_tag :li, link_to('Reference', sti_subject_path('Reference'), class: 'stype') %>
+            <%= content_tag :li, link_to('InReference', sti_subject_path('InReference'), class: 'stype') %>
+            <%= content_tag :li, link_to('Misc', sti_subject_path('Misc'), class: 'stype') %>
+          </ul>
+          <hr>
+          <ul class="nav nav-sidebar">
+            <li><a href="">Export</a></li>
+            <li><a href="">API</a></li>
+          </ul>
+        </div>
+        
+        <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
+          <h1 class="page-header"><%= yield(:title) if show_title? %></h1>
+          <%= yield %>
+          <%= link_to(fa_icon("plus-square-o"), sti_subject_path('Monograph', nil, :new)) %>
+        </div>
+      </div>
     </div>
+
   </body>
 </html>
