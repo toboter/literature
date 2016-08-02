@@ -82,7 +82,7 @@ class SubjectsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def subject_params
-      params.require(type.underscore.to_sym).permit(:title, :subtitle, :type, :parent_id, :first_page, :last_page, :page_count, :volume, :published_date, :abbr, :edition, :language, :publisher_id, :place_id, :g_volume_id, :g_canonical_link, :g_image_thumbnail, :creator_list => [])
+      params.require(type.underscore.to_sym).permit(:title, :subtitle, :type, :parent_id, :first_page, :last_page, :page_count, :volume, :published_date, :abbr, :edition, :language, :publisher, :place, :g_volume_id, :g_canonical_link, :g_image_thumbnail, :creator_list => [])
     end
 end
 

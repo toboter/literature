@@ -23,5 +23,17 @@ $(document).ready(function() {
     tags: true,
     tokenSeparators: [','],
     theme: "bootstrap"
-  })
+  });
+  $("#place").select2({
+    tags: true,
+    theme: "bootstrap",
+    placeholder: "Select a city",
+    allowClear: true
+  });
+  $("#publisher").select2({
+    tags: true,
+    theme: "bootstrap",
+    placeholder: "Select a publisher",
+    allowClear: true
+  });  
   });

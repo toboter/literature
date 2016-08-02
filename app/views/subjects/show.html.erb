@@ -1,11 +1,22 @@
 <p id="notice"><%= notice %></p>
 
 <% title "#{@subject.cite}" %>
+<% content_for(:buttons) do %>
+  <%= link_to sti_subject_path(@subject.type, @subject, :edit), class: 'btn btn-default' do %>
+    <%= fa_icon("edit") %>
+    <%= "Edit" %>
+  <% end %>
+  <%= link_to @subject, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-default' do %>
+    <%= fa_icon("remove") %>
+    <%= "Delete" %>
+  <% end %>
+<% end %>
+
+<%= link_to "Back to #{@type.pluralize}", sti_subject_path(@type) %>
 
 <p>
   <strong>Creators: </strong>
   <%= @subject.creators.map{|c| c.name}.join(', ') %>
-  <%= @subject.creatorships.inspect %>
 </p>
 
 <p>
@@ -75,12 +86,12 @@
 
 <p>
   <strong>Publisher:</strong>
-  <%= @subject.publisher_id %>
+  <%= @subject.publisher.try(:name) %>
 </p>
 
 <p>
   <strong>Place:</strong>
-  <%= @subject.place_id %>
+  <%= @subject.place.try(:name) %>
 </p>
 
 <p>
@@ -97,6 +108,3 @@
   <strong>G image thumbnail:</strong>
   <%= @subject.g_image_thumbnail %>
 </p>
-
-<%= link_to 'Edit', sti_subject_path(@subject.type, @subject, :edit) %> |
-<%= link_to 'Back', sti_subject_path(@type) %>

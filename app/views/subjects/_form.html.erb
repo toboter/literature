@@ -1,3 +1,10 @@
+<% content_for(:buttons) do %>
+  <%= link_to :back, class: 'btn btn-default' do %>
+    <%= fa_icon("reply") %>
+    <%= "Discard" %>
+  <% end %>
+<% end %>
+  
 <%= simple_form_for(@subject, html: { class: 'form-horizontal' }) do |f| %>
   <% if @subject.errors.any? %>
     <div id="error_explanation">
@@ -11,11 +18,8 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :type %>
-    <%= f.select :type, Subject.types.map {|t| [t.humanize, t.camelcase]}, 
-      {}, disabled: @type != "Subject" %>
-  </div>
+  <%= f.hidden_field :type, value: @type if @type != "Subject" %>
+  <%= f.input :type, collection: Subject.types.map {|t| [t.humanize, t.camelcase]}, selected: @type, disabled: @type != "Subject" %> 
   
   <%= f.input :creator_list, collection: Creator.order(lname: :asc), label_method: :name, value_method: :name, label: "Creators", selected: @subject.creators.map(&:name), input_html: {multiple: true, id: 'creator_names'} %>
 
@@ -30,15 +34,9 @@
   
   <%= f.input :volume %>
 
-  <div class="field">
-    <%= f.label :publisher_id %>
-    <%= f.number_field :publisher_id %>
-  </div>
+  <%= f.input :publisher, collection: Publisher.order(name: :asc), label_method: :name, value_method: :name, include_blank: true, label: "Publisher", selected: @subject.publisher.try(:name), input_html: {id: 'publisher'} %>
+  <%= f.input :place, collection: Place.order(name: :asc), label_method: :name, value_method: :name, include_blank: true, label: "Place", selected: @subject.place.try(:name), input_html: {id: 'place'} %>
 
-  <div class="field">
-    <%= f.label :place_id %>
-    <%= f.number_field :place_id %>
-  </div>
     
   <hr>
 
@@ -70,6 +68,6 @@
   </div>
 
   <div class="actions">
-    <%= f.submit %>
+    <%= f.submit class: 'btn btn-default' %>
   </div>
 <% end %>

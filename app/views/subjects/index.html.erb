@@ -1,57 +1,35 @@
 <p id="notice"><%= notice %></p>
 
 <% title "#{@type.pluralize}" %>
+<% content_for(:buttons) do %>
+  <%= link_to sti_subject_path(@type, nil, :new), class: 'btn btn-default' do %>
+    <%= fa_icon("plus") %>
+    <%= "New #{@type}" %>
+  <% end %>
+<% end %>
 
+<%= link_to 'See all subjects', sti_subject_path %>
 <table class="table table-bordered table-responsive">
   <thead>
     <tr>
+      <th>Cite</th>
       <th>Title</th>
-      <th>Subtitle</th>
-      <th>Type</th>
-      <th>Parent</th>
-      <th>Pages</th>
-      <th>Page count</th>
-      <th>Volume</th>
-      <th>Published date</th>
-      <th>Abbr</th>
-      <th>Edition</th>
-      <th>Language</th>
-      <th>Publisher</th>
-      <th>Place</th>
-      <th>G Books</th>
-      <th></th>
     </tr>
   </thead>
 
   <tbody>
     <% @subjects.each do |subject| %>
       <tr>
-        <td><%= link_to subject.title, sti_subject_path(subject.type, subject) %></td>
-        <td><%= subject.subtitle %></td>
-        <td><%= link_to subject.type.pluralize, sti_subject_path(subject.type) %> (<%= subject.slug %>)</td>
-        <td><%= subject.parent_id %></td>
-        <td><%= subject.first_page %> - <%= subject.last_page %></td>
-        <td><%= subject.page_count %></td>
-        <td><%= subject.volume %></td>
-        <td><%= subject.published_date %></td>
-        <td><%= subject.abbr %></td>
-        <td><%= subject.edition %></td>
-        <td><%= subject.language %></td>
-        <td><%= subject.publisher_id %></td>
-        <td><%= subject.place_id %></td>
         <td>
-          <%= subject.g_volume_id %>, 
-          <%= subject.g_canonical_link %>, 
-          <%= subject.g_image_thumbnail %>
+          <%= link_to subject.cite, sti_subject_path(subject.type, subject) %><br/>
+          <small><%= link_to subject.type, sti_subject_path(subject.type) %></small>
         </td>
         <td>
-          <%= link_to 'Edit', sti_subject_path(subject.type, subject, :edit) %>
-          <%= link_to 'Destroy', subject, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+          <%= subject.full_title %>
+          <%= link_to(fa_icon("edit"), sti_subject_path(subject.type, subject, :edit), class: 'pull-right') %>
+        </td>
+
       </tr>
     <% end %>
   </tbody>
 </table>
-
-<br>
-<%= link_to 'See all subjects', sti_subject_path %> | 
-<%= link_to "New #{@type}", sti_subject_path(@type, nil, :new) %>

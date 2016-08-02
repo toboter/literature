@@ -45,7 +45,6 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-sidebar">
             <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Analytics</a></li>
             <%= content_tag :li, link_to('All subjects', sti_subject_path) %>
           </ul>
           <ul class="nav nav-sidebar">
@@ -64,15 +63,22 @@
           </ul>
           <hr>
           <ul class="nav nav-sidebar">
+            <li><a href="">Import</a></li>
             <li><a href="">Export</a></li>
             <li><a href="">API</a></li>
           </ul>
         </div>
         
         <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
-          <h1 class="page-header"><%= yield(:title) if show_title? %></h1>
+          <div class="page-header">
+            <h1 class="">
+              <%= yield(:title) if content_for?(:title) %>
+              <div class="pull-right">
+                <%= yield(:buttons) if content_for?(:buttons) %>
+              </div>
+            </h1>
+          </div>
           <%= yield %>
-          <%= link_to(fa_icon("plus-square-o"), sti_subject_path('Monograph', nil, :new)) %>
         </div>
       </div>
     </div>

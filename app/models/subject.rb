@@ -3,8 +3,12 @@ class Subject < ApplicationRecord
   
   self.inheritance_column = :type
   
-  has_many :creatorships
+  validates :type, presence: true
+  
+  has_many :creatorships, dependent: :destroy
   has_many :creators, through: :creatorships
+  belongs_to :place
+  belongs_to :publisher
   
   accepts_nested_attributes_for :creatorships, :creators
   
@@ -29,10 +33,22 @@ class Subject < ApplicationRecord
     self.creators = names.reject { |c| c.empty? }.split(",").flatten.map do |n|
       Creator.where(lname: n.split(' ').last, fname: n.split(' ').first).first_or_create!
     end
-  end  
-  
-  def cite
-    "#{creators.order(lname: :asc).limit(3).map(&:lname).join(', ')}: #{published_date}"
+  end
+
+  def publisher=(name)
+    self.publisher_id = name.present? ? (Publisher.where(name: name).first_or_create!).id : nil
   end
   
+  def place=(name)
+    self.place_id = name.present? ? (Place.where(name: name).first_or_create!).id : nil
+  end
+  
+  def cite
+    names = creators.count <= 3 ? creators.order(lname: :asc).limit(3).map(&:lname).join(', ') : "#{creators.order(lname: :asc).first.lname} et al." 
+    "#{names} #{published_date}"
+  end
+ 
+  def full_title(style='harvard') #default
+    'error: not defined'
+  end
 end
