@@ -15,6 +15,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require select2-full
+//= require cocoon
 //= require_tree .
 
 

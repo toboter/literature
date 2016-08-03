@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  subject: one
+  ident_name: MyString
+  ident_value: MyString
+
+two:
+  subject: two
+  ident_name: MyString
+  ident_value: MyString

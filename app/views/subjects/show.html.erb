@@ -11,100 +11,110 @@
     <%= "Delete" %>
   <% end %>
 <% end %>
+<div class="row">
+  <div class="col-md-12">
+    <%= link_to "Back to #{@type.pluralize}", sti_subject_path(@type) %>
+  </div>
+</div>
 
-<%= link_to "Back to #{@type.pluralize}", sti_subject_path(@type) %>
+<div class="row">
+  <div class="col-md-8">
+    <p>
+      <strong>Creators: </strong>
+      <%= @subject.creators.map{|c| c.name}.join(', ') %>
+    </p>
+    
+    <p>
+      <strong>Slug:</strong>
+      <%= @subject.slug %>
+    </p>
+    
+    <p>
+      <strong>Title:</strong>
+      <%= @subject.title %>
+    </p>
+    
+    <p>
+      <strong>Subtitle:</strong>
+      <%= @subject.subtitle %>
+    </p>
+    
+    <p>
+      <strong>Type:</strong>
+      <%= @subject.type %>
+    </p>
+    
+    <p>
+      <strong>Parent:</strong>
+      <%= @subject.parent_id %>
+    </p>
+    
+    <p>
+      <strong>First page:</strong>
+      <%= @subject.first_page %>
+    </p>
+    
+    <p>
+      <strong>Last page:</strong>
+      <%= @subject.last_page %>
+    </p>
+    
+    <p>
+      <strong>Page count:</strong>
+      <%= @subject.page_count %>
+    </p>
+    
+    <p>
+      <strong>Volume:</strong>
+      <%= @subject.volume %>
+    </p>
+    
+    <p>
+      <strong>Published date:</strong>
+      <%= @subject.published_date %>
+    </p>
+    
+    <p>
+      <strong>Abbr:</strong>
+      <%= @subject.abbr %>
+    </p>
+    
+    <p>
+      <strong>Edition:</strong>
+      <%= @subject.edition %>
+    </p>
+    
+    <p>
+      <strong>Language:</strong>
+      <%= @subject.language %>
+    </p>
+    
+    <p>
+      <strong>Publisher:</strong>
+      <%= @subject.publisher.try(:name) %>
+    </p>
+    
+    <p>
+      <strong>Place:</strong>
+      <%= @subject.place.try(:name) %>
+    </p>
+  </div>
 
-<p>
-  <strong>Creators: </strong>
-  <%= @subject.creators.map{|c| c.name}.join(', ') %>
-</p>
-
-<p>
-  <strong>Slug:</strong>
-  <%= @subject.slug %>
-</p>
-
-<p>
-  <strong>Title:</strong>
-  <%= @subject.title %>
-</p>
-
-<p>
-  <strong>Subtitle:</strong>
-  <%= @subject.subtitle %>
-</p>
-
-<p>
-  <strong>Type:</strong>
-  <%= @subject.type %>
-</p>
-
-<p>
-  <strong>Parent:</strong>
-  <%= @subject.parent_id %>
-</p>
-
-<p>
-  <strong>First page:</strong>
-  <%= @subject.first_page %>
-</p>
-
-<p>
-  <strong>Last page:</strong>
-  <%= @subject.last_page %>
-</p>
-
-<p>
-  <strong>Page count:</strong>
-  <%= @subject.page_count %>
-</p>
-
-<p>
-  <strong>Volume:</strong>
-  <%= @subject.volume %>
-</p>
-
-<p>
-  <strong>Published date:</strong>
-  <%= @subject.published_date %>
-</p>
-
-<p>
-  <strong>Abbr:</strong>
-  <%= @subject.abbr %>
-</p>
-
-<p>
-  <strong>Edition:</strong>
-  <%= @subject.edition %>
-</p>
-
-<p>
-  <strong>Language:</strong>
-  <%= @subject.language %>
-</p>
-
-<p>
-  <strong>Publisher:</strong>
-  <%= @subject.publisher.try(:name) %>
-</p>
-
-<p>
-  <strong>Place:</strong>
-  <%= @subject.place.try(:name) %>
-</p>
-
-<p>
-  <strong>G volume:</strong>
-  <%= @subject.g_volume_id %>
-</p>
-
-<p>
-  <strong>G canonical link:</strong>
-  <%= @subject.g_canonical_link %>
-</p>
-
-<p>
-  <strong>G image thumbnail:</strong>
-  <%= @subject.g_image_thumbnail %>
-</p>
+  <div class="col-md-3 col-md-offset-1">
+    <div class="thumbnail">
+      <%= image_tag @subject.g_image_thumbnail, class: 'img-responsive', style: 'width: 100%' %>
+      <div class="caption">
+        <h3><%= @subject.g_volume_id %></h3>
+        <p>Description for <%= @subject.g_volume_id %></p>
+        <p><%= link_to 'Auf Google Books ansehen', @subject.g_canonical_link %>
+        </p>
+      </div>
+    </div>
+    
+      
+    <p>
+      <strong>other ids:</strong>
+      <%= @subject.identifiers.map{|i| "#{i.ident_name}: #{i.ident_value}"} %>
+    </p>
+  </div>
+</div>

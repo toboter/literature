@@ -1,0 +1,2 @@
+class Serial < Subject
+end

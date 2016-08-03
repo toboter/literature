@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'home/index'
+
   resources :subjects
   resources :monographs, controller: 'subjects', type: 'Monograph'
   resources :in_books, controller: 'subjects', type: 'InBook'
@@ -12,6 +14,7 @@ Rails.application.routes.draw do
   resources :references, controller: 'subjects', type: 'Reference'
   resources :in_references, controller: 'subjects', type: 'InReference'
   resources :miscs, controller: 'subjects', type: 'Misc'
+  resources :serials, controller: 'subjects', type: 'Serial'
   
-  root 'subjects#index'
+  root 'home#index'
 end

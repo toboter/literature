@@ -9,14 +9,15 @@ class Subject < ApplicationRecord
   has_many :creators, through: :creatorships
   belongs_to :place
   belongs_to :publisher
+  has_many :identifiers, dependent: :destroy
   
-  accepts_nested_attributes_for :creatorships, :creators
+  accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
   
   has_closure_tree
   friendly_id :code, use: :slugged # slug field: By default, this field must be named :slug, though you may change this using the slug_column configuration option. You should add an index to this column, and in most cases, make it unique. You may also wish to constrain it to NOT NULL, but this depends on your app's behavior 
   
   def self.types
-    %w(Monograph InBook Collection InCollection Proceeding InProceeding Journal Issue InJournal Reference InReference Misc)
+    %w(Monograph InBook Collection InCollection Proceeding InProceeding Journal Issue InJournal Reference InReference Misc Serial)
   end
   scope :monographs, -> { where(type: 'Monograph') } 
 
