@@ -13,103 +13,110 @@
 <% end %>
 <div class="row">
   <div class="col-md-12">
-    <%= link_to "Back to #{@type.pluralize}", sti_subject_path(@type) %>
+    <ol class="breadcrumb">
+      <%= content_tag :li, link_to(@subject.root.type.pluralize, sti_subject_path(@subject.root.type)) %>  
+      <% @subject.ancestors.each do |e| %>
+        <%= content_tag :li, link_to(e.cite, e) %>
+      <% end %>
+      <%= content_tag :li, @subject.cite, class: 'active' %>
+    </ol>
+    
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-8">
-    <p>
-      <strong>Creators: </strong>
-      <%= @subject.creators.map{|c| c.name}.join(', ') %>
-    </p>
-    
-    <p>
-      <strong>Slug:</strong>
-      <%= @subject.slug %>
-    </p>
-    
-    <p>
-      <strong>Title:</strong>
-      <%= @subject.title %>
-    </p>
-    
-    <p>
-      <strong>Subtitle:</strong>
-      <%= @subject.subtitle %>
-    </p>
-    
-    <p>
-      <strong>Type:</strong>
-      <%= @subject.type %>
-    </p>
-    
-    <p>
-      <strong>Parent:</strong>
-      <%= @subject.parent_id %>
-    </p>
-    
-    <p>
-      <strong>First page:</strong>
-      <%= @subject.first_page %>
-    </p>
-    
-    <p>
-      <strong>Last page:</strong>
-      <%= @subject.last_page %>
-    </p>
-    
-    <p>
-      <strong>Page count:</strong>
-      <%= @subject.page_count %>
-    </p>
-    
-    <p>
-      <strong>Volume:</strong>
-      <%= @subject.volume %>
-    </p>
-    
-    <p>
-      <strong>Published date:</strong>
-      <%= @subject.published_date %>
-    </p>
-    
-    <p>
-      <strong>Abbr:</strong>
-      <%= @subject.abbr %>
-    </p>
-    
-    <p>
-      <strong>Edition:</strong>
-      <%= @subject.edition %>
-    </p>
-    
-    <p>
-      <strong>Language:</strong>
-      <%= @subject.language %>
-    </p>
-    
-    <p>
-      <strong>Publisher:</strong>
-      <%= @subject.publisher.try(:name) %>
-    </p>
-    
-    <p>
-      <strong>Place:</strong>
-      <%= @subject.place.try(:name) %>
-    </p>
+    <%= content_tag :h3, @subject.full_title %>
+    <%= content_tag :p, truncate(@subject.g_description, length: 240, separator: ' ') %>
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <th><%= @subject.creator_type %>:</th>
+          <td><%= @subject.creators.map{|c| link_to c.name, subjects_path(lname: c.lname, fname: c.fname)}.join(', ').html_safe %></td>
+        </tr>
+
+        <tr>
+          <th>Title:</th>
+          <td><%= @subject.title %></td>
+        </tr>
+        <tr>
+          <th>Subtitle:</th>
+          <td><%= @subject.subtitle %></td>
+        </tr>
+        <tr>
+          <th>Type:</th>
+          <td><%= @subject.type %></td>
+        </tr>
+        <%= content_tag :tr do %>
+          <th>Parent:</th>
+          <td><%= link_to @subject.parent.full_entry, @subject.parent %></td>
+        <% end if @subject.child? %>
+        <tr>
+          <th>Volume:</th>
+          <td><%= @subject.volume %></td>
+        </tr>
+        <tr>
+          <th>First page:</th>
+          <td><%= @subject.first_page %></td>
+        </tr>
+        <tr>
+          <th>Last page:</th>
+          <td><%= @subject.last_page %></td>
+        </tr>
+        <tr>
+          <th>Page count:</th>
+          <td><%= @subject.page_count %></td>
+        </tr>
+
+        <tr>
+          <th>Published date:</th>
+          <td><%= @subject.published_date %></td>
+        </tr>
+        <tr>
+          <th>Abbr:</th>
+          <td><%= @subject.abbr %></td>
+        </tr>
+        <tr>
+          <th>Edition:</th>
+          <td><%= @subject.edition %></td>
+        </tr>
+        <tr>
+          <th>Language:</th>
+          <td><%= @subject.language %></td>
+        </tr>
+        <tr>
+          <th>Publisher:</th>
+          <td><%= @subject.publisher.try(:name) %></td>
+        </tr>
+        <tr>
+          <th>Place:</th>
+          <td><%= @subject.place.try(:name) %></td>
+        </tr>
+        <%= content_tag :tr do %>
+          <th>Contents:</th>
+          <td>
+            <% for child in @subject.children do %>
+              <div class="well">
+                <%= link_to child.full_entry, child %>
+              </div>
+            <% end %>
+          </td>
+        <% end if @subject.children.any? %>
+      </tbody>
+    </table>
+
   </div>
 
   <div class="col-md-3 col-md-offset-1">
-    <div class="thumbnail">
+    <%= content_tag :div, class: "thumbnail" do %>
       <%= image_tag @subject.g_image_thumbnail, class: 'img-responsive', style: 'width: 100%' %>
       <div class="caption">
-        <h3><%= @subject.g_volume_id %></h3>
+        <h4><%= @subject.g_volume_id %></h4>
         <p>Description for <%= @subject.g_volume_id %></p>
         <p><%= link_to 'Auf Google Books ansehen', @subject.g_canonical_link %>
         </p>
       </div>
-    </div>
+    <% end if @subject.g_volume_id %>
     
       
     <p>

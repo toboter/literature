@@ -36,5 +36,10 @@ $(document).ready(function() {
     theme: "bootstrap",
     placeholder: "Select a publisher",
     allowClear: true
+  });
+  $("#parent_entry_id").select2({
+    theme: "bootstrap",
+    placeholder: "Select a parent",
+    allowClear: true
   });  
   });

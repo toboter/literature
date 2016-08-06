@@ -50,6 +50,8 @@
           <hr>
           <ul class="nav nav-pills nav-stacked">
             <%= content_tag :li, link_to('All subjects', sti_subject_path), class: ('active' if @type.present? && @type == 'Subject') %> 
+            <li><%= 'name filter active' if params[:lname] %></li>
+            <li><%= 'search active' if params[:q] %></li>
             <li role="presentation" class="dropdown <%= ('active' if @type.present? && @type != 'Subject') %>">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 Subject Types <span class="caret"></span>

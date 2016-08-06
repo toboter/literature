@@ -18,7 +18,8 @@ class Identifier < ApplicationRecord
       if data
         subject.update(g_volume_id: data["items"][0]["id"],
           g_canonical_link: data["items"][0]["volumeInfo"]["canonicalVolumeLink"],
-          g_image_thumbnail: data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"])
+          g_image_thumbnail: data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"],
+          g_description: data["items"][0]["volumeInfo"]["description"])
       end
     end
   end

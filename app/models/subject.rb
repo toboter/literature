@@ -10,18 +10,30 @@ class Subject < ApplicationRecord
   belongs_to :place
   belongs_to :publisher
   has_many :identifiers, dependent: :destroy
-  
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
   
   has_closure_tree
+  accepts_nested_attributes_for :children, reject_if: :all_blank, allow_destroy: true
+  
   friendly_id :code, use: :slugged # slug field: By default, this field must be named :slug, though you may change this using the slug_column configuration option. You should add an index to this column, and in most cases, make it unique. You may also wish to constrain it to NOT NULL, but this depends on your app's behavior 
   
   def self.types
     %w(Monograph InBook Collection InCollection Proceeding InProceeding Journal Issue InJournal Reference InReference Misc Serial)
   end
   scope :monographs, -> { where(type: 'Monograph') } 
+  
+  scope :by_creator, -> lname, fname { joins(:creators).where('creators.lname = ? AND creators.fname = ?', lname, fname) if fname && lname }
 
-
+  def self.search(q)
+    if q
+      key = "%#{q}%"
+      joins(:creators).where('title LIKE :search OR subtitle LIKE :search OR published_date LIKE :search OR creators.lname LIKE :search OR creators.fname LIKE :search', search: key)
+    else
+      all
+    end
+  end
+  
+  
   def code
     Digest::SHA1.hexdigest self.published_date # und authors und index
   end
@@ -49,7 +61,21 @@ class Subject < ApplicationRecord
     "#{names} #{published_date}"
   end
  
-  def full_title(style='harvard') #default
+ 
+ # defaults
+  def full_entry(style='harvard')
     'error: not defined'
+  end
+  def has_children
+    false
+  end
+  def has_parent
+    false
+  end
+  def creator_type
+    "Creator"
+  end
+  def full_title
+    "#{title} : #{subtitle}"
   end
 end

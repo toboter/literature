@@ -25,7 +25,7 @@
           <small><%= link_to subject.type, sti_subject_path(subject.type) %></small>
         </td>
         <td>
-          <%= subject.full_title %>
+          <%= subject.full_entry %>
           <%= link_to(fa_icon("edit"), sti_subject_path(subject.type, subject, :edit), class: 'pull-right') %>
         </td>
 

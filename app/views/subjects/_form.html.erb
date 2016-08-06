@@ -24,58 +24,35 @@
   <% end %>
 
 
-  <div class="col-md-12">
-    <%= f.hidden_field :type, value: @type if @type != "Subject" %>
-    <%= f.input :type, collection: Subject.types.map {|t| [t.humanize, t.camelcase]}, selected: @type, disabled: @type != "Subject" %> 
-  </div>
-
-  <div class="col-md-12">
-    <%= f.input :creator_list, collection: Creator.order(lname: :asc), label_method: :name, value_method: :name, label: "Creators", selected: @subject.creators.map(&:name), input_html: {multiple: true, id: 'creator_names'} %>
-    <%= f.input :title %>
-    <%= f.input :subtitle %>
-    <%= f.input :published_date %>
-    <%= f.input :parent_id %>
+  <div class="row">
+  <%= content_tag :div, class: "col-md-12" do %>
+    <%= f.input :parent_id, collection: Subject.where(type: f.object.has_parent), label_method: :full_entry, 
+      value_method: :id, input_html: {id: 'parent_entry_id'} %>
+      
     <%= f.input :volume %>
+    
+    <p>... or add a new parent -> build</p>
+  <% end if f.object.has_parent %>
   </div>
   
-  <%= f.fields_for :parent do |g| %>
-    <%= g.label :type %><br />
-    <%= g.text_field :type %><br />
-    <%= g.label :title %><br />
-    <%= g.text_field :title %><br />
-  <% end %>
+  <%= render "form_fields", f: f %>
 
-  <div class="col-md-6">
-    <%= f.input :publisher, collection: Publisher.order(name: :asc), label_method: :name, value_method: :name, include_blank: true, label: "Publisher", selected: @subject.publisher.try(:name), input_html: {id: 'publisher'} %>
-    <%= f.input :place, collection: Place.order(name: :asc), label_method: :name, value_method: :name, include_blank: true, label: "Place", selected: @subject.place.try(:name), input_html: {id: 'place'} %>
-  </div>
-
-  <div class="col-md-6">
-    <%= f.input :first_page %>
-    <%= f.input :last_page %>
-    <%= f.input :page_count %>
-  </div>
-  
-  <div class="col-md-6">
-    <%= f.input :abbr %>
-    <%= f.input :edition %>
-    <%= f.input :language %>
-  </div>
-  
-  <div class="col-md-6">
-    <div id="identifiers">
-      <strong>Other Identifiers: </strong>
-      <%= f.simple_fields_for :identifiers do |id| %>
-        <%= render 'identifier_fields', f: id %>
+  <div class="row>  
+  <%= content_tag :div, class: "col-md-12" do %>
+    <div id="children">
+      <strong>Contents of this <%= @type %>: </strong>
+      <%= f.simple_fields_for :children do |c| %>
+        <%= render 'form_fields', f: c %>
       <% end %>
       <div class="links">
-        <%= link_to_add_association fa_icon('plus-square', text: 'add'), f, :identifiers %>
+        <%= link_to_add_association fa_icon('plus-square', text: 'add contents'), f, :children, partial: "form_fields" %>
       </div>
     </div>
-  </div>
+  <% end if f.object.has_children %>
 
-  <div class="col-md-12 actions">
+  <div class="col-md-12 ">
     <hr>
     <%= f.submit class: 'btn btn-default' %>
+  </div>
   </div>
 <% end %>
