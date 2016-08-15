@@ -5,7 +5,8 @@ class SubjectsController < ApplicationController
   # GET /subjects
   # GET /subjects.json
   def index
-    @subjects = type_class.search(params[:q]).by_creator(params[:lname], params[:fname]).by_serie(params[:serie]).order(published_date: :asc)
+    @subjects = type_class.search(params[:q]).by_creator(params[:lname], params[:fname])
+      .by_serie(params[:serie]).order(published_date: :asc)
   end
 
   # GET /subjects/1

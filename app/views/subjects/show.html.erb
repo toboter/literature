@@ -32,72 +32,72 @@
     <%= content_tag :p, truncate(@subject.g_description, length: 240, separator: ' ') %>
     <table class="table table-striped">
       <tbody>
-        <tr>
+        <%= content_tag :tr do %>
           <th><%= @subject.creator_type %>:</th>
           <td><%= @subject.creators.map{|c| link_to c.name, subjects_path(lname: c.lname, fname: c.fname)}.join(', ').html_safe %></td>
-        </tr>
+        <% end if @subject.creators.any? %>
 
-        <tr>
+        <%= content_tag :tr do %>
           <th>Title:</th>
           <td><%= @subject.title %></td>
-        </tr>
-        <tr>
+        <% end if @subject.title.present? %>
+        <%= content_tag :tr do %>
           <th>Subtitle:</th>
           <td><%= @subject.subtitle %></td>
-        </tr>
-        <tr>
-          <th>Type:</th>
-          <td><%= @subject.type %></td>
-        </tr>
+        <% end if @subject.subtitle.present? %>
         <%= content_tag :tr do %>
           <th>In:</th>
           <td><%= link_to @subject.parent.full_entry, @subject.parent %></td>
         <% end if @subject.child? %>
         <%= content_tag :tr do %>
           <th>Serial or Journal:</th>
-          <td><%= link_to @subject.serie.try(:name), subjects_path(serie: @subject.serie.id) %></td>
+          <td>
+            <%= link_to subjects_path(serie: @subject.serie.id) do %>
+              <%= @subject.serie.try(:name) %>
+              <%= "(#{@subject.serie.abbr})" if @subject.serie.abbr %>
+            <% end %>
+            <%= @subject.volume %>
+          </td>
         <% end if @subject.root? && @subject.serie %>
-        <tr>
-          <th>Volume:</th>
-          <td><%= @subject.volume %></td>
-        </tr>
-        <tr>
-          <th>First page:</th>
-          <td><%= @subject.first_page %></td>
-        </tr>
-        <tr>
-          <th>Last page:</th>
-          <td><%= @subject.last_page %></td>
-        </tr>
-        <tr>
-          <th>Page count:</th>
-          <td><%= @subject.page_count %></td>
-        </tr>
-
-        <tr>
+        
+        <%= content_tag :tr do %>
           <th>Published date:</th>
           <td><%= @subject.published_date %></td>
-        </tr>
-        <tr>
+        <% end if @subject.published_date.present? %>
+        
+        <%= content_tag :tr do %>
+          <th>First page:</th>
+          <td><%= @subject.first_page %></td>
+        <% end if @subject.first_page.present? %>
+        <%= content_tag :tr do %>
+          <th>Last page:</th>
+          <td><%= @subject.last_page %></td>
+        <% end if @subject.last_page.present? %>
+        <%= content_tag :tr do %>
+          <th>Page count:</th>
+          <td><%= @subject.page_count %></td>
+        <% end if @subject.page_count.present? %>
+        
+        <%= content_tag :tr do %>
           <th>Abbr:</th>
           <td><%= @subject.abbr %></td>
-        </tr>
-        <tr>
+        <% end if @subject.abbr.present? %>
+        <%= content_tag :tr do %>
           <th>Edition:</th>
           <td><%= @subject.edition %></td>
-        </tr>
-        <tr>
+        <% end if @subject.edition.present? %>
+        <%= content_tag :tr do %>
           <th>Language:</th>
           <td><%= @subject.language %></td>
-        </tr>
-        <tr>
+        <% end if @subject.language.present? %>
+        <%= content_tag :tr do %>
           <th>Publisher:</th>
           <td><%= @subject.publisher.try(:name) %></td>
-        </tr>
-        <tr>
+        <% end if @subject.publisher.present? %>
+        <%= content_tag :tr do %>
           <th>Place:</th>
           <td><%= @subject.place.try(:name) %></td>
-        </tr>
+        <% end if @subject.place.present? %>
         <%= content_tag :tr do %>
           <th>Contents:</th>
           <td>
