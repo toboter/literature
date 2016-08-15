@@ -37,6 +37,12 @@ $(document).ready(function() {
     placeholder: "Select a publisher",
     allowClear: true
   });
+  $("#serie_name").select2({
+    tags: true,
+    theme: "bootstrap",
+    placeholder: "Select a Serial or journal",
+    allowClear: true
+  });
   $("#parent_entry_id").select2({
     theme: "bootstrap",
     placeholder: "Select a parent",

@@ -13,20 +13,22 @@
 <% end %>
 <div class="row">
   <div class="col-md-12">
+
     <ol class="breadcrumb">
-      <%= content_tag :li, link_to(@subject.root.type.pluralize, sti_subject_path(@subject.root.type)) %>  
-      <% @subject.ancestors.each do |e| %>
+      <%= content_tag :li, link_to(@subject.root.type.pluralize, sti_subject_path(@subject.root.type)) %>
+      <%= content_tag :li, link_to(@subject.serie.abbr, subjects_path(serie: @subject.serie.id)) if @subject.serie %>  
+      <% @subject.ancestors.reverse.each do |e| %>
         <%= content_tag :li, link_to(e.cite, e) %>
       <% end %>
       <%= content_tag :li, @subject.cite, class: 'active' %>
     </ol>
-    
+    <%= content_tag :p, link_to(@subject.slug, @subject) %>    
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-8">
-    <%= content_tag :h3, @subject.full_title %>
+    <%= content_tag :h3, @subject.full_entry %>
     <%= content_tag :p, truncate(@subject.g_description, length: 240, separator: ' ') %>
     <table class="table table-striped">
       <tbody>
@@ -48,9 +50,13 @@
           <td><%= @subject.type %></td>
         </tr>
         <%= content_tag :tr do %>
-          <th>Parent:</th>
+          <th>In:</th>
           <td><%= link_to @subject.parent.full_entry, @subject.parent %></td>
         <% end if @subject.child? %>
+        <%= content_tag :tr do %>
+          <th>Serial or Journal:</th>
+          <td><%= link_to @subject.serie.try(:name), subjects_path(serie: @subject.serie.id) %></td>
+        <% end if @subject.root? && @subject.serie %>
         <tr>
           <th>Volume:</th>
           <td><%= @subject.volume %></td>
@@ -100,8 +106,9 @@
                 <%= link_to child.full_entry, child %>
               </div>
             <% end %>
+            <%= link_to(fa_icon("plus-square-o"), new_subject_path(parent_id: @subject.id), class: 'pull-right') %>
           </td>
-        <% end if @subject.children.any? %>
+        <% end if @subject.has_children %>
       </tbody>
     </table>
 

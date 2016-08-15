@@ -2,9 +2,25 @@
 
 <% title "#{@type.pluralize}" %>
 <% content_for(:buttons) do %>
-  <%= link_to sti_subject_path(@type, nil, :new), class: 'btn btn-default' do %>
-    <%= fa_icon("plus") %>
-    <%= "New #{@type}" %>
+  <% if Subject.parent_types.include?(@type) %>
+    <%= link_to sti_subject_path(@type, nil, :new), class: 'btn btn-default' do %>
+      <%= fa_icon("plus") %>
+      <%= "New #{@type}" %>
+    <% end %>
+  <% elsif !Subject.child_types.include?(@type) %>
+    <div class="btn-group">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <%= fa_icon("plus") %> New <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu">
+        <li><%= link_to 'Monograph', sti_subject_path('Monograph', nil, :new) %></li>
+        <li><%= link_to 'Collection', sti_subject_path('Collection', nil, :new) %></li>
+        <li><%= link_to 'Issue', sti_subject_path('Issue', nil, :new) %></li>
+        <li><%= link_to 'Proceeding', sti_subject_path('Proceeding', nil, :new) %></li>
+        <li><%= link_to 'Reference', sti_subject_path('Reference', nil, :new) %></li>
+        <li><%= link_to 'Misc', sti_subject_path('Misc', nil, :new) %></li>
+      </ul>
+    </div>
   <% end %>
 <% end %>
 
@@ -27,6 +43,7 @@
         <td>
           <%= subject.full_entry %>
           <%= link_to(fa_icon("edit"), sti_subject_path(subject.type, subject, :edit), class: 'pull-right') %>
+          <%= link_to(fa_icon("plus-square-o"), new_subject_path(parent_id: subject.id), class: 'pull-right') if subject.has_children %>
         </td>
 
       </tr>

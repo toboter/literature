@@ -55,6 +55,7 @@ gem 'friendly_id'
 gem "select2-rails" # https://select2.github.io/examples.html
 gem "font-awesome-rails"
 gem 'cocoon'
+gem 'sequenced'
 
 gem 'acts_as_list' # https://github.com/swanandp/acts_as_list
 gem 'closure_tree' # https://github.com/mceachen/closure_tree

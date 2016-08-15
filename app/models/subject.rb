@@ -1,5 +1,7 @@
 class Subject < ApplicationRecord
   extend FriendlyId
+  before_validation :create_url_code
+  before_validation :create_cite_base
   
   self.inheritance_column = :type
   
@@ -9,20 +11,48 @@ class Subject < ApplicationRecord
   has_many :creators, through: :creatorships
   belongs_to :place
   belongs_to :publisher
+  belongs_to :serie
   has_many :identifiers, dependent: :destroy
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
   
   has_closure_tree
-  accepts_nested_attributes_for :children, reject_if: :all_blank, allow_destroy: true
+  acts_as_sequenced scope: :cite_base, column: :cite_seq_id
   
-  friendly_id :code, use: :slugged # slug field: By default, this field must be named :slug, though you may change this using the slug_column configuration option. You should add an index to this column, and in most cases, make it unique. You may also wish to constrain it to NOT NULL, but this depends on your app's behavior 
+  friendly_id :friendly_url, use: :slugged 
+  def should_generate_new_friendly_id?
+    cite_base_changed?
+  end
+  def friendly_url
+    "#{cite_base}-#{url_code}"
+  end
+  def create_cite_base
+    if type == 'Issue' && serie_id
+      self.cite_base = "#{Serie.find(serie_id).abbr} #{volume} #{published_date}".parameterize
+    else
+    names=[]
+    creator_list.split(",").flatten.map do |n|
+      names << n.split(' ').last
+    end
+      self.cite_base = "#{names} #{published_date}".parameterize
+    end
+  end
+
   
   def self.types
-    %w(Monograph InBook Collection InCollection Proceeding InProceeding Journal Issue InJournal Reference InReference Misc Serial)
+    child_types+parent_types
   end
-  scope :monographs, -> { where(type: 'Monograph') } 
+  def self.child_types
+    %w(InBook InCollection InProceeding InJournal InReference)
+  end
+  def self.parent_types
+    %w(Monograph Collection  Proceeding  Issue  Reference  Misc)
+  end
+  def self.has_serie
+    %w(Monograph Collection  Proceeding  Issue  Reference)
+  end
   
   scope :by_creator, -> lname, fname { joins(:creators).where('creators.lname = ? AND creators.fname = ?', lname, fname) if fname && lname }
+  scope :by_serie, -> id { where(serie_id: id) if id }
 
   def self.search(q)
     if q
@@ -33,9 +63,15 @@ class Subject < ApplicationRecord
     end
   end
   
-  
-  def code
-    Digest::SHA1.hexdigest self.published_date # und authors und index
+  def cite
+    if creators.any? && published_date
+      names = creators.count <= 3 ? creators.order(lname: :asc).limit(3).map(&:lname).join(', ') : "#{creators.order(lname: :asc).first.lname} et al." 
+      "#{names} #{published_date}"
+    elsif type == 'Issue'
+      "#{serie.abbr} #{volume} (#{published_date})"
+    else
+      "#{title}"
+    end
   end
   
   def creator_list
@@ -56,26 +92,28 @@ class Subject < ApplicationRecord
     self.place_id = name.present? ? (Place.where(name: name).first_or_create!).id : nil
   end
   
-  def cite
-    names = creators.count <= 3 ? creators.order(lname: :asc).limit(3).map(&:lname).join(', ') : "#{creators.order(lname: :asc).first.lname} et al." 
-    "#{names} #{published_date}"
+  def serie_name=(name_abbr)
+    if name_abbr.include?('#')
+      abbr = name_abbr.split('#').first.squish
+      name = name_abbr.split('#').last.squish
+      self.serie = Serie.where(abbr: abbr, name: name).first_or_create!
+    end
   end
- 
+
  
  # defaults
   def full_entry(style='harvard')
     'error: not defined'
   end
-  def has_children
-    false
+
+
+  protected
+  def create_url_code
+    self.url_code = loop do
+      random_token = SecureRandom.urlsafe_base64(6, false)
+      break random_token unless self.class.exists?(url_code: random_token)
+    end
   end
-  def has_parent
-    false
-  end
-  def creator_type
-    "Creator"
-  end
-  def full_title
-    "#{title} : #{subtitle}"
-  end
+  
+
 end

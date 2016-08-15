@@ -6,11 +6,14 @@ class InBook < Subject
     #{published_date}, #{title}. #{subtitle}. #{place.try(:name)}: #{publisher.try(:name)}" 
   end
 
+  def has_serie
+    false
+  end
   def has_children
     false
   end
   def has_parent
-    %w(Monograph Collection Proceeding)
+    %w(Monograph)
   end
   def creator_type
     "Author"

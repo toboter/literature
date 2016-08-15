@@ -1,11 +1,11 @@
 class SubjectsController < ApplicationController
   before_action :set_subject, only: [:show, :edit, :update, :destroy]
-  before_action :set_type
+  before_action :set_type, except: :new
 
   # GET /subjects
   # GET /subjects.json
   def index
-    @subjects = type_class.search(params[:q]).by_creator(params[:lname], params[:fname]).order(published_date: :asc)
+    @subjects = type_class.search(params[:q]).by_creator(params[:lname], params[:fname]).by_serie(params[:serie]).order(published_date: :asc)
   end
 
   # GET /subjects/1
@@ -14,8 +14,16 @@ class SubjectsController < ApplicationController
   end
 
   # GET /subjects/new
-  def new
-    @subject = type_class.new
+  def new 
+    if params[:parent_id]
+      parent = Subject.find(params[:parent_id])
+      @type = parent.has_children
+      @subject = @type.constantize.new
+      @subject.parent = parent
+    else
+      set_type
+      @subject = type_class.new
+    end
   end
 
   # GET /subjects/1/edit
@@ -84,12 +92,8 @@ class SubjectsController < ApplicationController
     def subject_params
       params.require(type.underscore.to_sym).permit(:title, :subtitle, :type, :parent_id, :first_page, 
         :last_page, :page_count, :volume, :published_date, :abbr, :edition, :language, :publisher, 
-        :place, :g_volume_id, :g_canonical_link, :g_image_thumbnail, 
-        :creator_list => [], identifiers_attributes: [:id, :ident_name, :ident_value, :_destroy],
-        children_attributes: [:id, :_destroy, :title, :subtitle, :type, :parent_id, :first_page, 
-        :last_page, :page_count, :volume, :published_date, :abbr, :edition, :language, :publisher, 
-        :place, :g_volume_id, :g_canonical_link, :g_image_thumbnail, 
-        :creator_list => [], identifiers_attributes: [:id, :ident_name, :ident_value, :_destroy]])
+        :place, :g_volume_id, :g_canonical_link, :g_image_thumbnail, :serie_name, 
+        :creator_list => [], identifiers_attributes: [:id, :ident_name, :ident_value, :_destroy])
     end
 end
 
