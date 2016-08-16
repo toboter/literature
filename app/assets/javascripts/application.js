@@ -25,6 +25,11 @@ $(document).ready(function() {
     tokenSeparators: [','],
     theme: "bootstrap"
   });
+  $("#tag_names").select2({
+    tags: true,
+    tokenSeparators: [','],
+    theme: "bootstrap"
+  });
   $("#place").select2({
     tags: true,
     theme: "bootstrap",

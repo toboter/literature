@@ -66,6 +66,11 @@
         <% end if @subject.published_date.present? %>
         
         <%= content_tag :tr do %>
+          <th>Tags:</th>
+          <td><%= @subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path(tagged_with: c.name), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
+        <% end if @subject.tags.any? %>        
+        
+        <%= content_tag :tr do %>
           <th>First page:</th>
           <td><%= @subject.first_page %></td>
         <% end if @subject.first_page.present? %>

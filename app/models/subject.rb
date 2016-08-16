@@ -9,6 +9,8 @@ class Subject < ApplicationRecord
   
   has_many :creatorships, dependent: :destroy
   has_many :creators, through: :creatorships
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
   belongs_to :place
   belongs_to :publisher
   belongs_to :serie
@@ -81,6 +83,16 @@ class Subject < ApplicationRecord
   def creator_list=(names)
     self.creators = names.reject { |c| c.empty? }.split(",").flatten.map do |n|
       Creator.where(lname: n.split(' ').last, fname: n.split(' ').first).first_or_create!
+    end
+  end
+
+  def tag_list
+    tags.map(&:name).join(", ")
+  end
+  
+  def tag_list=(names)
+    self.tags = names.reject { |c| c.empty? }.split(",").flatten.map do |n|
+      Tag.where(name: n).first_or_create!
     end
   end
 

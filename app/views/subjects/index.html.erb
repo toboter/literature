@@ -42,8 +42,8 @@
         </td>
         <td>
           <%= subject.full_entry %>
-          <%= link_to(fa_icon("edit"), sti_subject_path(subject.type, subject, :edit), class: 'pull-right') %>
-          <%= link_to(fa_icon("plus-square-o"), new_subject_path(parent_id: subject.id), class: 'pull-right') if subject.has_children %>
+          <%= link_to(fa_icon("edit lg", ), sti_subject_path(subject.type, subject, :edit), class: 'pull-right') %>
+          <%= link_to(fa_icon("plus-square-o lg"), new_subject_path(parent_id: subject.id), class: 'pull-right') if subject.has_children %>
         </td>
 
       </tr>

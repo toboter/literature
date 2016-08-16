@@ -7,92 +7,110 @@
   
 <%= simple_form_for @subject, html: { class: 'form-horizontal' },
   wrapper: :horizontal_form do |f| %>
-  <% if @subject.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(subject.errors.count, "error") %> prohibited this subject from being saved:</h2>
-
-      <ul>
-      <% subject.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-
-  <div class="row">
-  <%= content_tag :div, class: "col-md-12" do %>
-    <% if Subject.has_serie.include?(@type) %>
-      <%= f.input :serie_name, collection: Serie.order(name: :asc), label_method: :name_abbr, 
-        value_method: :name_abbr, include_blank: true, label: "Serial or Journal", 
-        selected: @subject.serie.try(:name_abbr), input_html: {id: 'serie_name'}, 
-        hint: 'To add new series write abbr#full-name' %>
-      <%= f.input :volume %>
-    <% end %>
-    <% if Subject.child_types.include?(@type) %>
-      <% if params[:parent_id] %>
-        <div class="col-md-9 col-md-offset-3">
-          <%= content_tag :h4, link_to(@subject.parent.full_entry, @subject.parent) %>
-          <%= f.hidden_field :parent_id, value: @subject.parent.id %>
-        </div>
-      <% else %>
-        <%= f.input :parent_id, collection: Subject.where(type: @subject.has_parent), label_method: :full_entry, 
-          value_method: :id, input_html: {id: 'parent_entry_id'} %>
-      <% end %>
-    <% end %>
-    <br />
-  <% end %>
-  </div>
-
-  <div class="row">
-    <div class="col-md-12">
-      <%= f.hidden_field :type, value: @type if @type != "Subject" %>
-      <%= f.input :type, collection: Subject.types.map {|t| [t, t.camelcase]}, selected: @type, disabled: @type != "Subject" %> 
-    </div>
+  <div class="col-md-12 ">
+    <% if @subject.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(subject.errors.count, "error") %> prohibited this subject from being saved:</h2>
   
-    <div class="col-md-12">
-      <%= f.input :creator_list, collection: Creator.order(lname: :asc), label_method: :name, 
-        value_method: :name, label: @subject.creator_type, selected: @subject.creators.map(&:name), 
-        input_html: {multiple: true, id: 'creator_names'} %>
-      <%= f.input :title, hint: 'The title should end with punctuation.' %>
-      <%= f.input :subtitle %>
-      <%= f.input :published_date, input_html: {value: @subject.published_date.blank? && @subject.parent ? @subject.parent.published_date : @subject.published_date} %>
-    </div>
-    
-    <div class="col-md-6">
-      <%= f.input :publisher, collection: Publisher.order(name: :asc), label_method: :name, value_method: :name, include_blank: true, label: "Publisher", selected: @subject.publisher.try(:name), input_html: {id: 'publisher'} %>
-      <%= f.input :place, collection: Place.order(name: :asc), label_method: :name, value_method: :name, include_blank: true, label: "Place", selected: @subject.place.try(:name), input_html: {id: 'place'} %>
-    </div>
-  
-    <div class="col-md-6">
-      <%= f.input :first_page if @subject.type && @subject.type.underscore.include?("in_") %>
-      <%= f.input :last_page if @subject.type && @subject.type.underscore.include?("in_") %>
-      <%= f.input :page_count if @subject.type && !@subject.type.underscore.include?("in_") %>
-    </div>
-  </div>
-  <div class="row">    
-    <div class="col-md-6">
-      <%= f.input :abbr %>
-      <%= f.input :edition %>
-      <%= f.input :language %>
-    </div>
-    
-    <div class="col-md-6">
-      <div id="identifiers">
-        <strong>Other Identifiers: </strong>
-        <%= f.simple_fields_for :identifiers do |id| %>
-          <%= render 'identifier_fields', f: id %>
+        <ul>
+        <% subject.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
         <% end %>
-        <div class="links">
-          <%= link_to_add_association fa_icon('plus-square', text: 'add'), f, :identifiers %>
+        </ul>
+      </div>
+    <% end %>
+  
+  
+    <div class="row">
+      <%= content_tag :div, class: "col-md-12" do %>
+        <% if Subject.has_serie.include?(@type) %>
+          <%= f.input :serie_name, collection: Serie.order(name: :asc), label_method: :name_abbr, 
+            value_method: :name_abbr, include_blank: true, label: "Serial or Journal", 
+            selected: @subject.serie.try(:name_abbr), input_html: {id: 'serie_name'}, 
+            hint: 'To add new series write abbr#full-name' %>
+          <%= f.input :volume %>
+        <% end %>
+        <% if Subject.child_types.include?(@type) %>
+          <% if params[:parent_id] %>
+            <div class="col-md-9 col-md-offset-3">
+              <%= content_tag :h4, link_to(@subject.parent.full_entry, @subject.parent) %>
+              <%= f.hidden_field :parent_id, value: @subject.parent.id %>
+            </div>
+          <% else %>
+            <%= f.input :parent_id, collection: Subject.where(type: @subject.has_parent), label_method: :full_entry, 
+              value_method: :id, input_html: {id: 'parent_entry_id'} %>
+          <% end %>
+        <% end %>
+        <br />
+      <% end %>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-12">
+        <%= f.hidden_field :type, value: @type if @type != "Subject" %>
+        <%= f.input :type, collection: Subject.types.map {|t| [t, t.camelcase]}, selected: @type, 
+          disabled: @type != "Subject" %> 
+      </div>
+    
+      <div class="col-md-12">
+        <%= f.input :creator_list, collection: Creator.order(lname: :asc), label_method: :name, 
+          value_method: :name, label: @subject.creator_type, selected: @subject.creators.map(&:name), 
+          input_html: {multiple: true, id: 'creator_names'} %>
+        <%= f.input :published_date, input_html: {value: @subject.published_date.blank? && @subject.parent ? @subject.parent.published_date : @subject.published_date} %>
+        <%= f.input :title, hint: 'The title should end with punctuation.' %>
+        <%= f.input :subtitle %>
+        <%= f.input :tag_list, collection: Tag.order(name: :asc), label_method: :name, 
+          value_method: :name, selected: @subject.tags.map(&:name), 
+          input_html: {multiple: true, id: 'tag_names'} %>
+  
+        <div class="row">
+          <div class="col-md-6">
+            <%= f.input :publisher, collection: Publisher.order(name: :asc), label_method: :name, 
+              value_method: :name, include_blank: true, label: "Publisher", selected: @subject.publisher.try(:name), 
+              input_html: {id: 'publisher'} %>
+          </div>
+          <div class="col-md-6">
+            <%= f.input :place, collection: Place.order(name: :asc), label_method: :name, value_method: :name, 
+              include_blank: true, label: "Place", selected: @subject.place.try(:name), input_html: {id: 'place'} %>
+          </div>
+        </div>  
+      </div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-6">
+        <%= f.input :first_page %>
+        <%= f.input :last_page %>
+        <%= f.input :page_count %>
+      </div>
+    
+      <div class="col-md-6">
+        <%= f.input :abbr %>
+        <%= f.input :edition %>
+        <%= f.input :language %>
+      </div>
+    </div>
+      
+    <did class="row">
+      <div class="col-md-12">
+        <div id="identifiers">
+          <strong>Other Identifiers: </strong>
+          <%= f.simple_fields_for :identifiers do |id| %>
+            <%= render 'identifier_fields', f: id %>
+          <% end %>
+          <div class="links">
+            <%= link_to_add_association fa_icon('plus-square', text: 'add identifier'), f, :identifiers %>
+          </div>
         </div>
+      </div>
+    </div>
+  
+    <div class="row">
+      <div class="col-md-6">
+        <hr>
+        <%= f.submit class: 'btn btn-default' %>
       </div>
     </div>
   </div>
 
-  <div class="col-md-12 ">
-    <hr>
-    <%= f.submit class: 'btn btn-default' %>
-  </div>
-  </div>
 <% end %>
