@@ -66,7 +66,7 @@ class Subject < ApplicationRecord
   def cite
     if creators.any? && published_date
       names = creators.count <= 3 ? creators.order(lname: :asc).limit(3).map(&:lname).join(', ') : "#{creators.order(lname: :asc).first.lname} et al." 
-      "#{names} #{published_date}"
+      "#{names} #{published_date}#{numeric_to_alph(cite_seq_id)}"
     elsif type == 'Issue'
       "#{serie.abbr} #{volume} (#{published_date})"
     else
@@ -107,6 +107,18 @@ class Subject < ApplicationRecord
   end
 
 
+  Alpha26 = ("a".."z").to_a
+  def numeric_to_alph(value)
+    return "" if value.nil? || value < 1
+    s, q = "", value
+    loop do
+      q, r = (q - 1).divmod(26)
+      s.prepend(Alpha26[r]) 
+      break if q.zero?
+    end
+    s
+  end
+
   protected
   def create_url_code
     self.url_code = loop do
@@ -114,6 +126,6 @@ class Subject < ApplicationRecord
       break random_token unless self.class.exists?(url_code: random_token)
     end
   end
-  
+
 
 end

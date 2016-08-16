@@ -106,7 +106,7 @@
                 <%= link_to child.full_entry, child %>
               </div>
             <% end %>
-            <%= link_to(fa_icon("plus-square-o"), new_subject_path(parent_id: @subject.id), class: 'pull-right') %>
+            <%= link_to(fa_icon("plus-square-o", text: 'add content'), new_subject_path(parent_id: @subject.id), class: 'pull-right') %>
           </td>
         <% end if @subject.has_children %>
       </tbody>

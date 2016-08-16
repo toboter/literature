@@ -3,7 +3,10 @@ class InJournal < Subject
 
   def full_entry(style='harvard')
     "#{creators.order(lname: :asc).map(&:rname).join(', ')}, 
-    #{published_date ? published_date : parent.published_date}, #{title} #{subtitle ? subtitle+'. ' : ''} in: #{parent.full_entry}"
+    #{published_date ? published_date : parent.published_date}, 
+    #{title} 
+    #{subtitle} 
+    in: #{parent.full_entry}."
   end
 
   def has_serie

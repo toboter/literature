@@ -54,7 +54,7 @@
       <%= f.input :creator_list, collection: Creator.order(lname: :asc), label_method: :name, 
         value_method: :name, label: @subject.creator_type, selected: @subject.creators.map(&:name), 
         input_html: {multiple: true, id: 'creator_names'} %>
-      <%= f.input :title %>
+      <%= f.input :title, hint: 'The title should end with punctuation.' %>
       <%= f.input :subtitle %>
       <%= f.input :published_date, input_html: {value: @subject.published_date.blank? && @subject.parent ? @subject.parent.published_date : @subject.published_date} %>
     </div>

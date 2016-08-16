@@ -4,11 +4,11 @@ class Collection < Subject
   def full_entry(style='harvard')
     "#{creators.order(lname: :asc).map(&:rname).join(', ')}, 
     #{published_date}, 
-    #{title}. 
-    #{subtitle+'. '}
+    #{title} 
+    #{subtitle}
     #{has_serie && root? && serie ? serie.abbr+' '+volume+'. ' : ''} 
     #{place.try(:name)}: 
-    #{publisher.try(:name)}" 
+    #{publisher.try(:name)}." 
   end
 
   def has_serie
