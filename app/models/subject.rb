@@ -59,7 +59,8 @@ class Subject < ApplicationRecord
   def self.search(q)
     if q
       key = "%#{q}%"
-      joins(:creators).where('title LIKE :search OR subtitle LIKE :search OR published_date LIKE :search OR creators.lname LIKE :search OR creators.fname LIKE :search', search: key)
+      joins(:creators, :tags).where('title LIKE :search OR subtitle LIKE :search OR published_date LIKE :search 
+        OR creators.lname LIKE :search OR creators.fname LIKE :search OR tags.name LIKE :search', search: key)
     else
       all
     end

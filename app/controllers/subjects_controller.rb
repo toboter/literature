@@ -6,7 +6,10 @@ class SubjectsController < ApplicationController
   # GET /subjects.json
   def index
     @subjects = type_class.search(params[:q]).by_creator(params[:lname], params[:fname])
-      .by_serie(params[:serie]).order(published_date: :asc)
+      .by_serie(params[:serie]).order(published_date: :desc).paginate(:page => params[:page], :per_page => 10)
+    if params[:serie] || params[:lname] && params[:fname]
+      @filter = params[:serie] ? Serie.find(params[:serie]).name : "#{params[:lname]}, #{params[:fname]}"
+    end
   end
 
   # GET /subjects/1
