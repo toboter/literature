@@ -57,6 +57,7 @@ gem "font-awesome-rails"
 gem 'cocoon'
 gem 'sequenced'
 gem 'will_paginate-bootstrap'
+gem 'omniauth-oauth2'
 
 gem 'acts_as_list' # https://github.com/swanandp/acts_as_list
 gem 'closure_tree' # https://github.com/mceachen/closure_tree

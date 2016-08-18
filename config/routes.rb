@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  get 'home/index'
+  get '/auth/:provider/callback', to: 'sessions#create'
+  get '/signout', to: 'sessions#destroy', as: 'signout'
 
   resources :subjects
   resources :monographs, controller: 'subjects', type: 'Monograph'

@@ -77,6 +77,12 @@
                 <%= yield(:buttons) if content_for?(:buttons) %>
               </div>
             </h1>
+            <%= content_tag :div, class: "notice" do %>
+              <%= notice %>
+            <% end if notice %>
+            <%= content_tag :div, class: "alert" do %>
+              <%= alert %>
+            <% end if alert %>
           </div>
           <%= yield %>
         </div>
@@ -87,6 +93,17 @@
       <div class="row">
         <div class="col-md-12">
           <p>Footer</p>
+          <% if current_user %>        
+            <p id="logged_in">
+              Logged in as <strong><%= current_user.name %></strong>.
+              <%= link_to "Sign Out", signout_path %>
+            </p>
+          <% else %>
+            <p><strong>Currently not signed in.</strong></p>
+            <p>
+              <%= link_to "Sign in through Bab-ili", "/auth/babili" %>
+            </p>
+          <% end %>
         </div>
       </div>
     </div>
