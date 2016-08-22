@@ -1,1 +1,6 @@
 <% title "Overview" %>
+
+<p>Current User: <%= current_user.inspect %></p>
+<p>Token: <%= session[:access_token] %></p>
+
+<p>Current User Data in babili/api/me: <%= @data %></p>

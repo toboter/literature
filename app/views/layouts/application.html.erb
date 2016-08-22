@@ -23,10 +23,14 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to 'Advanced Search', '' %>
+            <li><%= link_to 'Advanced Search', '' %></li>
             <li><a href="#">Settings</a></li>
             <li><a href="#">Help</a></li>
-            <li><a href="#">Logout</a></li>
+            <% if current_user %>        
+              <li><%= link_to "Sign Out", signout_path %></li>
+            <% else %>
+              <li><%= link_to "Sign in through Bab-ili", "/auth/babili" %></li>
+            <% end %>
           </ul>
           <%= form_tag sti_subject_path, :method => 'get', class: "navbar-form navbar-right" do %>
             <div class="input-group">
@@ -43,6 +47,7 @@
     <div class="container-fluid" style="margin-top: 60px;">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
+          <p><%= current_user ? current_user.try(:name) : 'nicht angemeldet' %></p>
           <ul class="nav nav-pills nav-stacked">
             <%= content_tag :li, link_to('Overview', root_url), class: ('active' if current_page?(root_url)) %>
             <li><a href="#">Analytics</a></li>
@@ -93,17 +98,7 @@
       <div class="row">
         <div class="col-md-12">
           <p>Footer</p>
-          <% if current_user %>        
-            <p id="logged_in">
-              Logged in as <strong><%= current_user.name %></strong>.
-              <%= link_to "Sign Out", signout_path %>
-            </p>
-          <% else %>
-            <p><strong>Currently not signed in.</strong></p>
-            <p>
-              <%= link_to "Sign in through Bab-ili", "/auth/babili" %>
-            </p>
-          <% end %>
+
         </div>
       </div>
     </div>
