@@ -1,10 +1,12 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  before_action :check_token_expiration!
   
   rescue_from OAuth2::Error do |exception|
     if exception.response.status == 401
       session[:user_id] = nil
       session[:access_token] = nil
+      session[:expires_at] = nil
       redirect_to root_url, alert: "Access token expired, try signing in again."
     end
   end
@@ -27,5 +29,16 @@ private
     @current_user ||= User.find(session[:user_id]) if session[:user_id]
   end
   helper_method :current_user
+  
+  # The current_user is logged out automatically and redirected to root if the access_token is expired.
+  def check_token_expiration!
+    if session[:user_id] && session[:expires_at] < Time.now.to_i
+      session[:user_id] = nil
+      session[:access_token] = nil
+      session[:expires_at] = nil
+      
+      redirect_to root_url, notice: 'Access token expired. You have been logged out.'
+    end
+  end  
   
 end

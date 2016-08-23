@@ -1,7 +1,7 @@
 module OmniAuth
   module Strategies
     class Babili < OmniAuth::Strategies::OAuth2
-      option :babili, :doorkeeper
+      option :name, :babili
 
       option :client_options, {
         site: Rails.application.secrets.provider_site,
