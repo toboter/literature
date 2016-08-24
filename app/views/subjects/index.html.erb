@@ -22,7 +22,7 @@
       </ul>
     </div>
   <% end %>
-<% end %>
+<% end if current_user %>
 
 <div class="row">
   <div class="col-md-12">
@@ -45,7 +45,7 @@
     <tr>
       <th>Cite</th>
       <th>Title</th>
-      <%= content_tag :th, '', style: 'width: 70px;' %>
+      <%= content_tag :th, '', style: 'width: 70px;' if current_user %>
     </tr>
   </thead>
 
@@ -62,7 +62,7 @@
         <%= content_tag :td do %>
           <%= link_to(fa_icon("edit", text: 'edit'), sti_subject_path(subject.type, subject, :edit)) %><br />
           <%= link_to(fa_icon("plus-square-o", text: 'add'), new_subject_path(parent_id: subject.id)) if subject.has_children %>
-        <% end %>
+        <% end if current_user %>
 
       </tr>
     <% end %>

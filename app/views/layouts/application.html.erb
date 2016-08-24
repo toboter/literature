@@ -47,7 +47,6 @@
     <div class="container-fluid" style="margin-top: 60px;">
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
-          <p><%= current_user ? current_user.try(:name) : 'nicht angemeldet' %></p>
           <ul class="nav nav-pills nav-stacked">
             <%= content_tag :li, link_to('Overview', root_url), class: ('active' if current_page?(root_url)) %>
             <li><a href="#">Analytics</a></li>
