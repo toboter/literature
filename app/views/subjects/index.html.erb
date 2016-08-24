@@ -1,6 +1,5 @@
-<p id="notice"><%= notice %></p>
-
 <% title "#{@type.pluralize}" %>
+
 <% content_for(:buttons) do %>
   <% if Subject.parent_types.include?(@type) %>
     <%= link_to sti_subject_path(@type, nil, :new), class: 'btn btn-default' do %>

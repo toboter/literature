@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   get '/signout', to: 'sessions#destroy', as: 'signout'
 
   resources :subjects
+  resources :subject_imports
+  
   resources :monographs, controller: 'subjects', type: 'Monograph'
   resources :in_books, controller: 'subjects', type: 'InBook'
   resources :collections, controller: 'subjects', type: 'Collection'

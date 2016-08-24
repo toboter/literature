@@ -54,6 +54,7 @@ class Subject < ApplicationRecord
   end
   
   scope :by_creator, -> lname, fname { joins(:creators).where('creators.lname = ? AND creators.fname = ?', lname, fname) if fname && lname }
+  scope :tagged_with, -> tagged_with { joins(:tags).where('tags.name = ?', tagged_with) if tagged_with }
   scope :by_serie, -> id { where(serie_id: id) if id }
 
   def self.search(q)

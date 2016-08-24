@@ -1,6 +1,5 @@
-<p id="notice"><%= notice %></p>
-
 <% title "#{@subject.cite}" %>
+
 <% content_for(:buttons) do %>
   <%= link_to sti_subject_path(@subject.type, @subject, :edit), class: 'btn btn-default' do %>
     <%= fa_icon("edit") %>
