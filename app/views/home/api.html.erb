@@ -3,4 +3,38 @@
 <p>For all subjects <code>/api/citations.json</code></p>
 <p>For all subjects <code>/api/citations/'id'.json</code></p>
 
-<p>A call will result in json format</p>
+<p>A call will result in json format. All info is public.</p>
+
+<br>
+<h5>Example output</h5>
+<pre>
+{
+  cite: "Koldewey 2016a",
+  type: "Collection",
+  creators: 
+    {
+      type: "Editor",
+      names: "Walter Koldewey"
+    },
+  published: "2016",
+  title: "Ein neues Sammelwerk",
+  subtitle: "Die neue Aufarbeitung",
+  place: "Mainz",
+  publisher: "Zabern",
+  links: 
+    {
+      self: "http://localhost:3001/api/citations/koldewey-2016-ey7pnyet",
+      human: "http://localhost:3001/subjects/koldewey-2016-ey7pnyet"
+    },
+  pages: "376",
+  serie: 
+    {
+      name: "Wissenschaftliche Veröffentlichungen der deutschen Orientgesellschaft",
+      abbr: "WVDOG"
+    },
+  volume: "179",
+  full_entry: "Koldewey, Walter, 2016, Ein neues Sammelwerk alle zusammen WVDOG 179. Mainz: Zabern.",
+  identifiers: [ ],
+  parent: null
+}
+</pre>

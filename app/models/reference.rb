@@ -8,6 +8,9 @@ class Reference < Subject
   def has_serie
     true
   end
+  def has_parent
+    false
+  end
   def has_children
     true
   end

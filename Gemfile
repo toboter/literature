@@ -58,6 +58,7 @@ gem 'sequenced'
 gem 'will_paginate-bootstrap'
 gem 'omniauth-oauth2'
 gem 'roo'
+gem 'active_model_serializers', '~> 0.10.0'
 
 gem 'acts_as_list' # https://github.com/swanandp/acts_as_list
 gem 'closure_tree' # https://github.com/mceachen/closure_tree
