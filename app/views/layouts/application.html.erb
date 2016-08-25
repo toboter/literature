@@ -25,7 +25,7 @@
           <ul class="nav navbar-nav navbar-right">
             <li><%= link_to 'Advanced Search', '' %></li>
             <li><a href="#">Settings</a></li>
-            <li><a href="#">Help</a></li>
+            <li><%= link_to 'Help', help_path %></li>
             <% if current_user %>        
               <li><%= link_to "Sign Out", signout_path %></li>
             <% else %>
@@ -67,9 +67,9 @@
           </ul>
           <hr>
           <ul class="nav nav-pills nav-stacked">
-            <li><%= link_to "Import", new_subject_import_path %></li>
+            <%= content_tag :li, link_to("Import", new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %></li>
             <li><a href="">Export</a></li>
-            <li><a href="">API</a></li>
+            <%= content_tag :li, link_to('API', api_path), class: ('active' if current_page?(api_url)) %>
           </ul>
         </div>
         
@@ -81,11 +81,17 @@
                 <%= yield(:buttons) if content_for?(:buttons) %>
               </div>
             </h1>
-            <%= content_tag :div, class: "notice" do %>
+            <%= content_tag :div, class: "alert alert-info" do %>
               <%= notice %>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             <% end if notice %>
-            <%= content_tag :div, class: "alert" do %>
+            <%= content_tag :div, class: "alert alert-danger" do %>
               <%= alert %>
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
             <% end if alert %>
           </div>
           <%= yield %>

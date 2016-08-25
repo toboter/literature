@@ -16,6 +16,15 @@ Rails.application.routes.draw do
   resources :references, controller: 'subjects', type: 'Reference'
   resources :in_references, controller: 'subjects', type: 'InReference'
   resources :miscs, controller: 'subjects', type: 'Misc'
+
+
+  namespace :api, defaults: {format: 'json'} do
+    scope module: :v1 do
+      resources :citations, only: [:index, :show]
+    end
+  end
   
+  get '/api', to: 'home#api'
+  get '/help', to: 'home#help'
   root 'home#index'
 end

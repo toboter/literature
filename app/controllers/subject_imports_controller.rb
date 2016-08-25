@@ -1,4 +1,6 @@
 class SubjectImportsController < ApplicationController
+  before_action :authorize
+  
   def new
     @subject_import = SubjectImport.new
   end
