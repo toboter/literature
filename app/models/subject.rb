@@ -107,7 +107,7 @@ class Subject < ApplicationRecord
   end
   
   def serie_name=(name_abbr)
-    if name_abbr.include?('#')
+    if name_abbr && name_abbr.include?('#')
       abbr = name_abbr.split('#').first.squish
       name = name_abbr.split('#').last.squish
       self.serie = Serie.where(abbr: abbr, name: name).first_or_create!

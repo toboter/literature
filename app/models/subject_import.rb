@@ -8,7 +8,7 @@ class SubjectImport
   attr_accessor :file
   
   def self.col_attr
-    %w(title subtitle type parent_id first_page last_page page_count volume published_date abbr edition language publisher place serie_name)
+    %w(type title subtitle first_page last_page page_count volume published_date abbr edition language place publisher serie_name parent)
   end
 
   def initialize(attributes = {})
