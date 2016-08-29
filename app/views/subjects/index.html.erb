@@ -31,8 +31,6 @@
       <%= content_tag :li, @type.pluralize if @type != 'Subject' %>
       <% if params[:q] %>
         <li>Simple Search for <strong><%= params[:q] %></strong></li>
-      <% elsif @filter %>
-        <li>Filtered by <strong><%= @filter %></strong></li>
       <% end %>
     </ol>
     <%= will_paginate @subjects, renderer: BootstrapPagination::Rails %>

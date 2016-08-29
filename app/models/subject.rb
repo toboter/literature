@@ -1,5 +1,7 @@
 class Subject < ApplicationRecord
   extend FriendlyId
+  include SearchCop
+  
   before_validation :create_url_code
   before_validation :create_cite_base
   
@@ -52,19 +54,13 @@ class Subject < ApplicationRecord
   def self.has_serie
     %w(Monograph Collection  Proceeding  Issue  Reference)
   end
-  
-  scope :by_creator, -> lname, fname { joins(:creators).where('creators.lname = ? AND creators.fname = ?', lname, fname) if fname && lname }
-  scope :tagged_with, -> tagged_with { joins(:tags).where('tags.name = ?', tagged_with) if tagged_with }
-  scope :by_serie, -> id { where(serie_id: id) if id }
 
-  def self.search(q)
-    if q
-      key = "%#{q}%"
-      joins(:creators, :tags).where('title LIKE :search OR subtitle LIKE :search OR published_date LIKE :search 
-        OR creators.lname LIKE :search OR creators.fname LIKE :search OR tags.name LIKE :search', search: key)
-    else
-      all
-    end
+  search_scope :search do
+    attributes :title, :subtitle, :type, :published_date, :cite_base
+    attributes :identifier => ["identifiers.ident_value"]
+    attributes :serie => ["serie.abbr", "serie.name"]
+    attributes :creator => "creators.lname"
+    attributes :tag => "tags.name"
   end
   
   def cite

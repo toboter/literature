@@ -34,7 +34,7 @@
       <tbody>
         <%= content_tag :tr do %>
           <th><%= @subject.creator_type %>:</th>
-          <td><%= @subject.creators.map{|c| link_to c.name, subjects_path(lname: c.lname, fname: c.fname)}.join(', ').html_safe %></td>
+          <td><%= @subject.creators.map{|c| link_to c.name, subjects_path(q: "creator:#{c.lname}")}.join(', ').html_safe %></td>
         <% end if @subject.creators.any? %>
 
         <%= content_tag :tr do %>
@@ -52,7 +52,7 @@
         <%= content_tag :tr do %>
           <th>Serial or Journal:</th>
           <td>
-            <%= link_to subjects_path(serie: @subject.serie.id) do %>
+            <%= link_to subjects_path(q: "serie:#{@subject.serie.try(:name)} OR #{@subject.serie.try(:abbr)}") do %>
               <%= @subject.serie.try(:name) %>
               <%= "(#{@subject.serie.abbr})" if @subject.serie.abbr %>
             <% end %>
@@ -67,7 +67,7 @@
         
         <%= content_tag :tr do %>
           <th>Tags:</th>
-          <td><%= @subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path(tagged_with: c.name), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
+          <td><%= @subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path(q: "tag:#{c.name}"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
         <% end if @subject.tags.any? %>
 
         <%= content_tag :tr do %>
