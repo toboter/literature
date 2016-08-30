@@ -23,20 +23,11 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <%= content_tag :p, "Signed in as #{current_user.try(:name)}", class: 'navbar-text' if current_user %>
+            <%= content_tag :p, fa_icon('user', text: "Signed in as #{current_user.try(:name)}"), class: 'navbar-text' if current_user %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to 'Advanced Search', '' %></li>
             <li><%= link_to 'Help', help_path %></li>
           </ul>
-          <%= form_tag sti_subject_path, :method => 'get', class: "navbar-form navbar-right" do %>
-            <div class="input-group">
-              <span class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>
-              <%= search_field_tag :q, params[:q], placeholder: "Search", class: "form-control" %>
-            </div>
-            
-          <% end %>
-          
         </div>
       </div>
     </nav>
@@ -47,10 +38,12 @@
           <ul class="nav nav-pills nav-stacked">
             <%= content_tag :li, link_to('Overview', root_url), class: ('active' if current_page?(root_url)) %>
             <li><a href="#">Analytics</a></li>
+            <%= content_tag :li, link_to('Subjects', sti_subject_path), class: ('active' if @type.present?) %> 
           </ul>
           <hr>
-          <ul class="nav nav-pills nav-stacked">
-            <%= content_tag :li, link_to('All subjects', sti_subject_path), class: ('active' if @type.present? && @type == 'Subject') %> 
+          
+          <!--
+          <ul class="nav nav-pills nav-stacked">  
             <li role="presentation" class="dropdown <%= ('active' if @type.present? && @type != 'Subject') %>">
               <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                 Subject Types <span class="caret"></span>
@@ -63,6 +56,8 @@
             </li>
           </ul>
           <hr>
+          -->
+          
           <ul class="nav nav-pills nav-stacked">
             <%= content_tag :li, link_to("Import", new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %></li>
             <li><a href="">Export</a></li>
@@ -75,13 +70,17 @@
         </div>
         
         <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
-          <div class="page-header">
+          <%= content_tag :div, class: "page-header" do %>
             <h1 class="">
               <%= yield(:title) if content_for?(:title) %>
               <div class="pull-right">
                 <%= yield(:buttons) if content_for?(:buttons) %>
               </div>
             </h1>
+          <% end if content_for?(:buttons) || content_for?(:title) %>
+          
+          <%= content_tag :div, class: 'row' do %>
+            <div class="col-md-12">
             <%= content_tag :div, class: "alert alert-info" do %>
               <%= notice %>
               <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -94,8 +93,11 @@
                 <span aria-hidden="true">&times;</span>
               </button>
             <% end if alert %>
-          </div>
+            </div>
+          <% end if alert || notice %>
+          
           <%= yield %>
+          
         </div>
       </div>
     </div>
@@ -121,9 +123,9 @@
             
             <ul class="nav navbar-nav navbar-right">
               <% if current_user %>        
-                <li><%= link_to "Sign Out", signout_path %></li>
+                <li><%= link_to fa_icon('sign-out', text: "Sign Out"), signout_path %></li>
               <% else %>
-                <li><%= link_to "Sign in through Bab-ili", "/auth/babili" %></li>
+                <li><%= link_to fa_icon('sign-in', text: "Sign in through Bab-ili"), "/auth/babili" %></li>
               <% end %>
             </ul>            
           </div>        

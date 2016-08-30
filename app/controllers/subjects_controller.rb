@@ -6,7 +6,17 @@ class SubjectsController < ApplicationController
   # GET /subjects
   # GET /subjects.json
   def index
-    @subjects = type_class.search(params[:q]).order(published_date: :desc).paginate(:page => params[:page], :per_page => 10)
+    q = params[:q].dup if params[:q]
+    if q && q.include?('order:') && Subject.attribute_names().include?(q.match("\order:[a-zA-Z:_]*").to_s.split(':')[1])
+      subject_order = q.match("\order:[a-zA-Z:_]*")
+      order = subject_order.to_s.split(':')[1]
+      direction = subject_order.to_s.split(':')[2] ? subject_order.to_s.split(':')[2] : 'desc'
+      q.slice! subject_order.to_s
+    else 
+      order = 'published_date'
+      direction = 'desc'
+    end
+    @subjects = type_class.search(q).order("#{order} #{direction}").paginate(:page => params[:page], :per_page => 10)
   end
 
   # GET /subjects/1
@@ -97,6 +107,3 @@ class SubjectsController < ApplicationController
         :creator_list => [],  :tag_list => [], identifiers_attributes: [:id, :ident_name, :ident_value, :_destroy])
     end
 end
-
-
-# creatorships_attributes: [:subject_id, :creator_id, :poistion, :type, creatorship_creators_attributes: [:fname, :lname]]

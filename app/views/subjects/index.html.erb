@@ -1,39 +1,36 @@
-<% title "#{@type.pluralize}" %>
-
-<% content_for(:buttons) do %>
-  <% if Subject.parent_types.include?(@type) %>
-    <%= link_to sti_subject_path(@type, nil, :new), class: 'btn btn-default' do %>
-      <%= fa_icon("plus") %>
-      <%= "New #{@type}" %>
-    <% end %>
-  <% elsif !Subject.child_types.include?(@type) %>
-    <div class="btn-group">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <%= fa_icon("plus") %> New <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu">
-        <li><%= link_to 'Monograph', sti_subject_path('Monograph', nil, :new) %></li>
-        <li><%= link_to 'Collection', sti_subject_path('Collection', nil, :new) %></li>
-        <li><%= link_to 'Issue', sti_subject_path('Issue', nil, :new) %></li>
-        <li><%= link_to 'Proceeding', sti_subject_path('Proceeding', nil, :new) %></li>
-        <li><%= link_to 'Reference', sti_subject_path('Reference', nil, :new) %></li>
-        <li><%= link_to 'Misc', sti_subject_path('Misc', nil, :new) %></li>
-      </ul>
-    </div>
-  <% end %>
-<% end if current_user %>
-
 <div class="row">
+  <div class="col-md-12" style="margin:10px 0;">
+    <%= form_tag sti_subject_path, :method => 'get', class: "" do %>
+      <div class="input-group">
+        <span class="input-group-addon"><i class="fa fa-search fa-fw" aria-hidden="true"></i></span>
+        <%= search_field_tag :q, params[:q], placeholder: "Search", class: "form-control" %>
+      </div>
+    <% end %>
+  </div>
   <div class="col-md-12">
-
-    <ol class="breadcrumb">
-      <%= content_tag :li, link_to('All', sti_subject_path) %>
-      <%= content_tag :li, @type.pluralize if @type != 'Subject' %>
-      <% if params[:q] %>
-        <li>Simple Search for <strong><%= params[:q] %></strong></li>
-      <% end %>
-    </ol>
     <%= will_paginate @subjects, renderer: BootstrapPagination::Rails %>
+    <%= content_tag :div, class: 'pull-right' do %>
+      <% if Subject.parent_types.include?(@type) %>
+        <%= link_to sti_subject_path(@type, nil, :new), class: 'btn btn-default' do %>
+          <%= fa_icon("plus") %>
+          <%= "New #{@type}" %>
+        <% end %>
+      <% elsif !Subject.child_types.include?(@type) %>
+        <div class="btn-group" style="margin-bottom: 10px">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <%= fa_icon("plus") %> New <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu">
+            <li><%= link_to 'Monograph', sti_subject_path('Monograph', nil, :new) %></li>
+            <li><%= link_to 'Collection', sti_subject_path('Collection', nil, :new) %></li>
+            <li><%= link_to 'Issue', sti_subject_path('Issue', nil, :new) %></li>
+            <li><%= link_to 'Proceeding', sti_subject_path('Proceeding', nil, :new) %></li>
+            <li><%= link_to 'Reference', sti_subject_path('Reference', nil, :new) %></li>
+            <li><%= link_to 'Misc', sti_subject_path('Misc', nil, :new) %></li>
+          </ul>
+        </div>
+      <% end %>
+    <% end if current_user %>
   </div>
 </div>
 
@@ -51,7 +48,7 @@
       <tr>
         <td>
           <%= link_to subject.cite, sti_subject_path(subject.type, subject) %><br/>
-          <small><%= link_to subject.type, sti_subject_path(subject.type) %></small>
+          <small><%= link_to subject.type, subjects_path(q: "type:#{subject.type}") %></small>
         </td>
         <td>
           <%= subject.full_entry %>

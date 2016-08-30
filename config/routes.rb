@@ -26,5 +26,6 @@ Rails.application.routes.draw do
   
   get '/api', to: 'home#api'
   get '/help', to: 'home#help'
+  get '/search', to: 'home#search'
   root 'home#index'
 end
