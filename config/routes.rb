@@ -20,7 +20,11 @@ Rails.application.routes.draw do
 
   namespace :api, defaults: {format: 'json'} do
     scope module: :v1 do
-      resources :citations, only: [:index, :show]
+      resources :citations, only: [:index, :show] do
+        collection do
+          get 'search'
+        end 
+      end  
     end
   end
   

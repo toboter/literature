@@ -1,7 +1,8 @@
 <% title "API Description" %>
 
 <p>For all subjects <code>/api/citations.json</code></p>
-<p>For all subjects <code>/api/citations/'id'.json</code></p>
+<p>For a specific subject <code>/api/citations/'id'.json</code></p>
+<p>To search for subjects as described <%= link_to 'here', help_path(anchor: 'searching') %> <code>/api/citations/search.json?q=attribute:value</code>
 
 <p>A call will result in json format. All info is public.</p>
 

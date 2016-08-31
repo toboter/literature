@@ -59,9 +59,11 @@ class Subject < ApplicationRecord
     attributes :title, :subtitle, :type, :published_date, :cite_base
     attributes :identifier => ["identifiers.ident_value"]
     attributes :serie => ["serie.abbr", "serie.name"]
-    attributes :creator => "creators.lname"
+    attributes :creator => ["creators.lname", "creators.fname"]
     attributes :tag => "tags.name"
   end
+  
+
   
   def cite
     if creators.any? && published_date

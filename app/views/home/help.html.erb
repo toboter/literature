@@ -1,9 +1,63 @@
 <% title "Looking for help?" %>
 
-<p>Here you will find some infos</p>
-
 <% if current_user %>
-  <br />
+  <h2>
+    <a id="user-content-admin" class="anchor" href="#admin" aria-hidden="true"></a>
+    Admin Tools  
+  </h2>
   <p><strong>Addional info and howtos if you are logged in</strong></p>
 
 <% end %>
+
+
+
+<h2>
+  <a id="user-content-searching" class="anchor" href="#searching" aria-hidden="true"></a>
+  Searching
+</h2>
+<p>
+  <strong>Examples:</strong> <br>
+  <code>creator:Koldewey title:'Wiedererstehendes Babylon'</code> or <br>
+  <code>creator:Koldewey order:published_date:desc published_date < 1930</code>.
+</p>
+
+<h3>
+  <a id="user-content-queryable-attributes" class="anchor" href="#queryable-attributes" aria-hidden="true"></a>
+  Queryable Attributes
+</h3>
+
+<p>
+    Attributes you can query after are: <br>
+    <code>title</code>, <code>subtitle</code>, <code>type</code>, <code>published_date</code>, 
+    <code>cite_base</code>, <code>identifier</code>, <code>serie</code> (abbreviation or name), 
+    <code>creator</code> (last name or first name) and <code>tag</code>
+</p>
+
+<h3>
+  <a id="user-content-supported-operators" class="anchor" href="#supported-operators" aria-hidden="true"></a>
+  Supported operators
+</h3>
+
+<p>
+  Query string queries support <code>AND/and</code>, <code>OR/or</code>, <code>:</code>, <code>=</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>,
+  <code>&gt;</code>, <code>&gt;=</code>, <code>NOT/not/-</code>, <code>()</code>, <code>"..."</code> and <code>'...'</code>. Default operators are <code>AND</code>
+  and <code>matches</code>, <code>OR</code> has precedence over <code>AND</code>. <code>NOT</code> can only be used as infix
+  operator regarding a single attribute.
+</p>
+
+<p>
+  Hash based queries support <code>:and =&gt; [...]</code> and <code>:or =&gt; [...]</code>, which take an array
+  of <code>:not =&gt; {...}</code>, <code>:matches =&gt; {...}</code>, <code>:eq =&gt; {...}</code>, <code>:not_eq =&gt; {...}</code>,
+  <code>:lt =&gt; {...}</code>, <code>:lteq =&gt; {...}</code>, <code>:gt =&gt; {...}</code>, <code>:gteq =&gt; {...}</code> and <code>:query =&gt; "..."</code>
+  arguments. Moreover, <code>:query =&gt; "..."</code> makes it possible to create sub-queries.
+  The other rules for query string queries apply to hash based queries as well.
+</p>
+
+<h3>
+  <a id="user-content-ordering" class="anchor" href="#ordering" aria-hidden="true"></a>
+  Ordering
+</h3>
+
+<p>
+  You can order by any attribute. In two directions <code>asc</code> or <code>desc</code>. Having for example <code>order:published_date:asc</code>
+</p>
