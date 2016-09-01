@@ -10,7 +10,7 @@
 
   <body>
 
-    <nav class="navbar navbar-inverse navbar-fixed-top">
+    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -36,8 +36,7 @@
       <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-pills nav-stacked">
-            <%= content_tag :li, link_to('Overview', root_url), class: ('active' if current_page?(root_url)) %>
-            <li><a href="#">Analytics</a></li>
+            <!-- <li><a href="#">Analytics</a></li> -->
             <%= content_tag :li, link_to('Subjects', sti_subject_path), class: ('active' if @type.present?) %> 
           </ul>
           <hr>
@@ -103,7 +102,7 @@
     </div>
     
     <footer class="footer">
-      <nav class="navbar navbar-inverse navbar-static-bottom">
+      <nav class="navbar navbar-default navbar-static-bottom">
         <div class="container-fluid">  
           <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-bottom" aria-expanded="false" aria-controls="navbar">

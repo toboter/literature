@@ -18,9 +18,9 @@
       <%= content_tag :li, link_to(@subject.root.type.pluralize, sti_subject_path(@subject.root.type)) %>
       <%= content_tag :li, link_to(@subject.serie.abbr, subjects_path(serie: @subject.serie.id)) if @subject.serie %>  
       <% @subject.ancestors.reverse.each do |e| %>
-        <%= content_tag :li, link_to(e.cite, e) %>
+        <%= content_tag :li, link_to(e.citation, e) %>
       <% end %>
-      <%= content_tag :li, @subject.cite, class: 'active' %>
+      <%= content_tag :li, @subject.citation, class: 'active' %>
     </ol>
     <%= content_tag :p, link_to(fa_icon('link', text: subject_url(@subject)), @subject) %>    
   </div>
@@ -112,7 +112,7 @@
         <tbody>
           <% for child in @subject.children do %>
             <tr>
-              <th><%= link_to child.cite, child %>
+              <th><%= link_to child.citation, child %>
               <td><%= child.full_entry %></td>
             </tr>
           <% end %>

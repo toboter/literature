@@ -8,7 +8,7 @@ class SubjectImport
   attr_accessor :file
   
   def self.col_attr
-    %w(type title subtitle first_page last_page page_count volume published_date abbr edition language place publisher serie_name parent)
+    %w(type title subtitle first_page last_page page_count volume published_date abbr edition language place publisher serie_name)
   end
 
   def initialize(attributes = {})
@@ -48,6 +48,7 @@ class SubjectImport
       subject.attributes = row.to_hash.slice(*SubjectImport.col_attr)
       subject.creator_list = row["creator_list"].split(',').map{|r| r.strip} if row["creator_list"]
       subject.tag_list = row["tag_list"].split(',').map{|r| r.strip} if row["tag_list"]
+      subject.parent = Subject.find_by_cite(row["parent"]) if row["parent"] && Subject.child_types.include?(row["type"])
       subject
     end
   end

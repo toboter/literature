@@ -32,7 +32,7 @@
 <table class="table table-bordered table-responsive">
   <thead>
     <tr>
-      <th>Cite</th>
+      <th>Citation</th>
       <th>Title</th>
       <%= content_tag :th, '', style: 'width: 70px;' if current_user %>
     </tr>
@@ -42,7 +42,7 @@
     <% @subjects.each do |subject| %>
       <tr>
         <td>
-          <%= link_to subject.cite, sti_subject_path(subject.type, subject) %><br/>
+          <%= link_to "#{subject.cite}", sti_subject_path(subject.type, subject) %><br/>
           <small><%= link_to subject.type, subjects_path(q: "type:#{subject.type}") %></small>
         </td>
         <td>

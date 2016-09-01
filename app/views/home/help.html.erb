@@ -29,8 +29,11 @@
 <p>
     Attributes you can query after are: <br>
     <code>title</code>, <code>subtitle</code>, <code>type</code>, <code>published_date</code>, 
-    <code>cite_base</code>, <code>identifier</code>, <code>serie</code> (abbreviation or name), 
+    <code>cite</code>, <code>identifier</code>, <code>serie</code> (abbreviation or name), 
     <code>creator</code> (last name or first name) and <code>tag</code>
+</p>
+<p>
+  Types may be <%= Subject.types.join(', ') %>
 </p>
 
 <h3>
@@ -59,5 +62,8 @@
 </h3>
 
 <p>
-  You can order by any attribute. In two directions <code>asc</code> or <code>desc</code>. Having for example <code>order:published_date:asc</code>
+  You can order by <code>title</code>, <code>subtitle</code>, <code>type</code>, <code>published_date</code>, 
+  <code>cite</code> and <code>identifier</code>. In two directions <code>asc</code> or <code>desc</code>. Having for example <code>order:published_date:asc</code>
 </p>
+
+<p>If you like to order after the creators name, use the cite attribute instead.</p>

@@ -3,11 +3,13 @@ class Subject < ApplicationRecord
   include SearchCop
   
   before_validation :create_url_code
-  before_validation :create_cite_base
+  before_validation :create_citation
+  after_save :update_citation_sequence
   
   self.inheritance_column = :type
   
   validates :type, presence: true
+  validates :citation, :uniqueness => { :scope => :cite_seq_id, :message => "check against cite seq missing" }
   
   has_many :creatorships, dependent: :destroy
   has_many :creators, through: :creatorships
@@ -20,27 +22,40 @@ class Subject < ApplicationRecord
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
   
   has_closure_tree
-  acts_as_sequenced scope: :cite_base, column: :cite_seq_id
   
   friendly_id :friendly_url, use: :slugged 
   def should_generate_new_friendly_id?
-    cite_base_changed?
+    citation_changed?
   end
   def friendly_url
-    "#{cite_base}-#{url_code}"
+    "#{citation} #{url_code}".parameterize
   end
-  def create_cite_base
+  
+  
+  def create_citation
     if type == 'Issue' && serie_id
-      self.cite_base = "#{Serie.find(serie_id).abbr} #{volume} #{published_date}".parameterize
+      self.citation = "#{Serie.find(serie_id).abbr} #{volume} #{published_date}"
     else
     names=[]
     creator_list.split(",").flatten.map do |n|
       names << n.split(' ').last
     end
-      self.cite_base = "#{names} #{published_date}".parameterize
+      names = names.count <= 3 ? names.join(' ') : "#{names.first} et al."
+      self.citation = "#{names} #{published_date}"
     end
   end
+  acts_as_sequenced scope: :citation, column: :cite_seq_id
+  
+  def update_citation_sequence
+    if Subject.where(citation: citation).count > 1
+      self.update_columns(cite: "#{citation}#{numeric_to_alph(cite_seq_id)}")
+      first_subject = Subject.where(citation: citation, cite_seq_id: 1).first
+      first_subject.update_columns(cite: "#{first_subject.citation}#{numeric_to_alph(first_subject.cite_seq_id)}")
+    else
+      self.update_columns(cite: "#{citation}")
+    end
 
+  end
   
   def self.types
     child_types+parent_types
@@ -56,25 +71,13 @@ class Subject < ApplicationRecord
   end
 
   search_scope :search do
-    attributes :title, :subtitle, :type, :published_date, :cite_base
+    attributes :title, :subtitle, :type, :published_date, :cite
     attributes :identifier => ["identifiers.ident_value"]
     attributes :serie => ["serie.abbr", "serie.name"]
     attributes :creator => ["creators.lname", "creators.fname"]
     attributes :tag => "tags.name"
   end
   
-
-  
-  def cite
-    if creators.any? && published_date
-      names = creators.count <= 3 ? creators.order(lname: :asc).limit(3).map(&:lname).join(', ') : "#{creators.order(lname: :asc).first.lname} et al." 
-      "#{names} #{published_date}#{numeric_to_alph(cite_seq_id)}"
-    elsif type == 'Issue'
-      "#{serie.abbr} #{volume} (#{published_date})"
-    else
-      "#{title}"
-    end
-  end
   
   def creator_list
     creators.map(&:name).join(", ")
