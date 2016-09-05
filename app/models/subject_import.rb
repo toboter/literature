@@ -48,7 +48,16 @@ class SubjectImport
       subject.attributes = row.to_hash.slice(*SubjectImport.col_attr)
       subject.creator_list = row["creator_list"].split(',').map{|r| r.strip} if row["creator_list"]
       subject.tag_list = row["tag_list"].split(',').map{|r| r.strip} if row["tag_list"]
-      subject.parent = Subject.find_by_cite(row["parent"]) if row["parent"] && Subject.child_types.include?(row["type"])
+      if type == 'InJournal' && row["serie_name"] && row["volume"] && row["published_date"]
+        if row["serie_name"].include?('#')
+          abbr = row["serie_name"].split('#').first.squish
+          name = row["serie_name"].split('#').last.squish
+          serie = Serie.where(abbr: abbr, name: name).first_or_create!
+        end
+        subject.parent = Subject.where(type: 'Issue', serie: serie, volume: row["volume"], published_date: row["published_date"]).first_or_create!
+      elsif row["parent"] && Subject.child_types.include?(row["type"])
+        subject.parent = Subject.find_by_cite(row["parent"])
+      end
       subject
     end
   end

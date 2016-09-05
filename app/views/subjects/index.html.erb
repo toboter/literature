@@ -33,7 +33,7 @@
   <thead>
     <tr>
       <th>Citation</th>
-      <th>Title</th>
+      <th>Title <span class="badge pull-right">Total <%= @subjects.count %></span></th>
       <%= content_tag :th, '', style: 'width: 70px;' if current_user %>
     </tr>
   </thead>
@@ -43,7 +43,7 @@
       <tr>
         <td>
           <%= link_to "#{subject.cite}", sti_subject_path(subject.type, subject) %><br/>
-          <small><%= link_to subject.type, subjects_path(q: "type:#{subject.type}") %></small>
+          <small><%= link_to subject.type, subjects_path(q: "type='#{subject.type}'") %></small>
         </td>
         <td>
           <%= subject.full_entry %>
@@ -57,3 +57,4 @@
     <% end %>
   </tbody>
 </table>
+

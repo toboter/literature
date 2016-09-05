@@ -15,12 +15,12 @@
 
     <ol class="breadcrumb">
       <%= content_tag :li, link_to('All', sti_subject_path) %>
-      <%= content_tag :li, link_to(@subject.root.type.pluralize, sti_subject_path(@subject.root.type)) %>
-      <%= content_tag :li, link_to(@subject.serie.abbr, subjects_path(serie: @subject.serie.id)) if @subject.serie %>  
+      <%= content_tag :li, link_to(@subject.root.type.pluralize, subjects_path(q: "type='#{@subject.root.type}'")) %>
+      <%= content_tag :li, link_to(@subject.serie.try(:abbr), subjects_path(q: "serie:#{@subject.serie.try(:name)} OR #{@subject.serie.try(:abbr)}")) if @subject.serie %>  
       <% @subject.ancestors.reverse.each do |e| %>
-        <%= content_tag :li, link_to(e.citation, e) %>
+        <%= content_tag :li, link_to(e.cite, e) %>
       <% end %>
-      <%= content_tag :li, @subject.citation, class: 'active' %>
+      <%= content_tag :li, @subject.cite, class: 'active' %>
     </ol>
     <%= content_tag :p, link_to(fa_icon('link', text: subject_url(@subject)), @subject) %>    
   </div>
@@ -106,11 +106,22 @@
       </tbody>
     </table>
 
+    <% if @subject.comments.any? %>
+      <%= content_tag :h5, 'Comments' %>
+      <% for comment in @subject.comments.order(created_at: :desc) do %>
+        <div class="well">
+          <p><%= comment.body %></p>
+          <p><span class="pull-right"><small><%= comment.created_at.to_formatted_s(:long_ordinal) %></small></span></p>
+        </div>
+      <% end %>
+    <% end %>
+
+
     <% if @subject.has_children %>
-      <%= content_tag :h5, 'Contents' if @subject.children.any? %>
+      <%= content_tag :h5, "Contents #{content_tag :span, @subject.children.count, class: 'badge'}".html_safe if @subject.children.any? %>
       <table class="table table-bordered">
         <tbody>
-          <% for child in @subject.children do %>
+          <% for child in @subject.children.sort_by { |c| (c.first_page.to_i) } do %>
             <tr>
               <th><%= link_to child.citation, child %>
               <td><%= child.full_entry %></td>
@@ -124,7 +135,7 @@
 
   <div class="col-md-4">
     <%= content_tag :div, class: "thumbnail" do %>
-      <%= image_tag @subject.g_image_thumbnail, class: 'img-responsive', style: 'width: 100%' %>
+      <%= image_tag @subject.g_image_thumbnail, class: 'img-responsive', style: 'width: 100%' if @subject.g_image_thumbnail %>
       <div class="caption">
         <h4><%= @subject.g_volume_id %></h4>
         <p>Description for <%= @subject.g_volume_id %></p>
@@ -148,5 +159,11 @@
         </tr>        
       </tbody>
     <% end %>
+    
+    <h6>Export cite</h6>
+    <%= link_to 'BIBTex', '', class: 'btn btn-default btn-sm disabled' %>
+    <%= link_to 'EndNote', '', class: 'btn btn-default btn-sm disabled' %>
+    <%= link_to 'RefMan', '', class: 'btn btn-default btn-sm disabled' %>
+    <%= link_to 'JSON', api_citation_path(@subject), class: 'btn btn-default btn-sm' %>
   </div>
 </div>

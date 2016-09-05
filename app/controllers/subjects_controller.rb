@@ -17,6 +17,21 @@ class SubjectsController < ApplicationController
       direction = 'desc'
     end
     @subjects = type_class.search(q).order("#{order} #{direction}").paginate(:page => params[:page], :per_page => 10)
+    @send_data = type_class.search(q).order("#{order} #{direction}")
+    
+    respond_to do |format|
+      format.html
+      format.csv { 
+        send_data(
+          @send_data.to_csv,
+          disposition: "attachment; filename=literature.csv",
+          type: 'text/csv',
+          stream: 'true', 
+          buffer_size: '4096' 
+        )
+       }
+      format.xls
+    end
   end
 
   # GET /subjects/1
@@ -104,6 +119,7 @@ class SubjectsController < ApplicationController
       params.require(type.underscore.to_sym).permit(:title, :subtitle, :type, :parent_id, :first_page, 
         :last_page, :page_count, :volume, :published_date, :abbr, :edition, :language, :publisher, 
         :place, :g_volume_id, :g_canonical_link, :g_image_thumbnail, :serie_name, 
-        :creator_list => [],  :tag_list => [], identifiers_attributes: [:id, :ident_name, :ident_value, :_destroy])
+        :creator_list => [],  :tag_list => [], identifiers_attributes: [:id, :ident_name, :ident_value, :_destroy],
+        comments_attributes: [:id, :body, :_destroy])
     end
 end

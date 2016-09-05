@@ -10,10 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160901125544) do
+ActiveRecord::Schema.define(version: 20160902121351) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "comments", force: :cascade do |t|
+    t.integer  "subject_id"
+    t.text     "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["subject_id"], name: "index_comments_on_subject_id", using: :btree
+  end
 
   create_table "creators", force: :cascade do |t|
     t.string   "fname"
@@ -136,6 +144,7 @@ ActiveRecord::Schema.define(version: 20160901125544) do
     t.string   "gender"
   end
 
+  add_foreign_key "comments", "subjects"
   add_foreign_key "creatorships", "creators"
   add_foreign_key "creatorships", "subjects"
   add_foreign_key "identifiers", "subjects"

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Cite</Data></Cell>
+        <Cell><Data ss:Type="String">Type</Data></Cell>
+        <Cell><Data ss:Type="String">Creators</Data></Cell>
+        <Cell><Data ss:Type="String">PublishedDate</Data></Cell>
+        <Cell><Data ss:Type="String">Title</Data></Cell>
+        <Cell><Data ss:Type="String">Subtitle</Data></Cell>
+        <Cell><Data ss:Type="String">Place</Data></Cell>
+        <Cell><Data ss:Type="String">Publisher</Data></Cell>
+        <Cell><Data ss:Type="String">Identifiers</Data></Cell>
+        <Cell><Data ss:Type="String">Parent</Data></Cell>
+        <Cell><Data ss:Type="String">Pages</Data></Cell>
+        <Cell><Data ss:Type="String">Serie</Data></Cell>
+        <Cell><Data ss:Type="String">Volume</Data></Cell>
+        <Cell><Data ss:Type="String">FullEntry</Data></Cell>
+        <Cell><Data ss:Type="String">BabylonOnlineId</Data></Cell>
+      </Row>
+    <% @send_data.each do |subject| %>
+      <Row>
+        <Cell><Data ss:Type="String"><%= subject.cite %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.type %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.creator_list %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.published_date %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.title %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.subtitle %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.place.try(:name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.publisher.try(:name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.identifiers.map{|i| "#{i.ident_name}: #{i.ident_value}"}.join(', ') %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.parent.try(:cite) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.pages %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.serie.try(:name) %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.volume %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.full_entry %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= subject.slug %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>

@@ -9,7 +9,7 @@ class Subject < ApplicationRecord
   self.inheritance_column = :type
   
   validates :type, presence: true
-  validates :citation, :uniqueness => { :scope => :cite_seq_id, :message => "check against cite seq missing" }
+  validates :citation, :uniqueness => { :scope => :cite_seq_id, :message => "This should not happen because of the unique sequence abc etc." }
   
   has_many :creatorships, dependent: :destroy
   has_many :creators, through: :creatorships
@@ -19,7 +19,9 @@ class Subject < ApplicationRecord
   belongs_to :publisher
   belongs_to :serie
   has_many :identifiers, dependent: :destroy
+  has_many :comments, dependent: :destroy
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :comments, reject_if: :all_blank, allow_destroy: true
   
   has_closure_tree
   
@@ -34,14 +36,15 @@ class Subject < ApplicationRecord
   
   def create_citation
     if type == 'Issue' && serie_id
-      self.citation = "#{Serie.find(serie_id).abbr} #{volume} #{published_date}"
+      self.citation = "#{Serie.find(serie_id).abbr} #{volume} (#{published_date})"
     else
     names=[]
     creator_list.split(",").flatten.map do |n|
       names << n.split(' ').last
     end
-      names = names.count <= 3 ? names.join(' ') : "#{names.first} et al."
-      self.citation = "#{names} #{published_date}"
+      ct = type == 'Collection' || type == 'Proceeding' ? "(#{names.count > 1 ? creator_type.pluralize : creator_type})" : nil
+      names = names.count <= 3 ? names.join(', ') : "#{names.first} et al."
+      self.citation = "#{names} #{ct} #{published_date}"
     end
   end
   acts_as_sequenced scope: :citation, column: :cite_seq_id
@@ -132,6 +135,15 @@ class Subject < ApplicationRecord
       break if q.zero?
     end
     s
+  end
+  
+  def self.to_csv(options = {})
+    CSV.generate(options) do |csv|
+      csv << column_names
+      all.each do |subject|
+        csv << subject.attributes.values_at(*column_names)
+      end
+    end
   end
 
   protected

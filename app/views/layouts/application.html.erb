@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Literature</title>
+    <title><%= content_for?(:title) ? yield(:title) : 'literture.babylon-online.org' %></title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -26,6 +26,7 @@
             <%= content_tag :p, fa_icon('user', text: "Signed in as #{current_user.try(:name)}"), class: 'navbar-text' if current_user %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+            <li><%= link_to 'Contact', contact_path %></li>
             <li><%= link_to 'Help', help_path %></li>
           </ul>
         </div>
@@ -59,13 +60,18 @@
           
           <ul class="nav nav-pills nav-stacked">
             <%= content_tag :li, link_to("Import", new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %></li>
-            <li><a href="">Export</a></li>
           </ul>
           <hr>
           <ul class="nav nav-pills nav-stacked">
             <%= content_tag :li, link_to('API', api_path), class: ('active' if current_page?(api_url)) %>
             <li><%= link_to 'Help', help_path %></li>
           </ul>
+          
+          <%= content_tag :div do %>
+            <h6>Export as list</h6>
+            <%= link_to "CSV", subjects_path(q: params[:q], format: "csv"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
+            <%= link_to "Excel", subjects_path(q: params[:q], format: "xls"), class: 'btn btn-default btn-sm' %>
+          <% end if @type.present? && !@subject %>
         </div>
         
         <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">

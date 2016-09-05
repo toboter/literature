@@ -15,11 +15,12 @@ class Identifier < ApplicationRecord
 	    resp = Net::HTTP.get_response(URI.parse(source))
    	  data = JSON.parse(resp.body)
 
-      if data
-        subject.update(g_volume_id: data["items"][0]["id"],
-          g_canonical_link: data["items"][0]["volumeInfo"]["canonicalVolumeLink"],
-          g_image_thumbnail: data["items"][0]["volumeInfo"]["imageLinks"]["thumbnail"],
-          g_description: data["items"][0]["volumeInfo"]["description"])
+      if data && data["items"]
+        id = data["items"][0]["id"]
+        link = data["items"][0]["volumeInfo"]["canonicalVolumeLink"]
+        image = data["items"][0]["volumeInfo"].try(:[],'imageLinks').try(:[],'thumbnail')
+        description = data["items"][0]["volumeInfo"].try(:[],'description')
+        subject.update(g_volume_id: id, g_canonical_link: link, g_image_thumbnail: image, g_description: description )
       end
     end
   end
