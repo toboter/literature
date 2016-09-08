@@ -30,6 +30,6 @@ Rails.application.routes.draw do
   
   get '/api', to: 'home#api'
   get '/help', to: 'home#help'
-  get '/contact', to: 'home#contact'
+
   root 'home#index'
 end

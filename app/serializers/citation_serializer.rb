@@ -3,6 +3,7 @@ class CitationSerializer < ActiveModel::Serializer
   
   attributes :cite, :type
   attributes :creators
+  attributes :tags
   attribute :published_date, key: :published
   attributes :title, :subtitle, :place, :publisher
   attributes :links
@@ -31,7 +32,11 @@ class CitationSerializer < ActiveModel::Serializer
       type: object.creator_type, names: object.creators.map{|c| c.name}.join(', ')
     }
   end
-  
+
+  def tags
+    object.tags.map{|c| c.name}.join(', ')
+  end
+    
   def place
     object.place.try(:name)
   end

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= content_for?(:title) ? yield(:title) : 'literture.babylon-online.org' %></title>
+    <title><%= content_for?(:title) ? yield(:title) : 'literature.babylon-online.org' %></title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -26,7 +26,7 @@
             <%= content_tag :p, fa_icon('user', text: "Signed in as #{current_user.try(:name)}"), class: 'navbar-text' if current_user %>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to 'Contact', contact_path %></li>
+            <li><%= link_to 'API', api_path %></li>
             <li><%= link_to 'Help', help_path %></li>
           </ul>
         </div>
@@ -124,6 +124,7 @@
             <ul class="nav navbar-nav"> 
               <li><%= link_to "About", "#{Rails.application.secrets.provider_site}/about" %></li>
               <li><%= link_to "Imprint", "#{Rails.application.secrets.provider_site}/imprint" %></li>
+              <li><%= link_to "Contact", "#{Rails.application.secrets.provider_site}/contact?origin=literature" %></li>
             </ul>
             
             <ul class="nav navbar-nav navbar-right">

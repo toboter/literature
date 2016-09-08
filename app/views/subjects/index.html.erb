@@ -11,7 +11,7 @@
           <%= "New #{@type}" %>
         <% end %>
       <% elsif !Subject.child_types.include?(@type) %>
-        <div class="btn-group" style="margin-bottom: 10px">
+        <div class="btn-group" style="margin-bottom: 10px;">
           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <%= fa_icon("plus") %> New <span class="caret"></span>
           </button>

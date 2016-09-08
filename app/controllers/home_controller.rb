@@ -11,9 +11,5 @@ class HomeController < ApplicationController
   def help
   
   end
-  
-  def search
-  
-  end
-  
+   
 end
