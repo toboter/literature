@@ -67,10 +67,10 @@ class Subject < ApplicationRecord
     %w(InBook InCollection InProceeding InJournal InReference)
   end
   def self.parent_types
-    %w(Monograph Collection  Proceeding  Issue  Reference  Misc)
+    %w(Monograph Collection Proceeding Issue Reference Misc)
   end
   def self.has_serie
-    %w(Monograph Collection  Proceeding  Issue  Reference)
+    %w(Monograph Collection Proceeding Issue Reference)
   end
 
   search_scope :search do

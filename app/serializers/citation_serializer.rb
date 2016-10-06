@@ -1,7 +1,7 @@
 class CitationSerializer < ActiveModel::Serializer
   include Rails.application.routes.url_helpers
   
-  attributes :cite, :type
+  attributes :type, :subtype, :cite
   attributes :creators
   attributes :tags
   attribute :published_date, key: :published
@@ -13,6 +13,14 @@ class CitationSerializer < ActiveModel::Serializer
   attributes :serie
   attribute :volume
   attribute :full_entry
+  
+  def type
+    'Reference'
+  end
+  
+  def subtype
+    object.type
+  end
   
   def links
     {
