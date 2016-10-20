@@ -49,6 +49,7 @@ end
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 gem 'bootstrap-sass', '~> 3.3.6'
+gem 'jquery-turbolinks'
 gem 'simple_form'
 gem 'friendly_id'
 gem "select2-rails"     # https://select2.github.io/examples.html
