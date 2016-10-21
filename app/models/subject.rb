@@ -39,8 +39,8 @@ class Subject < ApplicationRecord
       self.citation = "#{Serie.find(serie_id).abbr} #{volume} (#{published_date})"
     else
     names=[]
-    creator_list.split(",").flatten.map do |n|
-      names << n.split(' ').last
+    creator_list.split(";").flatten.map do |n|
+      names << n.split(',').first.squish
     end
       ct = type == 'Collection' || type == 'Proceeding' ? "(#{names.count > 1 ? creator_type.pluralize : creator_type})" : nil
       names = names.count <= 3 ? names.join(', ') : "#{names.first} et al."
