@@ -4,7 +4,7 @@ class InProceeding < Subject
   
   def full_entry(style='harvard')
     "#{creators.order(lname: :asc).map(&:rname).join(', ')}, 
-    #{published_date ? published_date : parent.published_date}, #{title}. #{subtitle+'. '}#{parent.place.try(:name)}: #{parent.publisher.try(:name)} #{pages}." 
+    #{published_date ? published_date : parent.published_date}, #{title} #{subtitle} #{parent.place.try(:name)}: #{parent.publisher.try(:name)} #{pages}." 
   end
 
   def pages

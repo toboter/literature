@@ -5,7 +5,7 @@ class InCollection < Subject
   def full_entry(style='harvard')
     "#{creators.order(lname: :asc).map(&:rname).join(', ')} 
     (#{published_date ? published_date : parent.published_date}).
-     #{title} #{subtitle} in: #{parent.full_entry} #{pages}."
+     #{title} #{subtitle} In: #{parent.full_entry} #{pages}."
   end
   
   def pages

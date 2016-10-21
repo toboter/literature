@@ -4,7 +4,7 @@ class InBook < Subject
   
   def full_entry(style='harvard')
     "#{creators.order(lname: :asc).map(&:rname).join(', ')}, 
-    #{published_date}, #{title}. #{subtitle}. #{place.try(:name)}: #{publisher.try(:name)}" 
+    #{published_date}, #{title} #{subtitle} #{place.try(:name)}: #{publisher.try(:name)}" 
   end
   
   def pages

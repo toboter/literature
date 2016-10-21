@@ -7,7 +7,7 @@ class InJournal < Subject
     #{published_date ? published_date : parent.published_date}, 
     #{title} 
     #{subtitle} 
-    in: #{parent.full_entry} #{pages}."
+    In: #{parent.full_entry} #{pages}."
   end
   
   def pages

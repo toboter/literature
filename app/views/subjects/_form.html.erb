@@ -57,8 +57,8 @@
           value_method: :rname, label: @subject.creator_type, selected: @subject.creators.map(&:rname), 
           input_html: {multiple: true, id: 'creator_names'}, hint: 'Last name, first name seperated by semicolon.' %>
         <%= f.input :published_date, input_html: {value: @subject.published_date.blank? && @subject.parent ? @subject.parent.published_date : @subject.published_date} %>
-        <%= f.input :title, hint: 'The title should end with punctuation.' %>
-        <%= f.input :subtitle %>
+        <%= f.input :title %>
+        <%= f.input :subtitle, hint: 'Title and subtitle should end with punctuation.' %>
         <%= f.input :tag_list, collection: Tag.order(name: :asc), label_method: :name, 
           value_method: :name, selected: @subject.tags.map(&:name), 
           input_html: {multiple: true, id: 'tag_names'} %>
