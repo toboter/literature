@@ -83,12 +83,12 @@ class Subject < ApplicationRecord
   
   
   def creator_list
-    creators.map(&:name).join(", ")
+    creators.map(&:rname).join("; ")
   end
   
   def creator_list=(names)
-    self.creators = names.reject { |c| c.empty? }.split(",").flatten.map do |n|
-      Creator.where(lname: n.split(' ').last, fname: n.split(' ').first).first_or_create!
+    self.creators = names.reject { |c| c.empty? }.split(";").flatten.map do |n|
+      Creator.where(lname: n.split(',').first.squish, fname: n.split(',').last.squish).first_or_create!
     end
   end
 

@@ -24,7 +24,7 @@
 $(document).ready(function() {
   $("#creator_names").select2({
     tags: true,
-    tokenSeparators: [','],
+    tokenSeparators: [';'],
     theme: "bootstrap"
   });
   $("#tag_names").select2({
