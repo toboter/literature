@@ -23,7 +23,7 @@ class Subject < ApplicationRecord
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :comments, reject_if: :all_blank, allow_destroy: true
   
-  has_closure_tree
+  has_closure_tree dependent: :destroy
   
   friendly_id :friendly_url, use: :slugged 
   def should_generate_new_friendly_id?

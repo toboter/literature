@@ -3,7 +3,7 @@ class Issue < Subject
   validates :serie_id, uniqueness: { scope: :volume, message: "Volume to serie exists." }
   
   def full_entry(style='harvard')
-    "#{serie.abbr} #{volume} (#{published_date})"
+    "#{serie.abbr.present? ? serie.abbr : "[#{serie.name}]"} #{volume} (#{published_date})."
     # "#{creators.order(lname: :asc).map(&:rname).join(', ')}, 
     #{published_date}, #{title}. #{subtitle+'. '}#{child? && parent.root? ? parent.full_entry('abbr')+' '+volume+'. ' : ''} #{place.try(:name)}: #{publisher.try(:name)}" 
   end

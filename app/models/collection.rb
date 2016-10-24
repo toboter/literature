@@ -7,7 +7,7 @@ class Collection < Subject
     (#{published_date}).
     #{title} 
     #{subtitle}
-    #{has_serie && root? && serie ? serie.abbr+' '+volume+'.' : ''}
+    #{has_serie && root? && serie ? (serie.abbr.present? ? serie.abbr+' '+volume+'. ' : "[#{serie.name}] #{volume}.") : ''}
     #{place.try(:name)}#{place && publisher ? ':' : nil}#{publisher.try(:name)}."
   end
 

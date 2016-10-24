@@ -16,7 +16,7 @@
     <ol class="breadcrumb">
       <%= content_tag :li, link_to('All', sti_subject_path) %>
       <%= content_tag :li, link_to(@subject.root.type.pluralize, subjects_path(q: "type='#{@subject.root.type}'")) %>
-      <%= content_tag :li, link_to(@subject.serie.try(:abbr), subjects_path(q: "serie:#{@subject.serie.try(:name)} OR #{@subject.serie.try(:abbr)}")) if @subject.serie %>  
+      <%= content_tag :li, link_to((@subject.serie.abbr.present? ? @subject.serie.try(:abbr) : "[#{@subject.serie.name}]"), subjects_path(q: "serie:#{@subject.serie.try(:name)}#{' OR '+@subject.serie.try(:abbr) if @subject.serie.abbr.present?}")) if @subject.serie %>  
       <% @subject.ancestors.reverse.each do |e| %>
         <%= content_tag :li, link_to(e.cite, e) %>
       <% end %>
@@ -52,9 +52,9 @@
         <%= content_tag :tr do %>
           <th>Serial or Journal:</th>
           <td>
-            <%= link_to subjects_path(q: "serie:#{@subject.serie.try(:name)} OR #{@subject.serie.try(:abbr)}") do %>
+            <%= link_to subjects_path(q: "serie:#{@subject.serie.try(:name)}#{' OR '+@subject.serie.try(:abbr) if @subject.serie.abbr.present?}") do %>
               <%= @subject.serie.try(:name) %>
-              <%= "(#{@subject.serie.abbr})" if @subject.serie.abbr %>
+              <%= "(#{@subject.serie.abbr})" if @subject.serie.abbr.present? %>
             <% end %>
             <%= @subject.volume %>
           </td>
@@ -123,7 +123,7 @@
         <tbody>
           <% for child in @subject.children.sort_by { |c| (c.first_page.to_i) } do %>
             <tr>
-              <th><%= link_to child.citation, child %>
+              <th><%= link_to child.cite, child %>
               <td><%= child.full_entry %></td>
             </tr>
           <% end %>

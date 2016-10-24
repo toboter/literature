@@ -46,7 +46,7 @@ class SubjectImport
       type = Subject.types.include?(row["type"]) ? row["type"] : "Subject"
       subject = Subject.find_by_id(row["id"]) || type.constantize.new
       subject.attributes = row.to_hash.slice(*SubjectImport.col_attr)
-      subject.creator_list = row["creator_list"].split(',').map{|r| r.strip} if row["creator_list"]
+      subject.creator_list = row["creator_list"].split(';').map{|r| r.strip} if row["creator_list"]
       subject.tag_list = row["tag_list"].split(',').map{|r| r.strip} if row["tag_list"]
       if type == 'InJournal' && row["serie_name"] && row["volume"] && row["published_date"]
         if row["serie_name"].include?('#')
