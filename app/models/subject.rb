@@ -79,8 +79,8 @@ class Subject < ApplicationRecord
     attributes :serie => ["serie.abbr", "serie.name"]
     attributes :creator => ["creators.lname", "creators.fname"]
     attributes :tag => "tags.name"
+    # Ideal wäre, wenn auch die parent attribute durchsucht würden.
   end
-  
   
   def creator_list
     creators.map(&:rname).join("; ")

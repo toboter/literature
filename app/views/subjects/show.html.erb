@@ -129,7 +129,7 @@
           <% end %>
         </tbody>
       </table>
-      <%= link_to(fa_icon("plus-square-o", text: "add #{@subject.has_children}"), new_subject_path(parent_id: @subject.id)) if current_user %>
+      <%= link_to(fa_icon("plus-square-o", text: "add #{@subject.has_children}"), new_subject_path(parent_id: @subject.id), class: 'btn btn-default btn-sm') if current_user %>
     <% end %>
   </div>
 
