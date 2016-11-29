@@ -16,7 +16,7 @@ class SubjectsController < ApplicationController
       order = 'published_date'
       direction = 'desc'
     end
-    @subjects = type_class.search(q).order("#{order} #{direction}").paginate(:page => params[:page], :per_page => 10)
+    @subjects = type_class.search(q).order("#{order} #{direction}").paginate(:page => params[:page], :per_page => session[:per_page])
     @send_data = type_class.search(q).order("#{order} #{direction}")
     
     respond_to do |format|
