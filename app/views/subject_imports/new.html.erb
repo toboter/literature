@@ -1,6 +1,6 @@
 <% title "Subject Import" %>
 
-<p>A CSV or Excel file can be used to import records. The first row should be the column name. The following columns are allowed.</p>
+<p>A CSV or Excel file can be used to import records. The first row must be column names. The following names are allowed.</p>
 
 <ul>
   <% Subject.columns.each do |column| %>
@@ -13,11 +13,11 @@
   <% end %>
     <li>
       <strong>creator_list</strong> -
-      Token type (firstname lastname, different creators seperated by comma)
+      Token type (lastname, firstname - creators seperated by ';')
     </li>
     <li>
       <strong>tag_list</strong> -
-      String type (different tags seperated by comma)
+      Token type (different tags seperated by comma)
     </li>
     <li>
       <strong>place</strong> -
