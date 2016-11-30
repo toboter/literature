@@ -1,6 +1,6 @@
 class InJournal < Subject
   validates :title, :published_date, :creator_list, :parent, presence: true # + authors + journal
-  validates :title, uniqueness: { scope: :citation, message: "Creators title exists." }
+  # validates :title, uniqueness: { scope: :published_date, message: "Creators title exists." }
   
   def full_entry(style='harvard')
     "#{creators.order(lname: :asc).map(&:rname).join(', ')}, 
