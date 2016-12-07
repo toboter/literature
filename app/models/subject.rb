@@ -2,19 +2,36 @@ class Subject < ApplicationRecord
   extend FriendlyId
   include SearchCop
   
-  before_validation :create_url_code
+  before_validation :create_url_code, on: :create
   before_validation :create_citation
-  after_save :update_citation_sequence
+  after_save :update_citation_sequence  
   
   self.inheritance_column = :type
-  
+  friendly_id :friendly_url, use: :slugged
+  has_closure_tree dependent: :destroy
+  acts_as_sequenced scope: :citation, column: :cite_seq_id
+  acts_as_taggable
+      
   validates :type, presence: true
   validates :citation, :uniqueness => { :scope => :cite_seq_id, :message => "This should not happen because of the unique sequence abc etc." }
+
+  
+  def self.types
+    child_types+parent_types
+  end
+  def self.child_types
+    %w(InBook InCollection InProceeding InJournal InReference)
+  end
+  def self.parent_types
+    %w(Monograph Collection Proceeding Issue Reference Misc)
+  end
+  def self.has_serie
+    %w(Monograph Collection Proceeding Issue Reference)
+  end
+    
   
   has_many :creatorships, dependent: :destroy
   has_many :creators, through: :creatorships
-  has_many :taggings, dependent: :destroy
-  has_many :tags, through: :taggings
   belongs_to :place
   belongs_to :publisher
   belongs_to :serie
@@ -23,16 +40,29 @@ class Subject < ApplicationRecord
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :comments, reject_if: :all_blank, allow_destroy: true
   
-  has_closure_tree dependent: :destroy
+
   
-  friendly_id :friendly_url, use: :slugged 
+  #scopes
+  search_scope :search do
+    attributes :title, :subtitle, :type, :published_date, :cite
+    attributes :identifier => ["identifiers.ident_value"]
+    attributes :serie => ["serie.abbr", "serie.name"]
+    attributes :creator => ["creators.lname", "creators.fname"]
+    attributes :tag => "tags.name"
+    # Ideal wäre, wenn auch die parent attribute durchsucht würden.
+  end
+   
+  
+  
+  # before filter
+ 
   def should_generate_new_friendly_id?
     citation_changed?
   end
+  
   def friendly_url
     "#{citation} #{url_code}".parameterize
   end
-  
   
   def create_citation
     if type == 'Issue' && serie_id
@@ -47,8 +77,7 @@ class Subject < ApplicationRecord
       self.citation = "#{names} #{ct} #{published_date}"
     end
   end
-  acts_as_sequenced scope: :citation, column: :cite_seq_id
-  
+
   def update_citation_sequence
     if Subject.where(citation: citation).count > 1
       self.update_columns(cite: "#{citation}#{numeric_to_alph(cite_seq_id)}")
@@ -60,27 +89,9 @@ class Subject < ApplicationRecord
 
   end
   
-  def self.types
-    child_types+parent_types
-  end
-  def self.child_types
-    %w(InBook InCollection InProceeding InJournal InReference)
-  end
-  def self.parent_types
-    %w(Monograph Collection Proceeding Issue Reference Misc)
-  end
-  def self.has_serie
-    %w(Monograph Collection Proceeding Issue Reference)
-  end
 
-  search_scope :search do
-    attributes :title, :subtitle, :type, :published_date, :cite
-    attributes :identifier => ["identifiers.ident_value"]
-    attributes :serie => ["serie.abbr", "serie.name"]
-    attributes :creator => ["creators.lname", "creators.fname"]
-    attributes :tag => "tags.name"
-    # Ideal wäre, wenn auch die parent attribute durchsucht würden.
-  end
+
+  # import/export
   
   def creator_list
     creators.map(&:rname).join("; ")
@@ -89,16 +100,6 @@ class Subject < ApplicationRecord
   def creator_list=(names)
     self.creators = names.reject { |c| c.empty? }.split(";").flatten.map do |n|
       Creator.where(lname: n.split(',').first.squish, fname: n.split(',').last.squish).first_or_create!
-    end
-  end
-
-  def tag_list
-    tags.map(&:name).join(", ")
-  end
-  
-  def tag_list=(names)
-    self.tags = names.reject { |c| c.empty? }.split(",").flatten.map do |n|
-      Tag.where(name: n).first_or_create!
     end
   end
 
@@ -117,13 +118,6 @@ class Subject < ApplicationRecord
       self.serie = Serie.where(abbr: abbr, name: name).first_or_create!
     end
   end
-
- 
- # defaults
-  def full_entry(style='harvard')
-    'error: not defined'
-  end
-
 
   Alpha26 = ("a".."z").to_a
   def numeric_to_alph(value)
@@ -145,6 +139,14 @@ class Subject < ApplicationRecord
       end
     end
   end
+  
+ 
+  # defaults
+  
+  def full_entry(style='harvard')
+    'error: not defined'
+  end
+
 
   protected
   def create_url_code

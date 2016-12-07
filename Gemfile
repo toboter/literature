@@ -64,5 +64,6 @@ gem 'search_cop'        # https://github.com/mrkamel/search_cop
 
 gem 'acts_as_list'      # https://github.com/swanandp/acts_as_list
 gem 'closure_tree'      # https://github.com/mceachen/closure_tree
+gem 'acts-as-taggable-on', '~> 4.0'
 
 ruby '2.3.1'
