@@ -73,6 +73,9 @@
             <%= link_to "CSV", subjects_path(q: params[:q], format: "csv"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
             <%= link_to "Excel", subjects_path(q: params[:q], format: "xls"), class: 'btn btn-default btn-sm' %>
           <% end if @type.present? && !@subject %>
+
+          <p class="text-muted" style="margin-left:15px; margin-top:20px;"><small>v. <%= APP_VERSION %></small></p>
+
         </div>
         
         <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
