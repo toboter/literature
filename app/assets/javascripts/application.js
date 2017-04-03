@@ -22,37 +22,46 @@
 
 
 $(document).ready(function() {
-  $("#creator_names").select2({
-    tags: true,
-    tokenSeparators: [';'],
-    theme: "bootstrap"
-  });
-  $("#tag_names").select2({
-    tags: true,
-    tokenSeparators: [','],
-    theme: "bootstrap"
-  });
-  $("#place").select2({
-    tags: true,
-    theme: "bootstrap",
-    placeholder: "Select a city",
-    allowClear: true
-  });
-  $("#publisher").select2({
-    tags: true,
-    theme: "bootstrap",
-    placeholder: "Select a publisher",
-    allowClear: true
-  });
-  $("#serie_name").select2({
-    tags: true,
-    theme: "bootstrap",
-    placeholder: "Select a Serial or journal",
-    allowClear: true
-  });
-  $("#parent_entry_id").select2({
-    theme: "bootstrap",
-    placeholder: "Select a parent",
-    allowClear: true
-  });  
-  });
+    $("#creator_names").select2({
+        tags: true,
+        tokenSeparators: [';'],
+        theme: "bootstrap"
+    });
+    $("#tag_names").select2({
+        tags: true,
+        tokenSeparators: [','],
+        theme: "bootstrap"
+    });
+    $("#place").select2({
+        tags: true,
+        theme: "bootstrap",
+        placeholder: "Select a city",
+        allowClear: true
+    });
+    $("#publisher").select2({
+        tags: true,
+        theme: "bootstrap",
+        placeholder: "Select a publisher",
+        allowClear: true
+    });
+    $("#serie_name").select2({
+        tags: true,
+        theme: "bootstrap",
+        placeholder: "Select a Serial or journal",
+        allowClear: true
+    });
+    $("#parent_entry_id").select2({
+        theme: "bootstrap",
+        placeholder: "Select a parent",
+        allowClear: true
+    });
+
+    $("select").on("select2:select", function(evt) {
+        var element = evt.params.data.element;
+        var $element = $(element);
+
+        $element.detach();
+        $(this).append($element);
+        $(this).trigger("change");
+    });
+});

@@ -6,7 +6,7 @@ class SessionsController < ApplicationController
     session[:user_id] = user.id
     session[:access_token] = auth["credentials"]["token"]
 
-    redirect_to root_url, notice: "You have been signed in through #{user.provider.humanize}."
+    redirect_to (request.env['omniauth.origin'] || root_url), notice: "You have been signed in through #{user.provider.humanize}."
   end
 
   def destroy

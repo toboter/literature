@@ -41,6 +41,7 @@ class SubjectsController < ApplicationController
 
   # GET /subjects/new
   def new 
+    @creators = Creator.all
     if params[:parent_id]
       parent = Subject.find(params[:parent_id])
       @type = parent.has_children
@@ -54,6 +55,7 @@ class SubjectsController < ApplicationController
 
   # GET /subjects/1/edit
   def edit
+    @creators = Creator.all
   end
 
   # POST /subjects

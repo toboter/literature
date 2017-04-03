@@ -1,10 +1,3 @@
-<% content_for(:buttons) do %>
-  <%= link_to sti_subject_path(@type, @subject), class: 'btn btn-default' do %>
-    <%= fa_icon("eye") %>
-    View
-  <% end unless @subject.new_record? %>
-<% end %>
-  
 <%= simple_form_for @subject, html: { class: 'form-horizontal' },
   wrapper: :horizontal_form do |f| %>
   <div class="col-md-12 ">
@@ -51,11 +44,10 @@
         <%= f.input :type, collection: Subject.types.map {|t| [t, t.camelcase]}, selected: @type, 
           disabled: @type != "Subject" %> 
       </div>
-    
       <div class="col-md-12">
-        <%= f.input :creator_list, collection: Creator.order(lname: :asc), label_method: :rname, 
+        <%= f.input :creator_list, collection: @creators, label_method: :rname, 
           value_method: :rname, label: @subject.creator_type, selected: @subject.creators.map(&:rname), 
-          input_html: {multiple: true, id: 'creator_names'}, hint: 'Last name, first name seperated by semicolon.' %>
+          input_html: {multiple: true, id: 'creator_names'}, hint: '"Last name, first name", multiple seperated by semicolon.' %>
         <%= f.input :published_date, input_html: {value: @subject.published_date.blank? && @subject.parent ? @subject.parent.published_date : @subject.published_date} %>
         <%= f.input :title %>
         <%= f.input :subtitle, hint: 'Title and subtitle should end with punctuation.' %>
@@ -120,7 +112,8 @@
     <div class="row">
       <div class="col-md-6">
         <hr>
-        <%= f.submit class: 'btn btn-default' %>
+        <%= f.submit class: 'btn btn-primary' %>
+        <%= link_to 'Cancel', (@subject.new_record? ? sti_subject_path(@type) : sti_subject_path(@type, @subject)), class: "btn btn-default" %>
       </div>
     </div>
   </div>
