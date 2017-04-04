@@ -3,7 +3,7 @@ class InCollection < Subject
   validates :title, uniqueness: { scope: :published_date, message: "Title exists." }
   
   def full_entry(style='harvard')
-    "#{creators.order(lname: :asc).map(&:rname).join(', ')} 
+    "#{creatorships.order(id: :asc).map{|cs| cs.creator.rname}.join(', ')} 
     (#{published_date ? published_date : parent.published_date}).
      #{title} #{subtitle} In: #{parent.full_entry} #{pages}."
   end

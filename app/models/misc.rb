@@ -3,7 +3,7 @@ class Misc < Subject
   validates :title, uniqueness: { scope: :published_date, message: "Creators title exists." }
   
   def full_entry(style='harvard')
-    "#{creators.order(lname: :asc).map(&:rname).join(', ')}, 
+    "#{creatorships.order(id: :asc).map{|cs| cs.creator.rname}.join(', ')}, 
     #{published_date}, #{title}. #{subtitle+'. '}#{child? && parent.root? ? parent.full_entry('abbr')+' '+volume+'. ' : ''} #{place.try(:name)}: #{publisher.try(:name)}" 
   end
 

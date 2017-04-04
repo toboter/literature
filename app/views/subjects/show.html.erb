@@ -47,7 +47,7 @@
       <tbody>
         <%= content_tag :tr do %>
           <th><%= @subject.creator_type %>:</th>
-          <td><%= @subject.creators.map{|c| link_to c.name, subjects_path(q: "creator:#{c.lname}")}.join(', ').html_safe %></td>
+          <td><%= @subject.creatorships.order(id: :asc).map{|cs| link_to cs.creator.name, subjects_path(q: "creator:#{cs.creator.lname}")}.join(', ').html_safe %></td>
         <% end if @subject.creators.any? %>
 
         <%= content_tag :tr do %>
