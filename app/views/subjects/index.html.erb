@@ -2,9 +2,30 @@
   <div class="col-md-12" style="margin:10px 0;">
     <%= render "shared/search" %>
   </div>
-  <div class="col-md-12">
-    <%= will_paginate @subjects, renderer: BootstrapPagination::Rails %>
-    <%= content_tag :div, class: 'pull-right' do %>
+</div>
+
+<div class="row">
+  <div class="col-md-7">
+    <div class="list-group">
+      <% @subjects.each do |subject| %>
+        <%= link_to subject, remote: true, class: "list-group-item #{'active' if subject == @subject}" do %>
+          <strong><%= subject.cite %></strong><br/>
+          <%= subject.full_entry %>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div>
+      <%= will_paginate @subjects, renderer: BootstrapPagination::Rails %>
+    </div>
+
+    <div style="margin-top: 20px; margin-bottom: 10px;">
+      <%= render 'shared/per_page' %>
+    </div>
+  </div>
+
+  <div class="col-md-5">
+    <%= content_tag :div do %>
       <% if Subject.parent_types.include?(@type) %>
         <%= link_to sti_subject_path(@type, nil, :new), class: 'btn btn-success' do %>
           <%= fa_icon("plus") %>
@@ -16,48 +37,26 @@
             <%= fa_icon("plus") %> New <span class="caret"></span>
           </button>
           <ul class="dropdown-menu">
-            <li><%= link_to 'Monograph', sti_subject_path('Monograph', nil, :new) %></li>
-            <li><%= link_to 'Collection', sti_subject_path('Collection', nil, :new) %></li>
-            <li><%= link_to 'Issue', sti_subject_path('Issue', nil, :new) %></li>
-            <li><%= link_to 'Proceeding', sti_subject_path('Proceeding', nil, :new) %></li>
-            <li><%= link_to 'Reference', sti_subject_path('Reference', nil, :new) %></li>
-            <li><%= link_to 'Misc', sti_subject_path('Misc', nil, :new) %></li>
+            <% for ptype in Subject.parent_types do %>
+              <%= content_tag :li, link_to(ptype, sti_subject_path(ptype, nil, :new)) %>
+            <% end %>
+            <li role="separator" class="divider"></li>
+            <% for ctype in Subject.child_types do %>
+              <%= content_tag :li, link_to(ctype, sti_subject_path(ctype, nil, :new)) %>
+            <% end %>       
           </ul>
         </div>
       <% end %>
+      <%= content_tag :div, class: 'pull-right' do %>
+        <%= link_to fa_icon('download', text: 'CSV'), subjects_path(q: params[:q], format: "csv"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
+        <%= link_to fa_icon('download', text: 'Excel'), subjects_path(q: params[:q], format: "xls"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
+      <% end if @type.present? %>
     <% end if current_user %>
+    
+    <hr>
+
+    <div id="show-target" data-spy="affix" data-offset-top="60">
+      <%= render partial: 'subjects/show', locals: { subject: @subjects.first }%>
+    </div>
   </div>
-</div>
-
-<table class="table table-bordered table-responsive">
-  <thead>
-    <tr>
-      <th>Citation</th>
-      <th>Title <span class="badge pull-right">Total <%= @subjects.count %></span></th>
-      <%= content_tag :th, '', style: 'width: 70px;' if current_user %>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @subjects.each do |subject| %>
-      <tr>
-        <td>
-          <%= link_to "#{subject.cite}", sti_subject_path(subject.type, subject) %><br/>
-          <small><%= link_to subject.type, subjects_path(q: "type='#{subject.type}'") %></small>
-        </td>
-        <td>
-          <%= subject.full_entry %>
-        </td>
-        <%= content_tag :td do %>
-          <%= link_to(fa_icon("edit"), sti_subject_path(subject.type, subject, :edit), style: 'padding:3px') %>
-          <%= link_to(fa_icon("plus-square-o"), new_subject_path(parent_id: subject.id), style: 'padding:3px') if subject.has_children %>
-        <% end if current_user %>
-
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<div style="margin-top: 20px; margin-bottom: 10px;">
-  <%= render 'shared/per_page' %>
 </div>

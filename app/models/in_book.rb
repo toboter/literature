@@ -7,10 +7,6 @@ class InBook < Subject
     #{published_date}, #{title} #{subtitle} #{place.try(:name)}: #{publisher.try(:name)}" 
   end
   
-  def pages
-    first_page.present? && last_page.present? ? "#{first_page}-#{last_page}" : ''
-  end
-
   def has_serie
     false
   end

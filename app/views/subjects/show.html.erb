@@ -1,6 +1,20 @@
 <% title "#{@subject.cite}" %>
 
 <% content_for(:buttons) do %>
+  <div class="btn-group">
+    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <%= fa_icon("plus") %> New <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+      <% for ptype in Subject.parent_types do %>
+        <%= content_tag :li, link_to(ptype, sti_subject_path(ptype, nil, :new)) %>
+      <% end %>
+      <li role="separator" class="divider"></li>
+      <% for ctype in Subject.child_types do %>
+        <%= content_tag :li, link_to(ctype, sti_subject_path(ctype, nil, :new)) %>
+      <% end %>       
+    </ul>
+  </div>
   <%= link_to sti_subject_path(@subject.type, @subject, :edit), class: 'btn btn-warning' do %>
     <%= fa_icon("edit") %>
     <%= "Edit" %>
@@ -9,19 +23,6 @@
     <%= fa_icon("remove") %>
     <%= "Delete" %>
   <% end %>
-  <div class="btn-group">
-    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      <%= fa_icon("plus") %> New <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu">
-      <li><%= link_to 'Monograph', sti_subject_path('Monograph', nil, :new) %></li>
-      <li><%= link_to 'Collection', sti_subject_path('Collection', nil, :new) %></li>
-      <li><%= link_to 'Issue', sti_subject_path('Issue', nil, :new) %></li>
-      <li><%= link_to 'Proceeding', sti_subject_path('Proceeding', nil, :new) %></li>
-      <li><%= link_to 'Reference', sti_subject_path('Reference', nil, :new) %></li>
-      <li><%= link_to 'Misc', sti_subject_path('Misc', nil, :new) %></li>
-    </ul>
-  </div>
 <% end if current_user %>
 <div class="row">
   <div class="col-md-12">
@@ -65,7 +66,7 @@
         <%= content_tag :tr do %>
           <th>Serial or Journal:</th>
           <td>
-            <%= link_to subjects_path(q: "serie:#{@subject.serie.try(:name)}#{' OR '+@subject.serie.try(:abbr) if @subject.serie.abbr.present?}") do %>
+            <%= link_to subjects_path(q: "serie='#{@subject.serie.try(:name)}'#{' OR serie='+@subject.serie.try(:abbr) if @subject.serie.abbr.present?}") do %>
               <%= @subject.serie.try(:name) %>
               <%= "(#{@subject.serie.abbr})" if @subject.serie.abbr.present? %>
             <% end %>
@@ -91,6 +92,10 @@
           <th>Last page:</th>
           <td><%= @subject.last_page %></td>
         <% end if @subject.last_page.present? %>
+        <%= content_tag :tr do %>
+          <th>Pages:</th>
+          <td><%= @subject.extra_pages %></td>
+        <% end if @subject.extra_pages.present? %>
         <%= content_tag :tr do %>
           <th>Page count:</th>
           <td><%= @subject.page_count %></td>
@@ -119,17 +124,6 @@
       </tbody>
     </table>
 
-    <% if @subject.comments.any? %>
-      <%= content_tag :h5, 'Comments' %>
-      <% for comment in @subject.comments.order(created_at: :desc) do %>
-        <div class="well">
-          <p><%= comment.body %></p>
-          <p><span class="pull-right"><small><%= comment.created_at.to_formatted_s(:long_ordinal) %></small></span></p>
-        </div>
-      <% end %>
-    <% end %>
-
-
     <% if @subject.has_children %>
       <%= content_tag :h5, "Contents #{content_tag :span, @subject.children.count, class: 'badge'}".html_safe if @subject.children.any? %>
       <table class="table table-bordered">
@@ -144,6 +138,9 @@
       </table>
       <%= link_to(fa_icon("plus", text: "#{@subject.has_children}"), new_subject_path(parent_id: @subject.id), class: 'btn btn-success btn-sm') if current_user %>
     <% end %>
+
+
+
   </div>
 
   <div class="col-md-4">

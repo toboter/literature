@@ -23,12 +23,24 @@
           <%= link_to 'literature.babylon-online.org', root_url, class: "navbar-brand" %>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-left">
-            <%= content_tag :p, fa_icon('user', text: "Signed in as #{current_user.try(:name)}"), class: 'navbar-text' if current_user %>
-          </ul>
           <ul class="nav navbar-nav navbar-right">
-            <li><%= link_to 'API', api_path %></li>
-            <li><%= link_to 'Help', help_path %></li>
+            <% if current_user %> 
+              <li class="dropdown">
+                <p class="navbar-text dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                  <%= fa_icon('user', text: "#{current_user.try(:name)}") %>
+                  <span class="caret"></span>
+                </p>
+
+                <ul class="dropdown-menu">
+                  <%= content_tag :li, link_to(fa_icon('cog', text: "Settings"), ''), class: 'disabled' %>
+                  <%= content_tag :li, link_to(fa_icon('users', text: "Administration"), ''), class: 'disabled' %>
+                  <li role="separator" class="divider"></li>        
+                  <li><%= link_to fa_icon('sign-out', text: "Sign Out"), signout_path %></li>
+                </ul>
+              </li>
+            <% else %>
+              <li><%= link_to fa_icon('sign-in', text: "Sign in through Bab-ili"), "/auth/babili" %></li>
+            <% end %>
           </ul>
         </div>
       </div>
@@ -39,7 +51,7 @@
         <div class="col-sm-3 col-md-2 sidebar">
           <ul class="nav nav-pills nav-stacked">
             <!-- <li><a href="#">Analytics</a></li> -->
-            <%= content_tag :li, link_to('Subjects', sti_subject_path), class: ('active' if @type.present?) %> 
+            <%= content_tag :li, link_to(fa_icon('book', text: "Subjects"), sti_subject_path), class: ('active' if @type.present?) %> 
           </ul>
           <hr>
           
@@ -60,7 +72,9 @@
           -->
           
           <ul class="nav nav-pills nav-stacked">
-            <%= content_tag :li, link_to("Import", new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %></li>
+            <%= content_tag :li, link_to(fa_icon('outdent', text: "Edit creators"), ''), class: 'disabled' if current_user %>
+            <%= content_tag :li, link_to(fa_icon('list', text: "Edit series"), ''), class: 'disabled' if current_user %>
+            <%= content_tag :li, link_to(fa_icon('upload', text: "Import"), new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %>
           </ul>
           <hr>
           <ul class="nav nav-pills nav-stacked">
@@ -68,17 +82,11 @@
             <li><%= link_to 'Help', help_path %></li>
           </ul>
           
-          <%= content_tag :div do %>
-            <h6>Export as list</h6>
-            <%= link_to "CSV", subjects_path(q: params[:q], format: "csv"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
-            <%= link_to "Excel", subjects_path(q: params[:q], format: "xls"), class: 'btn btn-default btn-sm' %>
-          <% end if @type.present? && !@subject %>
-
           <p class="text-muted" style="margin-left:15px; margin-top:20px;"><small>v. <%= APP_VERSION %></small></p>
 
         </div>
         
-        <div class="col-sm-8 col-sm-offset-1 col-md-9 col-md-offset-1 main">
+        <div class="col-sm-9 col-md-10 main">
           <%= content_tag :div, class: "page-header" do %>
             <h1 class="">
               <%= yield(:title) if content_for?(:title) %>
@@ -129,15 +137,7 @@
               <li><%= link_to "About", "#{Rails.application.secrets.provider_site}/about" %></li>
               <li><%= link_to "Imprint", "#{Rails.application.secrets.provider_site}/imprint" %></li>
               <li><%= link_to "Contact", "#{Rails.application.secrets.provider_site}/contact?origin=literature" %></li>
-            </ul>
-            
-            <ul class="nav navbar-nav navbar-right">
-              <% if current_user %>        
-                <li><%= link_to fa_icon('sign-out', text: "Sign Out"), signout_path %></li>
-              <% else %>
-                <li><%= link_to fa_icon('sign-in', text: "Sign in through Bab-ili"), "/auth/babili" %></li>
-              <% end %>
-            </ul>            
+            </ul>          
           </div>        
         </div>
       </nav>

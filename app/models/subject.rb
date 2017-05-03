@@ -36,9 +36,7 @@ class Subject < ApplicationRecord
   belongs_to :publisher
   belongs_to :serie
   has_many :identifiers, dependent: :destroy
-  has_many :comments, dependent: :destroy
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
-  accepts_nested_attributes_for :comments, reject_if: :all_blank, allow_destroy: true
   
 
   
@@ -89,7 +87,9 @@ class Subject < ApplicationRecord
 
   end
   
-
+  def pages
+    (first_page.present? || last_page.present?) ? "#{first_page if first_page.present?}-#{last_page if last_page.present?}" : nil
+  end
 
   # import/export
   

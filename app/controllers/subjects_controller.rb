@@ -120,7 +120,7 @@ class SubjectsController < ApplicationController
     def subject_params
       params.require(type.underscore.to_sym).permit(:title, :subtitle, :type, :parent_id, :first_page, 
         :last_page, :page_count, :volume, :published_date, :abbr, :edition, :language, :publisher, 
-        :place, :g_volume_id, :g_canonical_link, :g_image_thumbnail, :serie_name, 
+        :place, :g_volume_id, :g_canonical_link, :g_image_thumbnail, :serie_name, :extra_pages,
         :creator_list => [], :tag_list => [], identifiers_attributes: [:id, :ident_name, :ident_value, :_destroy],
         comments_attributes: [:id, :body, :_destroy])
     end

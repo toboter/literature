@@ -17,40 +17,55 @@
 @import "bootstrap-sprockets";
 @import "bootstrap";
 @import "font-awesome";
-
 html {
-  position: relative;
-  min-height: 100%;
-}
-body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-.footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  /* Set the fixed height of the footer here */
-  height: 50px;
-  background-color: #f5f5f5;
-}
-.navbar-static-bottom {
-  @extend .navbar-fixed-bottom;
-  position: relative;
-  border-width: 0;
-}
-.pagination {
-  margin: 0 0 5px 0;
+    position: relative;
+    min-height: 100%;
 }
 
-.col-centered{
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    /* Set the fixed height of the footer here */
+    height: 50px;
+    background-color: #f5f5f5;
+}
+
+.navbar-static-bottom {
+    @extend .navbar-fixed-bottom;
+    position: relative;
+    border-width: 0;
+}
+
+.pagination {
+    margin: 0 0 5px 0;
+}
+
+.col-centered {
     float: none;
     margin: 0 auto;
 }
 
 .tag-cloud {
-  .css1 { font-size: 1.0em; }
-  .css2 { font-size: 1.2em; }
-  .css3 { font-size: 1.4em; }
-  .css4 { font-size: 1.6em; }
+    .css1 {
+        font-size: 1.0em;
+    }
+    .css2 {
+        font-size: 1.2em;
+    }
+    .css3 {
+        font-size: 1.4em;
+    }
+    .css4 {
+        font-size: 1.6em;
+    }
+}
+
+.affix {
+    top: 60px;
 }

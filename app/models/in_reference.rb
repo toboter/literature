@@ -7,10 +7,6 @@ class InReference < Subject
     #{published_date ? published_date : parent.published_date}, #{title} #{subtitle} In: #{parent.full_entry} #{pages}."
   end
 
-  def pages
-    first_page.present? && last_page.present? ? "#{first_page}-#{last_page}" : ''
-  end
-
   def has_serie
     false
   end

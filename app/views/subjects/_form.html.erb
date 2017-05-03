@@ -73,6 +73,7 @@
       <div class="col-md-6">
         <%= f.input :first_page %>
         <%= f.input :last_page %>
+        <%= f.input :extra_pages %>
         <%= f.input :page_count %>
       </div>
     
@@ -96,17 +97,6 @@
         </div>
       </div>
 
-      <div class="col-md-12">
-        <div id="comments">
-          <strong>Comments: </strong>
-          <%= f.simple_fields_for :comments do |id| %>
-            <%= render 'comment_fields', f: id %>
-          <% end %>
-          <div class="links">
-            <%= link_to_add_association fa_icon('plus-square', text: 'add comment'), f, :comments %>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="row">

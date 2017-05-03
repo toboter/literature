@@ -1,3 +1,17 @@
+GIT
+  remote: git://github.com/toboter/has_issues.git
+  revision: 8a048b2c2fdb15366456f2cec3520803299411a7
+  specs:
+    has_issues (0.2.2)
+      bootstrap-sass (~> 3.3.6)
+      font-awesome-rails
+      jquery-rails
+      rails (~> 5.0.0)
+      redcarpet
+      simple_form
+      turbolinks
+      will_paginate-bootstrap
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -162,6 +176,7 @@ GEM
     rb-fsevent (0.9.7)
     rb-inotify (0.9.7)
       ffi (>= 0.5.0)
+    redcarpet (3.4.0)
     ref (2.0.0)
     roo (2.5.0)
       nokogiri (~> 1)
@@ -239,6 +254,7 @@ DEPENDENCIES
   coffee-rails (~> 4.2)
   font-awesome-rails
   friendly_id
+  has_issues!
   jbuilder (~> 2.5)
   jquery-rails
   jquery-turbolinks

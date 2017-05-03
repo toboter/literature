@@ -28,11 +28,6 @@ private
     @access_token ||= OAuth2::AccessToken.new(oauth_client, session[:access_token]) if session[:access_token]
   end
   
-  def current_user
-    @current_user ||= User.find(session[:user_id]) if session[:user_id]
-  end
-  helper_method :current_user
-  
   def authorize
     redirect_to root_url, alert: "Not authorized. Please sign in." if current_user.nil?
   end
