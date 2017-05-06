@@ -4,7 +4,12 @@ class Proceeding < Subject
   
   def full_entry(style='harvard')
     "#{creatorships.order(id: :asc).map{|cs| cs.creator.rname}.join(', ')}, 
-     #{published_date}, #{title}. #{subtitle}. #{place.try(:name)}: #{publisher.try(:name)}" 
+     #{published_date},
+     #{title}
+     #{subtitle}
+     #{place.try(:name)}
+     #{': ' if publisher && place}
+     #{publisher.try(:name)}." 
   end
 
   def pages

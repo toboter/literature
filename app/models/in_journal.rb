@@ -7,7 +7,8 @@ class InJournal < Subject
     #{published_date ? published_date : parent.published_date}, 
     #{title} 
     #{subtitle} 
-    In: #{parent.full_entry} #{pages}."
+    #{parent.full_entry}
+    #{' ' + pages if pages}."
   end
   
   def has_serie

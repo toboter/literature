@@ -9,7 +9,8 @@ class Monograph < Subject
     #{title} 
     #{subtitle}
     #{has_serie && serie ? (serie.abbr.present? ? serie.abbr+' '+volume+'. ' : "[#{serie.name}] #{volume}") : ''} 
-    #{place.try(:name)}: 
+    #{place.try(:name)}
+    #{': ' if publisher && place}
     #{publisher.try(:name)}." 
   end
 

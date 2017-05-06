@@ -1,14 +1,22 @@
+<% title "Subjects", false %>
+
 <div class="row">
   <div class="col-md-12" style="margin:10px 0;">
     <%= render "shared/search" %>
+    <%= link_to 'Advanced Search', "#filter-fields", data: {toggle: 'collapse'} %>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-7">
+    <div class="collapse" id="filter-fields">
+      <div class="well">
+      filter & sort
+      </div>
+    </div>
     <div class="list-group">
       <% @subjects.each do |subject| %>
-        <%= link_to subject, remote: true, class: "list-group-item #{'active' if subject == @subject}" do %>
+        <%= link_to subject, remote: true, class: "list-group-item" do %>
           <strong><%= subject.cite %></strong><br/>
           <%= subject.full_entry %>
         <% end %>
@@ -51,9 +59,8 @@
         <%= link_to fa_icon('download', text: 'CSV'), subjects_path(q: params[:q], format: "csv"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
         <%= link_to fa_icon('download', text: 'Excel'), subjects_path(q: params[:q], format: "xls"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
       <% end if @type.present? %>
-    <% end if current_user %>
-    
     <hr>
+    <% end if current_user %>
 
     <div id="show-target" data-spy="affix" data-offset-top="60">
       <%= render partial: 'subjects/show', locals: { subject: @subjects.first }%>

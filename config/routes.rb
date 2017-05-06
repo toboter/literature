@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   get '/auth/:provider/callback', to: 'sessions#create'
   get '/signout', to: 'sessions#destroy', as: 'signout'
   put '/set_per_page', to: 'sessions#set_per_page'
@@ -29,7 +28,12 @@ Rails.application.routes.draw do
       end  
     end
   end
-  
+
+  scope :admin do
+    resources :series, except: [:show, :new, :create]
+    resources :creators, except: [:show, :new, :create]
+  end
+
   get '/api', to: 'home#api'
   get '/help', to: 'home#help'
 

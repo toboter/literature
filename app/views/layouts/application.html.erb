@@ -55,28 +55,14 @@
           </ul>
           <hr>
           
-          <!--
-          <ul class="nav nav-pills nav-stacked">  
-            <li role="presentation" class="dropdown <%= ('active' if @type.present? && @type != 'Subject') %>">
-              <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                Subject Types <span class="caret"></span>
-              </a>
-              <ul class="dropdown-menu">
-                <% for type in Subject.types do %>
-                  <%= content_tag :li, link_to(type, sti_subject_path(type), class: ('active' if @type.present? && @type == type)) %>
-                <% end %>
-              </ul>
-            </li>
-          </ul>
-          <hr>
-          -->
-          
-          <ul class="nav nav-pills nav-stacked">
-            <%= content_tag :li, link_to(fa_icon('outdent', text: "Edit creators"), ''), class: 'disabled' if current_user %>
-            <%= content_tag :li, link_to(fa_icon('list', text: "Edit series"), ''), class: 'disabled' if current_user %>
-            <%= content_tag :li, link_to(fa_icon('upload', text: "Import"), new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %>
-          </ul>
-          <hr>
+          <% if current_user %>
+            <ul class="nav nav-pills nav-stacked">
+              <%= content_tag :li, link_to(fa_icon('outdent', text: "Edit creators"), creators_path) %>
+              <%= content_tag :li, link_to(fa_icon('list', text: "Edit series"), series_path) %>
+              <%= content_tag :li, link_to(fa_icon('upload', text: "Import"), new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %>
+            </ul>
+            <hr>
+          <% end %>
           <ul class="nav nav-pills nav-stacked">
             <%= content_tag :li, link_to('API', api_path), class: ('active' if current_page?(api_url)) %>
             <li><%= link_to 'Help', help_path %></li>
@@ -94,7 +80,7 @@
                 <%= yield(:buttons) if content_for?(:buttons) %>
               </div>
             </h1>
-          <% end if content_for?(:buttons) || content_for?(:title) %>
+          <% end if content_for?(:buttons) || content_for?(:title) && @show_header %>
           
           <%= content_tag :div, class: 'row' do %>
             <div class="col-md-12">

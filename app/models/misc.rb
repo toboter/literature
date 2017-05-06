@@ -4,7 +4,13 @@ class Misc < Subject
   
   def full_entry(style='harvard')
     "#{creatorships.order(id: :asc).map{|cs| cs.creator.rname}.join(', ')}, 
-    #{published_date}, #{title}. #{subtitle+'. '}#{child? && parent.root? ? parent.full_entry('abbr')+' '+volume+'. ' : ''} #{place.try(:name)}: #{publisher.try(:name)}" 
+    #{published_date},
+    #{title}
+    #{subtitle}
+    #{child? && parent.root? ? parent.full_entry('abbr')+' '+volume+'. ' : ''}
+    #{place.try(:name)}
+    #{': ' if publisher && place}
+    #{publisher.try(:name)}." 
   end
 
   def pages

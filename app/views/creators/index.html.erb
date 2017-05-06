@@ -1,0 +1,17 @@
+<% title "Creators", false %>
+
+<div class="row">
+  <div class="col-md-7">
+    <div class="list-group">
+      <% @creators.each do |creator| %>
+        <%= link_to edit_creator_path(creator), remote: true, class: "list-group-item" do %>
+          <%= creator.lname %>, <%= creator.fname %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-5">
+    <div id="edit-target" data-spy="affix" data-offset-top="60">
+    </div>
+  </div>
+</div>

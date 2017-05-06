@@ -8,7 +8,9 @@ class Collection < Subject
     #{title} 
     #{subtitle}
     #{has_serie && root? && serie ? (serie.abbr.present? ? serie.abbr+' '+volume+'. ' : "[#{serie.name}] #{volume}.") : ''}
-    #{place.try(:name)}#{place && publisher ? ':' : nil}#{publisher.try(:name)}."
+    #{place.try(:name)}
+    #{': ' if place && publisher}
+    #{publisher.try(:name)}."
   end
 
   def pages

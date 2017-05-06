@@ -4,7 +4,11 @@ class InBook < Subject
   
   def full_entry(style='harvard')
     "#{creatorships.order(id: :asc).map{|cs| cs.creator.rname}.join(', ')}, 
-    #{published_date}, #{title} #{subtitle} #{place.try(:name)}: #{publisher.try(:name)}" 
+    #{published_date}, 
+    #{title}
+    #{subtitle}
+    In: #{parent.full_entry}
+    #{' ' + pages if pages}."
   end
   
   def has_serie

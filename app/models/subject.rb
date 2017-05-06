@@ -38,8 +38,6 @@ class Subject < ApplicationRecord
   has_many :identifiers, dependent: :destroy
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
   
-
-  
   #scopes
   search_scope :search do
     attributes :title, :subtitle, :type, :published_date, :cite
@@ -47,7 +45,10 @@ class Subject < ApplicationRecord
     attributes :serie => ["serie.abbr", "serie.name"]
     attributes :creator => ["creators.lname", "creators.fname"]
     attributes :tag => "tags.name"
+
+    # attributes :in => ['parent.*']
     # Ideal wäre, wenn auch die parent attribute durchsucht würden.
+
   end
    
   
@@ -66,10 +67,10 @@ class Subject < ApplicationRecord
     if type == 'Issue' && serie_id
       self.citation = "#{Serie.find(serie_id).abbr} #{volume} (#{published_date})"
     else
-    names=[]
-    creator_list.split(";").flatten.map do |n|
-      names << n.split(',').first.squish
-    end
+      names=[]
+      creator_list.split(";").flatten.map do |n|
+        names << n.split(',').first.squish
+      end
       ct = type == 'Collection' || type == 'Proceeding' ? "(#{names.count > 1 ? creator_type.pluralize : creator_type})" : nil
       names = names.count <= 3 ? names.join(', ') : "#{names.first} et al."
       self.citation = "#{names} #{ct} #{published_date}"

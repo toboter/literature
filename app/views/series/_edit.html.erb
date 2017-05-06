@@ -1,0 +1,15 @@
+<%= simple_form_for serie do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :abbr %>
+  <%= f.input :name %>
+  <%= f.submit 'Update', class: 'btn btn-primary' %>
+<% end %>
+
+<hr>
+
+<div>
+  <h4>Subjects</h4>
+  <p><%= serie.subjects.limit(10).map{ |s| link_to s.cite, s }.join(', ').html_safe %> <span class="badge">Total: <%= serie.subjects.count %></span></p>
+</div>
+
+<%= link_to 'Remove serie', serie, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger #{'disabled' if serie.subjects.any?}" %>

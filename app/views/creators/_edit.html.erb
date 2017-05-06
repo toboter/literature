@@ -1,0 +1,15 @@
+<%= simple_form_for creator do |f| %>
+  <%= f.error_notification %>
+  <%= f.input :fname %>
+  <%= f.input :lname %>
+  <%= f.submit 'Update', class: 'btn btn-primary' %>
+<% end %>
+
+<hr>
+
+<div>
+  <h4>Subjects</h4>
+  <p><%= creator.subjects.limit(10).map{ |s| link_to s.cite, s }.join(', ').html_safe %> <span class="badge">Total: <%= creator.subjects.count %></span></p>
+</div>
+
+<%= link_to 'Remove creator', creator, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger #{'disabled' if creator.subjects.any?}" %>
