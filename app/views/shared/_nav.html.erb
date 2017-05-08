@@ -1,0 +1,15 @@
+            <%= content_tag :li, link_to(fa_icon('book', text: "Subjects"), sti_subject_path), class: ('active' if @type.present?) %> 
+
+            <hr>
+          
+            <% if current_user %>
+
+              <%= content_tag :li, link_to(fa_icon('outdent', text: "Edit creators"), creators_path), class: ('active' if current_page?(creators_path)) %>
+              <%= content_tag :li, link_to(fa_icon('list', text: "Edit series"), series_path), class: ('active' if current_page?(series_path)) %>
+              <%= content_tag :li, link_to(fa_icon('upload', text: "Import"), new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %>
+
+              <hr>
+            <% end %>
+
+            <%= content_tag :li, link_to('API', api_path), class: ('active' if current_page?(api_url)) %>
+            <%= content_tag :li, link_to('Help', help_path), class: ('active' if current_page?(help_path)) %></li>

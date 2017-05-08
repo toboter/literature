@@ -16,7 +16,7 @@
     </div>
     <div class="list-group">
       <% @subjects.each do |subject| %>
-        <%= link_to subject, remote: true, class: "list-group-item" do %>
+        <%= link_to subject, remote: !browser.device.mobile?, class: "list-group-item" do %>
           <strong><%= subject.cite %></strong><br/>
           <%= subject.full_entry %>
         <% end %>
@@ -62,8 +62,8 @@
     <hr>
     <% end if current_user %>
 
-    <div id="show-target" data-spy="affix" data-offset-top="60">
+    <%= content_tag :div, id: "show-target", data: {spy: ('affix' if !browser.device.mobile?), 'offset-top': "60"} do %>
       <%= render partial: 'subjects/show', locals: { subject: @subjects.first }%>
-    </div>
+    <% end %>
   </div>
 </div>

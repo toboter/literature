@@ -24,6 +24,15 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown visible-xs-block">
+              <p class="navbar-text dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                Menu
+                <span class="caret"></span>
+              </p>
+              <ul class="dropdown-menu">
+                <%= render 'shared/nav' %>
+              </ul>
+            </li>            
             <% if current_user %> 
               <li class="dropdown">
                 <p class="navbar-text dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -48,24 +57,9 @@
 
     <div class="container-fluid" style="margin-top: 60px;">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
+        <div class="col-sm-3 col-md-2 sidebar hidden-xs">
           <ul class="nav nav-pills nav-stacked">
-            <!-- <li><a href="#">Analytics</a></li> -->
-            <%= content_tag :li, link_to(fa_icon('book', text: "Subjects"), sti_subject_path), class: ('active' if @type.present?) %> 
-          </ul>
-          <hr>
-          
-          <% if current_user %>
-            <ul class="nav nav-pills nav-stacked">
-              <%= content_tag :li, link_to(fa_icon('outdent', text: "Edit creators"), creators_path) %>
-              <%= content_tag :li, link_to(fa_icon('list', text: "Edit series"), series_path) %>
-              <%= content_tag :li, link_to(fa_icon('upload', text: "Import"), new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %>
-            </ul>
-            <hr>
-          <% end %>
-          <ul class="nav nav-pills nav-stacked">
-            <%= content_tag :li, link_to('API', api_path), class: ('active' if current_page?(api_url)) %>
-            <li><%= link_to 'Help', help_path %></li>
+            <%= render 'shared/nav' %>
           </ul>
           
           <p class="text-muted" style="margin-left:15px; margin-top:20px;"><small>v. <%= APP_VERSION %></small></p>
