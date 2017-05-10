@@ -30,7 +30,7 @@
         <%= content_tag :tr do %>
           <th>Serial or Journal:</th>
           <td>
-            <%= link_to subjects_path('filterrific[search]': "serie='#{subject.serie.try(:name)}'#{' OR serie='+subject.serie.try(:abbr) if subject.serie.abbr.present?}") do %>
+            <%= link_to subjects_path('filterrific[search]': "serie='#{subject.serie.try(:name)}'#{" OR serie='" + subject.serie.try(:abbr) + "'" if subject.serie.abbr.present?}") do %>
               <%= subject.serie.try(:name) %>
               <%= "(#{subject.serie.abbr})" if subject.serie.abbr.present? %>
             <% end %>
@@ -45,7 +45,7 @@
         
         <%= content_tag :tr do %>
           <th>Tags:</th>
-          <td><%= subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path('filterrific[search]': "tag:#{c.name}"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
+          <td><%= subject.tags.map{|t| content_tag :span, link_to(t.name, subjects_path('filterrific[search]': "tag:'#{t.name}'"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
         <% end if subject.tags.any? %>
 
         <%= content_tag :tr do %>

@@ -124,8 +124,8 @@
     <hr>
     <% end if current_user %>
 
-    <%= content_tag :div, id: "show-target", data: {spy: ('affix' if !browser.device.mobile?), 'offset-top': "60"} do %>
+    <%= content_tag :div, id: "show-target", data: {spy: 'affix', 'offset-top': "60"} do %>
       <%= render partial: 'subjects/show', locals: { subject: @subjects.first }%>
-    <% end %>
+    <% end if !browser.device.mobile? %>
   </div>
 </div>
