@@ -1,102 +1,103 @@
-<% if subject %>
-  <%= content_tag :p, fa_icon('link')+' '+link_to(subject_url(subject), subject_url(subject)) %>
-  <%= content_tag :p, fa_icon('book')+' '+link_to(subject.type, subjects_path('filterrific[search]': "type='#{subject.type}'")) %>
+<div class="panel panel-default">
+  <div class="panel-body">
 
-  <%= link_to(fa_icon("edit", text: 'Edit'), sti_subject_path(subject.type, subject, :edit), class: 'btn btn-sm btn-warning pull-right', style: 'margin-top: 5px;') if current_user %>
-  <%= content_tag :h3, link_to("#{subject.cite}", sti_subject_path(subject.type, subject)) %>
+    <% if subject %>
+      <%= content_tag :p, fa_icon('link')+' '+link_to(subject_url(subject), subject_url(subject)) %>
+      <%= content_tag :p, fa_icon('book')+' '+link_to(subject.type, subjects_path('filterrific[search]': "type='#{subject.type}'")) %>
 
-  <%= content_tag :p, "<strong>#{subject.full_entry}</strong>".html_safe %>
-  <%= content_tag :p, truncate(subject.g_description, length: 240, separator: ' ') %>
+      <%= link_to(fa_icon("edit", text: 'Edit'), sti_subject_path(subject.type, subject, :edit), class: 'btn btn-sm btn-warning pull-right', style: 'margin-top: 5px;') if current_user %>
+      <%= content_tag :h3, link_to("#{subject.cite}", sti_subject_path(subject.type, subject)) %>
+
+      <%= content_tag :p, "<strong>#{subject.full_entry}</strong>".html_safe %>
+      <%= content_tag :p, truncate(subject.g_description, length: 240, separator: ' ') %>
   
-    <table class="table table-striped">
-      <tbody>
-        <%= content_tag :tr do %>
-          <th><%= subject.creator_type %>:</th>
-          <td><%= subject.creatorships.order(id: :asc).map{|cs| link_to cs.creator.name, subjects_path('filterrific[search]': "creator:#{cs.creator.lname}")}.join(', ').html_safe %></td>
-        <% end if subject.creators.any? %>
+      <table class="table table-striped">
+        <tbody>
+          <%= content_tag :tr do %>
+            <th><%= subject.creator_type %>:</th>
+            <td><%= subject.creatorships.order(id: :asc).map{|cs| link_to cs.creator.name, subjects_path('filterrific[search]': "creator:#{cs.creator.lname}")}.join(', ').html_safe %></td>
+          <% end if subject.creators.any? %>
 
-        <%= content_tag :tr do %>
-          <th>Title:</th>
-          <td><%= subject.title %></td>
-        <% end if subject.title.present? %>
-        <%= content_tag :tr do %>
-          <th>Subtitle:</th>
-          <td><%= subject.subtitle %></td>
-        <% end if subject.subtitle.present? %>
-        <%= content_tag :tr do %>
-          <th>In:</th>
-          <td><%= link_to subject.parent.full_entry, subject.parent %></td>
-        <% end if subject.child? %>
-        <%= content_tag :tr do %>
-          <th>Serial or Journal:</th>
-          <td>
-            <%= link_to subjects_path('filterrific[search]': "serie='#{subject.serie.try(:name)}'#{" OR serie='" + subject.serie.try(:abbr) + "'" if subject.serie.abbr.present?}") do %>
-              <%= subject.serie.try(:name) %>
-              <%= "(#{subject.serie.abbr})" if subject.serie.abbr.present? %>
-            <% end %>
-            <%= subject.volume %>
-          </td>
-        <% end if subject.root? && subject.serie %>
-        
-        <%= content_tag :tr do %>
-          <th>Published date:</th>
-          <td><%= subject.published_date %></td>
-        <% end if subject.published_date.present? %>
-        
-        <%= content_tag :tr do %>
-          <th>Tags:</th>
-          <td><%= subject.tags.map{|t| content_tag :span, link_to(t.name, subjects_path('filterrific[search]': "tag:'#{t.name}'"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
-        <% end if subject.tags.any? %>
+          <%= content_tag :tr do %>
+            <th>Title:</th>
+            <td><%= subject.title %></td>
+          <% end if subject.title.present? %>
+          <%= content_tag :tr do %>
+            <th>Subtitle:</th>
+            <td><%= subject.subtitle %></td>
+          <% end if subject.subtitle.present? %>
+          <%= content_tag :tr do %>
+            <th>In:</th>
+            <td><%= link_to subject.parent.full_entry, subject.parent %></td>
+          <% end if subject.child? %>
+          <%= content_tag :tr do %>
+            <th>Serial or Journal:</th>
+            <td>
+              <%= link_to subjects_path('filterrific[search]': "serie='#{subject.serie.try(:name)}'#{" OR serie='" + subject.serie.try(:abbr) + "'" if subject.serie.abbr.present?}") do %>
+                <%= subject.serie.try(:name) %>
+                <%= "(#{subject.serie.abbr})" if subject.serie.abbr.present? %>
+              <% end %>
+              <%= subject.volume %>
+            </td>
+          <% end if subject.root? && subject.serie %>
+          
+          <%= content_tag :tr do %>
+            <th>Published date:</th>
+            <td><%= subject.published_date %></td>
+          <% end if subject.published_date.present? %>
+          
+          <%= content_tag :tr do %>
+            <th>Tags:</th>
+            <td><%= subject.tags.map{|t| content_tag :span, link_to(t.name, subjects_path('filterrific[search]': "tag:'#{t.name}'"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
+          <% end if subject.tags.any? %>
 
-        <%= content_tag :tr do %>
-          <th>Pages:</th>
-          <td><%= subject.pages %></td>
-        <% end if subject.pages %>
+          <%= content_tag :tr do %>
+            <th>Pages:</th>
+            <td><%= subject.pages %></td>
+          <% end if subject.pages %>
 
-        <%= content_tag :tr do %>
-          <th>Page count:</th>
-          <td><%= subject.page_count %></td>
-        <% end if subject.page_count.present? %>
-        
-        <%= content_tag :tr do %>
-          <th>Abbr:</th>
-          <td><%= subject.abbr %></td>
-        <% end if subject.abbr.present? %>
-        <%= content_tag :tr do %>
-          <th>Edition:</th>
-          <td><%= subject.edition %></td>
-        <% end if subject.edition.present? %>
-        <%= content_tag :tr do %>
-          <th>Language:</th>
-          <td><%= subject.language %></td>
-        <% end if subject.language.present? %>
-        <%= content_tag :tr do %>
-          <th>Publisher:</th>
-          <td><%= subject.publisher.try(:name) %></td>
-        <% end if subject.publisher.present? %>
-        <%= content_tag :tr do %>
-          <th>Place:</th>
-          <td><%= subject.place.try(:name) %></td>
-        <% end if subject.place.present? %>
-        <%= content_tag :tr do %>
-          <th>Contents:</th>
-          <td>
-            <%= link_to 'Show Contents', subject %>
-            <%= content_tag :span, subject.children.count, class: 'badge pull-right' %>
-          </td>
-        <% end if subject.has_children %>
-      </tbody>
-    </table>
+          <%= content_tag :tr do %>
+            <th>Page count:</th>
+            <td><%= subject.page_count %></td>
+          <% end if subject.page_count.present? %>
+          
+          <%= content_tag :tr do %>
+            <th>Abbr:</th>
+            <td><%= subject.abbr %></td>
+          <% end if subject.abbr.present? %>
+          <%= content_tag :tr do %>
+            <th>Edition:</th>
+            <td><%= subject.edition %></td>
+          <% end if subject.edition.present? %>
+          <%= content_tag :tr do %>
+            <th>Language:</th>
+            <td><%= subject.language %></td>
+          <% end if subject.language.present? %>
+          <%= content_tag :tr do %>
+            <th>Publisher:</th>
+            <td><%= subject.publisher.try(:name) %></td>
+          <% end if subject.publisher.present? %>
+          <%= content_tag :tr do %>
+            <th>Place:</th>
+            <td><%= subject.place.try(:name) %></td>
+          <% end if subject.place.present? %>
+          <%= content_tag :tr do %>
+            <th>Contents:</th>
+            <td>
+              <%= link_to 'Show Contents', subject %>
+              <%= content_tag :span, subject.children.count, class: 'badge pull-right' %>
+            </td>
+          <% end if subject.has_children %>
+        </tbody>
+      </table>
 
-
-
-
-        <%= content_tag :div do %>
-    <h6>Export this cite</h6>
-    <%= link_to 'BIBTex', '', class: 'btn btn-default btn-sm disabled' %>
-    <%= link_to 'EndNote', '', class: 'btn btn-default btn-sm disabled' %>
-    <%= link_to 'RefMan', '', class: 'btn btn-default btn-sm disabled' %>
-    <%= link_to 'JSON', api_citation_path(subject), class: 'btn btn-default btn-sm' %>
-          <% end %>
-
-<% end %>
+      <%= content_tag :div do %>
+        <h6>Export this cite</h6>
+        <%= link_to 'BIBTex', '', class: 'btn btn-default btn-sm disabled' %>
+        <%= link_to 'EndNote', '', class: 'btn btn-default btn-sm disabled' %>
+        <%= link_to 'RefMan', '', class: 'btn btn-default btn-sm disabled' %>
+        <%= link_to 'JSON', api_citation_path(subject), class: 'btn btn-default btn-sm' %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

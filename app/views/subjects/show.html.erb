@@ -24,9 +24,10 @@
     <%= "Delete" %>
   <% end %>
 <% end if current_user %>
+
+
 <div class="row">
   <div class="col-md-12">
-
     <ol class="breadcrumb">
       <%= content_tag :li, link_to('All', sti_subject_path) %>
       <%= content_tag :li, link_to(@subject.root.type.pluralize, subjects_path('filterrific[search]': "type='#{@subject.root.type}'")) %>
@@ -41,7 +42,7 @@
 </div>
 
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-7">
     <%= content_tag :h3, @subject.full_entry %>
     <%= content_tag :p, truncate(@subject.g_description, length: 240, separator: ' ') %>
     <table class="table table-striped">
@@ -125,55 +126,89 @@
     </table>
 
     <% if @subject.has_children %>
-      <%= content_tag :h5, "Contents #{content_tag :span, @subject.children.count, class: 'badge'}".html_safe if @subject.children.any? %>
-      <table class="table table-bordered">
-        <tbody>
-          <% for child in @subject.children.sort_by { |c| (c.first_page.to_i) } do %>
-            <tr>
-              <th><%= link_to child.cite, child %>
-              <td><%= child.full_entry %></td>
-            </tr>
+      <%= content_tag :h5 do %>     
+        <%= "<strong>Contents</strong> #{content_tag :span, @subject.children.count, class: 'badge'}".html_safe %>
+      <% end if @subject.children.any? %>
+      <div class="list-group">
+        <% @subject.children.sort_by { |c| (c.first_page.to_i) }.each do |subject| %>
+          <%= link_to subject, remote: !browser.device.mobile?, class: "list-group-item" do %>
+            <strong><%= subject.cite %></strong><br/>
+            <%= subject.full_entry %>
           <% end %>
-        </tbody>
-      </table>
-      <%= link_to(fa_icon("plus", text: "#{@subject.has_children}"), new_subject_path(parent_id: @subject.id), class: 'btn btn-success btn-sm') if current_user %>
-    <% end %>
-
-
-
-  </div>
-
-  <div class="col-md-4">
-    <%= content_tag :div, class: "thumbnail" do %>
-      <%= image_tag @subject.g_image_thumbnail, class: 'img-responsive', style: 'width: 100%' if @subject.g_image_thumbnail %>
-      <div class="caption">
-        <h4><%= @subject.g_volume_id %></h4>
-        <p>Description for <%= @subject.g_volume_id %></p>
-        <p><%= link_to 'Auf Google Books ansehen', @subject.g_canonical_link %>
-        </p>
-      </div>
-    <% end if @subject.g_volume_id %>
-    
-      
-    <%= content_tag :table, class: 'table table-bordered' do %>
-      <tbody>
-        <% for id in @subject.identifiers do %>
-          <tr>
-            <th><%= id.ident_name %></th>
-            <td><%= id.ident_value %></td>
-          </tr>
         <% end %>
-        <tr>
-          <th>self</th>
-          <td><%= @subject.slug %></td>
-        </tr>        
-      </tbody>
+      </div>
     <% end %>
-    
-    <h6>Export cite</h6>
-    <%= link_to 'BIBTex', '', class: 'btn btn-default btn-sm disabled' %>
-    <%= link_to 'EndNote', '', class: 'btn btn-default btn-sm disabled' %>
-    <%= link_to 'RefMan', '', class: 'btn btn-default btn-sm disabled' %>
-    <%= link_to 'JSON', api_citation_path(@subject), class: 'btn btn-default btn-sm' %>
+
+
+
   </div>
+
+  <div class="col-md-5">
+
+    <%= content_tag :div do %>
+      <%= link_to(fa_icon("plus", text: " #{@subject.has_children}"), new_subject_path(parent_id: @subject.id), class: 'btn btn-success btn-sm') if current_user %>
+      
+      <%= content_tag :div, class: 'pull-right' do %>
+        <%= link_to fa_icon('download', text: 'BIBTex'), subjects_path(format: "refman"), class: 'btn btn-default btn-sm disabled', 'data-no-turbolink': true %>
+        <%= link_to fa_icon('download', text: 'EndNote'), subjects_path(format: "refman"), class: 'btn btn-default btn-sm disabled', 'data-no-turbolink': true %>
+        <%= link_to fa_icon('download', text: 'RefMan'), subjects_path(format: "refman"), class: 'btn btn-default btn-sm disabled', 'data-no-turbolink': true %>
+        <%= link_to fa_icon('download', text: 'JSON'), api_citation_path(@subject), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
+      <% end if @subject.present? %>
+      <div class="clearfix"></div>
+    <hr>
+    <% end %>
+
+    <div class="panel panel-default">
+    <div class="panel-body">
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs" role="tablist">
+        <%= content_tag :li, link_to('Identity', '#identity', aria: {controls: 'identity'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: 'active' %>
+        <%= content_tag :li, link_to('Comments', '#comments', aria: {controls: 'comments'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
+        <%= content_tag :li, link_to('Sharing', '#sharing', aria: {controls: 'sharing'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
+      </ul>
+
+      <div class="tab-content">
+        <%= content_tag :div, id: 'identity', role: 'tabpanel', class: 'tab-pane active' do %>
+        imagery
+          <%= content_tag :div, class: "thumbnail" do %>
+            <%= image_tag @subject.g_image_thumbnail, class: 'img-responsive', style: 'width: 100%' if @subject.g_image_thumbnail %>
+            <div class="caption">
+              <h4><%= @subject.g_volume_id %></h4>
+              <p>Description for <%= @subject.g_volume_id %></p>
+              <p><%= link_to 'Auf Google Books ansehen', @subject.g_canonical_link %>
+              </p>
+            </div>
+          <% end if @subject.g_volume_id %>
+
+          <%= content_tag :table, class: 'table table-bordered' do %>
+            <tbody>
+              <% for id in @subject.identifiers do %>
+                <tr>
+                  <th><%= id.ident_name %></th>
+                  <td><%= id.ident_value %></td>
+                </tr>
+              <% end %>
+              <tr>
+                <th>self</th>
+                <td><%= @subject.slug %></td>
+              </tr>        
+            </tbody>
+          <% end %>
+        <% end %>
+
+        <%= content_tag :div, id: 'comments', role: 'tabpanel', class: 'tab-pane' do %>
+        comments
+        <% end %>
+
+        <%= content_tag :div, id: 'sharing', role: 'tabpanel', class: 'tab-pane' do %>
+        sharing
+        <% end %>
+      </div>
+    </div>
+    </div>
+
+    <%= content_tag :div, id: "show-target", data: {spy: 'affix', 'offset-top': "400"} do %>
+    <% end if !browser.device.mobile? %>
+  </div>
+
 </div>
