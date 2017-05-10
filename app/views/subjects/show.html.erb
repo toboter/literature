@@ -44,7 +44,6 @@
 <div class="row">
   <div class="col-md-7">
     <%= content_tag :h3, @subject.full_entry %>
-    <%= content_tag :p, truncate(@subject.g_description, length: 240, separator: ' ') %>
     <table class="table table-striped">
       <tbody>
         <%= content_tag :tr do %>
@@ -169,11 +168,11 @@
 
       <div class="tab-content">
         <%= content_tag :div, id: 'identity', role: 'tabpanel', class: 'tab-pane active' do %>
-        imagery
           <%= content_tag :div, class: "thumbnail" do %>
             <%= image_tag @subject.g_image_thumbnail, class: 'img-responsive', style: 'width: 100%' if @subject.g_image_thumbnail %>
             <div class="caption">
               <h4><%= @subject.g_volume_id %></h4>
+              <%= content_tag :p, truncate(@subject.g_description, length: 240, separator: ' ') %>
               <p>Description for <%= @subject.g_volume_id %></p>
               <p><%= link_to 'Auf Google Books ansehen', @subject.g_canonical_link %>
               </p>
