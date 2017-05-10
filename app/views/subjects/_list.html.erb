@@ -1,0 +1,13 @@
+<div id="filterrific_results">
+  <div class="list-group">
+    <% subjects.each do |subject| %>
+      <%= link_to subject, remote: !browser.device.mobile?, class: "list-group-item" do %>
+        <strong><%= subject.cite %></strong><br/>
+        <%= subject.full_entry %>
+      <% end %>
+    <% end %>
+  </div>
+  <div id="pagination-results">
+    <%= will_paginate subjects, params: params.merge({filterrific: nil}), renderer: BootstrapPagination::Rails %>
+  </div>
+</div>

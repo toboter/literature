@@ -29,14 +29,14 @@
 
     <ol class="breadcrumb">
       <%= content_tag :li, link_to('All', sti_subject_path) %>
-      <%= content_tag :li, link_to(@subject.root.type.pluralize, subjects_path(q: "type='#{@subject.root.type}'")) %>
-      <%= content_tag :li, link_to((@subject.serie.abbr.present? ? @subject.serie.try(:abbr) : "[#{@subject.serie.name}]"), subjects_path(q: "serie:#{@subject.serie.try(:name)}#{' OR '+@subject.serie.try(:abbr) if @subject.serie.abbr.present?}")) if @subject.serie %>  
+      <%= content_tag :li, link_to(@subject.root.type.pluralize, subjects_path('filterrific[search]': "type='#{@subject.root.type}'")) %>
+      <%= content_tag :li, link_to((@subject.serie.abbr.present? ? @subject.serie.try(:abbr) : "[#{@subject.serie.name}]"), subjects_path('filterrific[search]': "serie=#{@subject.serie.try(:name)}#{' OR serie='+@subject.serie.try(:abbr) if @subject.serie.abbr.present?}")) if @subject.serie %>  
       <% @subject.ancestors.reverse.each do |e| %>
         <%= content_tag :li, link_to(e.cite, e) %>
       <% end %>
       <%= content_tag :li, @subject.cite, class: 'active' %>
     </ol>
-    <%= content_tag :p, link_to(fa_icon('link', text: subject_url(@subject)), @subject) %>    
+    <%= content_tag :p, link_to(fa_icon('link', text: subject_url(@subject)), subject_url(@subject)) %>    
   </div>
 </div>
 
@@ -48,7 +48,7 @@
       <tbody>
         <%= content_tag :tr do %>
           <th><%= @subject.creator_type %>:</th>
-          <td><%= @subject.creatorships.order(id: :asc).map{|cs| link_to cs.creator.name, subjects_path(q: "creator:#{cs.creator.lname}")}.join(', ').html_safe %></td>
+          <td><%= @subject.creatorships.order(id: :asc).map{|cs| link_to cs.creator.name, subjects_path('filterrific[search]': "creator:#{cs.creator.lname}")}.join(', ').html_safe %></td>
         <% end if @subject.creators.any? %>
 
         <%= content_tag :tr do %>
@@ -66,7 +66,7 @@
         <%= content_tag :tr do %>
           <th>Serial or Journal:</th>
           <td>
-            <%= link_to subjects_path(q: "serie='#{@subject.serie.try(:name)}'#{' OR serie='+@subject.serie.try(:abbr) if @subject.serie.abbr.present?}") do %>
+            <%= link_to subjects_path('filterrific[search]': "serie='#{@subject.serie.try(:name)}'#{' OR serie='+@subject.serie.try(:abbr) if @subject.serie.abbr.present?}") do %>
               <%= @subject.serie.try(:name) %>
               <%= "(#{@subject.serie.abbr})" if @subject.serie.abbr.present? %>
             <% end %>
@@ -81,7 +81,7 @@
         
         <%= content_tag :tr do %>
           <th>Tags:</th>
-          <td><%= @subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path(q: "tag:#{c.name}"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
+          <td><%= @subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path('filterrific[search]': "tag=#{c.name}"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
         <% end if @subject.tags.any? %>
 
         <%= content_tag :tr do %>

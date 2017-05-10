@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/ayaman/filterrific.git
+  revision: 292ecd953df4ec70f2f9a879105ef5aba5b77e95
+  specs:
+    filterrific (2.1.2)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -239,6 +245,7 @@ DEPENDENCIES
   closure_tree
   cocoon
   coffee-rails (~> 4.2)
+  filterrific!
   font-awesome-rails
   friendly_id
   jbuilder (~> 2.5)

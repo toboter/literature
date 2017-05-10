@@ -1,32 +1,94 @@
 <% title "Subjects", false %>
 
+<%= form_for_filterrific @filterrific do |f| %>
+
 <div class="row">
   <div class="col-md-12" style="margin:10px 0;">
-    <%= render "shared/search" %>
-    <%= link_to 'Advanced Search', "#filter-fields", data: {toggle: 'collapse'} %>
+      <div class="form-inline row">
+        <div class="form-group col-md-8 col-sm-8">
+          <div class="input-group" style="width:100%">
+            <span class="input-group-addon" style="width:38px;"><%= link_to fa_icon('search'), help_path(anchor: 'searching') %></span>
+            <%= f.search_field(:search, placeholder: "Search in all fields", class: 'filterrific-periodically-observed form-control', style: '') %>
+          </div>
+        </div>
+        <div class="form-group col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1">
+          <%= f.select(:sorted_by, @filterrific.select_options[:sorted_by], {}, { class: 'form-control pull-right' }) %>
+        </div>
+      </div>
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-7">
-    <div class="collapse" id="filter-fields">
-      <div class="well">
-      filter & sort
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="typeFilterHeading">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#typeFilter" aria-expanded="false" aria-controls="typeFilter">
+              Filter by type
+            </a>
+          </h4>
+        </div>
+        <div id="typeFilter" class="panel-collapse collapse" role="tabpanel" aria-labelledby="typeFilterHeading">
+          <div class="panel-body">
+            <div class="row" style="margin-left:20px;">
+              <div class="col-md-6">
+                <ul class="list-unstyled checkbox-list">
+                  <% for type in Subject.child_types do %>
+                    <li>
+                      <label class="checkbox">
+                        <%= f.check_box(:with_type, {multiple: true}, type, nil) %>
+                        <%= type %>
+                      </label>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+              <div class="col-md-6">
+                <ul class="list-unstyled checkbox-list">
+                  <% for type in Subject.parent_types do %>
+                    <li>
+                      <label class="checkbox">
+                        <%= f.check_box(:with_type, {multiple: true}, type, nil) %>
+                        <%= type %>
+                      </label>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="otherFilterHeading">
+          <h4 class="panel-title">
+            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#otherFilter" aria-expanded="false" aria-controls="collapseThree">
+              Other filters
+            </a>
+          </h4>
+        </div>
+        <div id="otherFilter" class="panel-collapse collapse" role="tabpanel" aria-labelledby="otherFilterHeading">
+          <div class="panel-body">
+            <div style="margin-left:20px;">
+              none
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="list-group">
-      <% @subjects.each do |subject| %>
-        <%= link_to subject, remote: !browser.device.mobile?, class: "list-group-item" do %>
-          <strong><%= subject.cite %></strong><br/>
-          <%= subject.full_entry %>
-        <% end %>
-      <% end %>
-    </div>
 
-    <div>
-      <%= will_paginate @subjects, renderer: BootstrapPagination::Rails %>
-    </div>
+<% end %> <!-- filterrific form end -->
 
+    <div class="well" style="padding:10px 10px;">
+      <span id="page-result-info">
+        <%= page_entries_info @subjects, model: 'Subject' %>
+      </span>
+      <%= render_filterrific_spinner %>
+      <%= link_to('Reset', reset_filterrific_url, class: 'pull-right btn btn-sm btn-default', style: 'margin-top: -2px;line-height:1;') %>
+    </div>
+    <%= render(partial: 'subjects/list', locals: { subjects: @subjects }) %>
     <div style="margin-top: 20px; margin-bottom: 10px;">
       <%= render 'shared/per_page' %>
     </div>
@@ -56,8 +118,8 @@
         </div>
       <% end %>
       <%= content_tag :div, class: 'pull-right' do %>
-        <%= link_to fa_icon('download', text: 'CSV'), subjects_path(q: params[:q], format: "csv"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
-        <%= link_to fa_icon('download', text: 'Excel'), subjects_path(q: params[:q], format: "xls"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
+        <%= link_to fa_icon('download', text: 'CSV'), subjects_path(format: "csv"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
+        <%= link_to fa_icon('download', text: 'Excel'), subjects_path(format: "xls"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
       <% end if @type.present? %>
     <hr>
     <% end if current_user %>

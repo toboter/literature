@@ -1,6 +1,6 @@
 <% if subject %>
-  <%= content_tag :p, fa_icon('link')+' '+link_to(subject_url(subject), subject) %>
-  <%= content_tag :p, fa_icon('book')+' '+link_to(subject.type, subjects_path(q: "type='#{subject.type}'")) %>
+  <%= content_tag :p, fa_icon('link')+' '+link_to(subject_url(subject), subject_url(subject)) %>
+  <%= content_tag :p, fa_icon('book')+' '+link_to(subject.type, subjects_path('filterrific[search]': "type='#{subject.type}'")) %>
 
   <%= link_to(fa_icon("edit", text: 'Edit'), sti_subject_path(subject.type, subject, :edit), class: 'btn btn-sm btn-warning pull-right', style: 'margin-top: 5px;') if current_user %>
   <%= content_tag :h3, link_to("#{subject.cite}", sti_subject_path(subject.type, subject)) %>
@@ -12,7 +12,7 @@
       <tbody>
         <%= content_tag :tr do %>
           <th><%= subject.creator_type %>:</th>
-          <td><%= subject.creatorships.order(id: :asc).map{|cs| link_to cs.creator.name, subjects_path(q: "creator:#{cs.creator.lname}")}.join(', ').html_safe %></td>
+          <td><%= subject.creatorships.order(id: :asc).map{|cs| link_to cs.creator.name, subjects_path('filterrific[search]': "creator:#{cs.creator.lname}")}.join(', ').html_safe %></td>
         <% end if subject.creators.any? %>
 
         <%= content_tag :tr do %>
@@ -30,7 +30,7 @@
         <%= content_tag :tr do %>
           <th>Serial or Journal:</th>
           <td>
-            <%= link_to subjects_path(q: "serie='#{subject.serie.try(:name)}'#{' OR serie='+subject.serie.try(:abbr) if subject.serie.abbr.present?}") do %>
+            <%= link_to subjects_path('filterrific[search]': "serie='#{subject.serie.try(:name)}'#{' OR serie='+subject.serie.try(:abbr) if subject.serie.abbr.present?}") do %>
               <%= subject.serie.try(:name) %>
               <%= "(#{subject.serie.abbr})" if subject.serie.abbr.present? %>
             <% end %>
@@ -45,7 +45,7 @@
         
         <%= content_tag :tr do %>
           <th>Tags:</th>
-          <td><%= subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path(q: "tag:#{c.name}"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
+          <td><%= subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path('filterrific[search]': "tag:#{c.name}"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
         <% end if subject.tags.any? %>
 
         <%= content_tag :tr do %>

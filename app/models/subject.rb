@@ -7,12 +7,12 @@ class Subject < ApplicationRecord
   after_save :update_citation_sequence  
   
   self.inheritance_column = :type
-  friendly_id :friendly_url, use: :slugged
+  friendly_id :url_code #, use: :slugged
   has_closure_tree dependent: :destroy
   acts_as_sequenced scope: :citation, column: :cite_seq_id
   acts_as_taggable
       
-  validates :type, presence: true
+  validates :type, :url_code, presence: true
   validates :citation, :uniqueness => { :scope => :cite_seq_id, :message => "This should not happen because of the unique sequence abc etc." }
 
   
@@ -37,7 +37,16 @@ class Subject < ApplicationRecord
   belongs_to :serie
   has_many :identifiers, dependent: :destroy
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
-  
+
+  filterrific(
+    default_filter_params: { sorted_by: 'published_date_desc' },
+    available_filters: [
+      :sorted_by,
+      :search,
+      :with_type
+    ]
+  )
+
   #scopes
   search_scope :search do
     attributes :title, :subtitle, :type, :published_date, :cite
@@ -50,18 +59,38 @@ class Subject < ApplicationRecord
     # Ideal wäre, wenn auch die parent attribute durchsucht würden.
 
   end
+
+  scope :with_type, lambda { |types|
+    where(type: [*types])
+  }
+
+  scope :sorted_by, lambda { |sort_option|
+    direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+    case sort_option.to_s
+    when /^title_/
+      order("LOWER(subjects.title) #{ direction }")
+    when /^published_date_/
+      order("LOWER(subjects.published_date) #{ direction }")
+    when /^creator_/
+      order("LOWER(subjects.cite) #{ direction }")
+    else
+      raise(ArgumentError, "Invalid sort option: #{ sort_option.inspect }")
+    end
+  }
    
-  
+  def self.options_for_sorted_by
+    [
+      ['Title (a-z)', 'title_asc'],
+      ['Title (z-a)', 'title_desc'],
+      ['Published date (newest first)', 'published_date_desc'],
+      ['Published date (oldest first)', 'published_date_asc'],
+      ['Author or editor (a-z)', 'creator_asc'],
+      ['Author or editor (z-a)', 'creator_desc']
+    ]
+  end
+
   
   # before filter
- 
-  def should_generate_new_friendly_id?
-    citation_changed?
-  end
-  
-  def friendly_url
-    "#{citation} #{url_code}".parameterize
-  end
   
   def create_citation
     if type == 'Issue' && serie_id
