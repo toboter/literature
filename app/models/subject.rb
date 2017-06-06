@@ -1,6 +1,7 @@
 class Subject < ApplicationRecord
   extend FriendlyId
   include SearchCop
+  include Nabu
   
   before_validation :create_url_code, on: :create
   before_validation :create_citation
@@ -15,6 +16,9 @@ class Subject < ApplicationRecord
   validates :type, :url_code, presence: true
   validates :citation, :uniqueness => { :scope => :cite_seq_id, :message => "This should not happen because of the unique sequence abc etc." }
 
+  def name
+    cite
+  end
   
   def self.types
     child_types+parent_types
@@ -37,6 +41,7 @@ class Subject < ApplicationRecord
   belongs_to :serie
   has_many :identifiers, dependent: :destroy
   accepts_nested_attributes_for :identifiers, reject_if: :all_blank, allow_destroy: true
+
 
   filterrific(
     default_filter_params: { sorted_by: 'published_date_desc' },

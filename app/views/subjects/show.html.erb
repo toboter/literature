@@ -81,7 +81,7 @@
         
         <%= content_tag :tr do %>
           <th>Tags:</th>
-          <td><%= @subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path('filterrific[search]': "tag=#{c.name}"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
+          <td><%= @subject.tags.map{|c| content_tag :span, link_to(c.name, subjects_path('filterrific[search]': "tag='#{c.name}'"), style: 'color: white;'), class: 'label label-default'}.join(' ').html_safe %></td>
         <% end if @subject.tags.any? %>
 
         <%= content_tag :tr do %>
@@ -162,7 +162,7 @@
       <!-- Nav tabs -->
       <ul class="nav nav-tabs" role="tablist">
         <%= content_tag :li, link_to('Identity', '#identity', aria: {controls: 'identity'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: 'active' %>
-        <%= content_tag :li, link_to('Comments', '#comments', aria: {controls: 'comments'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
+        <%= content_tag :li, link_to("Comments <span class='badge'>#{@subject.root_comments.count}</span>".html_safe, '#comments', aria: {controls: 'comments'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
         <%= content_tag :li, link_to('Sharing', '#sharing', aria: {controls: 'sharing'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
       </ul>
 
@@ -196,7 +196,7 @@
         <% end %>
 
         <%= content_tag :div, id: 'comments', role: 'tabpanel', class: 'tab-pane' do %>
-        comments
+          <%= commentables_for(@subject) %>
         <% end %>
 
         <%= content_tag :div, id: 'sharing', role: 'tabpanel', class: 'tab-pane' do %>

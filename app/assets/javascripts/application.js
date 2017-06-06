@@ -17,6 +17,7 @@
 //= require select2-full
 //= require cocoon
 //= require filterrific/filterrific-jquery
+//= require bootstrap-markdown-bundle
 //= require turbolinks
 //= require turbolinks-compatibility
 //= require_tree .
@@ -65,4 +66,5 @@ $(document).ready(function() {
         $(this).append($element);
         $(this).trigger("change");
     });
+
 });

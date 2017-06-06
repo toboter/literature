@@ -6,7 +6,7 @@
 
               <%= content_tag :li, link_to(fa_icon('outdent', text: "Edit creators"), creators_path), class: ('active' if current_page?(creators_path)) %>
               <%= content_tag :li, link_to(fa_icon('list', text: "Edit series"), series_path), class: ('active' if current_page?(series_path)) %>
-              <%= content_tag :li, link_to(fa_icon('upload', text: "Import"), new_subject_import_path), class: ('active' if current_page?(controller: 'subject_imports', action: 'new')) %>
+              <%= content_tag :li, link_to(fa_icon('upload', text: "Import"), new_subject_import_path), class: ('active' if current_page?(new_subject_import_path)) %>
 
               <hr>
             <% end %>
