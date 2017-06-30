@@ -1,6 +1,5 @@
 class CreatorsController < ApplicationController
-  before_action :set_creator, only: [:edit, :update, :destroy]
-  before_action :authorize
+  load_and_authorize_resource
 
   # GET /creators
   # GET /creators.json

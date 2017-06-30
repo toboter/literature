@@ -1,5 +1,5 @@
 class SubjectImportsController < ApplicationController
-  before_action :authorize
+  load_and_authorize_resource
   
   def new
     @subject_import = SubjectImport.new
@@ -7,6 +7,7 @@ class SubjectImportsController < ApplicationController
 
   def create
     @subject_import = SubjectImport.new(subject_import_params)
+    
     if @subject_import.save
       redirect_to subjects_url, notice: "Imported subjects successfully."
     else

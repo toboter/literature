@@ -1,9 +1,8 @@
 <% title "Subjects", false %>
 
-<%= form_for_filterrific @filterrific do |f| %>
-
 <div class="row">
   <div class="col-md-12" style="margin:10px 0;">
+    <%= form_for_filterrific @filterrific do |f| %>
       <div class="form-inline row">
         <div class="form-group col-md-8 col-sm-8">
           <div class="input-group" style="width:100%">
@@ -15,71 +14,53 @@
           <%= f.select(:sorted_by, @filterrific.select_options[:sorted_by], {}, { class: 'form-control pull-right' }) %>
         </div>
       </div>
+      <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false" style="margin-top:10px;">
+        <div class="panel panel-default">
+          <div class="panel-heading" role="tab" id="typeFilterHeading">
+            <h4 class="panel-title">
+              <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#typeFilter" aria-expanded="false" aria-controls="typeFilter">
+                Filters
+              </a>
+            </h4>
+          </div>
+          <div id="typeFilter" class="panel-collapse collapse" role="tabpanel" aria-labelledby="typeFilterHeading">
+            <div class="panel-body">
+              <div class="row" style="margin-left:20px;">
+                <div class="col-md-6">
+                  <ul class="list-unstyled checkbox-list">
+                    <% for type in Subject.child_types do %>
+                      <li>
+                        <label class="checkbox">
+                          <%= f.check_box(:with_type, {multiple: true}, type, nil) %>
+                          <%= type %>
+                        </label>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <ul class="list-unstyled checkbox-list">
+                    <% for type in Subject.parent_types do %>
+                      <li>
+                        <label class="checkbox">
+                          <%= f.check_box(:with_type, {multiple: true}, type, nil) %>
+                          <%= type %>
+                        </label>
+                      </li>
+                    <% end %>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %> <!-- filterrific form end -->
   </div>
 </div>
 
 <div class="row">
   <div class="col-md-7">
-    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="false">
-      <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="typeFilterHeading">
-          <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#typeFilter" aria-expanded="false" aria-controls="typeFilter">
-              Filter by type
-            </a>
-          </h4>
-        </div>
-        <div id="typeFilter" class="panel-collapse collapse" role="tabpanel" aria-labelledby="typeFilterHeading">
-          <div class="panel-body">
-            <div class="row" style="margin-left:20px;">
-              <div class="col-md-6">
-                <ul class="list-unstyled checkbox-list">
-                  <% for type in Subject.child_types do %>
-                    <li>
-                      <label class="checkbox">
-                        <%= f.check_box(:with_type, {multiple: true}, type, nil) %>
-                        <%= type %>
-                      </label>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-              <div class="col-md-6">
-                <ul class="list-unstyled checkbox-list">
-                  <% for type in Subject.parent_types do %>
-                    <li>
-                      <label class="checkbox">
-                        <%= f.check_box(:with_type, {multiple: true}, type, nil) %>
-                        <%= type %>
-                      </label>
-                    </li>
-                  <% end %>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="panel panel-default">
-        <div class="panel-heading" role="tab" id="otherFilterHeading">
-          <h4 class="panel-title">
-            <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#otherFilter" aria-expanded="false" aria-controls="collapseThree">
-              Other filters
-            </a>
-          </h4>
-        </div>
-        <div id="otherFilter" class="panel-collapse collapse" role="tabpanel" aria-labelledby="otherFilterHeading">
-          <div class="panel-body">
-            <div style="margin-left:20px;">
-              none
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-<% end %> <!-- filterrific form end -->
 
     <div class="well" style="padding:10px 10px;">
       <span id="page-result-info">
@@ -95,7 +76,7 @@
   </div>
 
   <div class="col-md-5">
-    <%= content_tag :div do %>
+    <%= content_tag :div, class: 'clearfix' do %>
       <% if Subject.parent_types.include?(@type) %>
         <%= link_to sti_subject_path(@type, nil, :new), class: 'btn btn-success' do %>
           <%= fa_icon("plus") %>
@@ -116,7 +97,8 @@
             <% end %>       
           </ul>
         </div>
-      <% end %>
+      <% end if can? :new, Subject %>
+      <%= link_to fa_icon('share-alt', text: 'Sharing'),"#record-access-settings", class: 'btn btn-warning', data: {toggle: 'collapse'}, style:'margin-top:-10px' if can_administrate? %>
       <%= content_tag :div, class: 'pull-right' do %>
         <%= link_to fa_icon('download', text: 'CSV'), subjects_path(format: "csv"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>
         <%= link_to fa_icon('download', text: 'Excel'), subjects_path(format: "xls"), class: 'btn btn-default btn-sm', 'data-no-turbolink': true %>

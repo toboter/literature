@@ -1,6 +1,5 @@
 class SeriesController < ApplicationController
-  before_action :set_serie, only: [:edit, :update, :destroy]
-  before_action :authorize
+  load_and_authorize_resource
 
   # GET /series
   # GET /series.json

@@ -1,4 +1,9 @@
 <div id="filterrific_results">
+
+  <div class="collapse" id="record-access-settings">
+    <%= share_multiple_with(Subject) %>
+  </div>
+
   <div class="list-group">
     <% subjects.each do |subject| %>
       <%= link_to subject, remote: !browser.device.mobile?, class: "list-group-item" do %>

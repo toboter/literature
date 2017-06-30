@@ -1,11 +1,9 @@
 Rails.application.routes.draw do
-  get '/auth/:provider/callback', to: 'sessions#create'
-  get '/signout', to: 'sessions#destroy', as: 'signout'
-  put '/set_per_page', to: 'sessions#set_per_page'
-
+  # added by nabu
   concern :commentable do
     resources :comments, only: [:index, :new, :create, :destroy]
   end
+  # 'concerns: :commentable' needs to be added to any resource where nabu is included.
 
   resources :subjects
   resources :subject_imports
@@ -30,7 +28,6 @@ Rails.application.routes.draw do
           get 'search'
         end 
       end
-      resources :notifications, only: :create
     end
   end
 

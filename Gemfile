@@ -57,7 +57,6 @@ gem "font-awesome-rails"
 gem 'cocoon'
 gem 'sequenced'
 gem 'will_paginate-bootstrap'
-gem 'omniauth-oauth2'
 gem 'roo'
 gem 'active_model_serializers', '~> 0.10.0'
 gem 'search_cop'
@@ -68,8 +67,18 @@ gem 'acts_as_list'
 gem 'closure_tree'
 gem 'acts-as-taggable-on', '~> 4.0'
 gem 'browser'
+gem 'cancancan', '~> 1.10'
+
+# Auth & Babili
+# gem 'marduk', path: '/home/tschmidt/dev/babylon/gem_dev/marduk'
+gem 'marduk', git: 'https://github.com/toboter/marduk.git'
+
+# Record Sharing
+# gem 'enki', path: '/home/tschmidt/dev/babylon/gem_dev/enki'
+gem 'enki', git: 'https://github.com/toboter/enki.git'
 
 # Comments
+# gem 'nabu', path: '/home/tschmidt/dev/babylon/gem_dev/nabu'
 gem 'nabu', git: 'https://github.com/toboter/nabu.git'
 gem 'rails-bootstrap-markdown'
 

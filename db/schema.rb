@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170606093850) do
+ActiveRecord::Schema.define(version: 20170629225503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -67,6 +67,14 @@ ActiveRecord::Schema.define(version: 20170606093850) do
     t.index ["sluggable_type"], name: "index_friendly_id_slugs_on_sluggable_type", using: :btree
   end
 
+  create_table "groups", force: :cascade do |t|
+    t.string   "name"
+    t.string   "provider"
+    t.string   "gid"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "identifiers", force: :cascade do |t|
     t.integer  "subject_id"
     t.string   "ident_name"
@@ -74,6 +82,16 @@ ActiveRecord::Schema.define(version: 20170606093850) do
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
     t.index ["subject_id"], name: "index_identifiers_on_subject_id", using: :btree
+  end
+
+  create_table "memberships", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "group_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id", "user_id"], name: "index_memberships_on_group_id_and_user_id", unique: true, using: :btree
+    t.index ["group_id"], name: "index_memberships_on_group_id", using: :btree
+    t.index ["user_id"], name: "index_memberships_on_user_id", using: :btree
   end
 
   create_table "places", force: :cascade do |t|
@@ -88,11 +106,37 @@ ActiveRecord::Schema.define(version: 20170606093850) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "record_activities", force: :cascade do |t|
+    t.integer  "actor_id"
+    t.string   "resource_type"
+    t.integer  "resource_id"
+    t.string   "activity_type"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.index ["resource_type", "resource_id"], name: "index_record_activities_on_resource_type_and_resource_id", using: :btree
+  end
+
   create_table "series", force: :cascade do |t|
     t.string   "name"
     t.string   "abbr"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "share_models", force: :cascade do |t|
+    t.string   "resource_type"
+    t.integer  "resource_id"
+    t.string   "shared_to_type"
+    t.integer  "shared_to_id"
+    t.string   "shared_from_type"
+    t.integer  "shared_from_id"
+    t.boolean  "edit"
+    t.datetime "created_at",       null: false
+    t.datetime "updated_at",       null: false
+    t.index ["resource_id", "resource_type", "shared_to_id", "shared_to_type"], name: "index_share_models_on_resource_and_shared_to", unique: true, using: :btree
+    t.index ["resource_type", "resource_id"], name: "index_share_models_on_resource_type_and_resource_id", using: :btree
+    t.index ["shared_from_type", "shared_from_id"], name: "index_share_models_on_shared_from_type_and_shared_from_id", using: :btree
+    t.index ["shared_to_type", "shared_to_id"], name: "index_share_models_on_shared_to_type_and_shared_to_id", using: :btree
   end
 
   create_table "subject_hierarchies", id: false, force: :cascade do |t|
@@ -162,14 +206,21 @@ ActiveRecord::Schema.define(version: 20170606093850) do
     t.string   "provider"
     t.string   "uid"
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
     t.string   "email"
     t.string   "birthday"
     t.string   "gender"
+    t.boolean  "app_admin"
+    t.string   "token"
+    t.boolean  "app_commentator"
+    t.boolean  "app_creator"
+    t.boolean  "app_publisher"
   end
 
   add_foreign_key "creatorships", "creators"
   add_foreign_key "creatorships", "subjects"
   add_foreign_key "identifiers", "subjects"
+  add_foreign_key "memberships", "groups"
+  add_foreign_key "memberships", "users"
 end

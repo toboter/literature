@@ -1,28 +1,28 @@
 <% title "#{@subject.cite}" %>
 
 <% content_for(:buttons) do %>
-  <div class="btn-group">
+  <%= content_tag :div, class: "btn-group" do %>
     <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       <%= fa_icon("plus") %> New <span class="caret"></span>
     </button>
     <ul class="dropdown-menu">
       <% for ptype in Subject.parent_types do %>
-        <%= content_tag :li, link_to(ptype, sti_subject_path(ptype, nil, :new)) %>
+        <%= content_tag :li, link_to(ptype, sti_subject_path(ptype, nil, :new)) %>b
       <% end %>
       <li role="separator" class="divider"></li>
       <% for ctype in Subject.child_types do %>
         <%= content_tag :li, link_to(ctype, sti_subject_path(ctype, nil, :new)) %>
       <% end %>       
     </ul>
-  </div>
+  <% end if can? :new, Subject %>
   <%= link_to sti_subject_path(@subject.type, @subject, :edit), class: 'btn btn-warning' do %>
     <%= fa_icon("edit") %>
     <%= "Edit" %>
-  <% end %>
+  <% end if can? :edit, @subject %>
   <%= link_to @subject, method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger' do %>
     <%= fa_icon("remove") %>
     <%= "Delete" %>
-  <% end %>
+  <% end if can? :destroy, @subject %>
 <% end if current_user %>
 
 
@@ -145,7 +145,7 @@
   <div class="col-md-5">
 
     <%= content_tag :div do %>
-      <%= link_to(fa_icon("plus", text: " #{@subject.has_children}"), new_subject_path(parent_id: @subject.id), class: 'btn btn-success btn-sm') if current_user %>
+      <%= link_to(fa_icon("plus", text: " #{@subject.has_children}"), new_subject_path(parent_id: @subject.id), class: 'btn btn-success btn-sm') if can? :create, Subject %>
       
       <%= content_tag :div, class: 'pull-right' do %>
         <%= link_to fa_icon('download', text: 'BIBTex'), subjects_path(format: "refman"), class: 'btn btn-default btn-sm disabled', 'data-no-turbolink': true %>
@@ -163,7 +163,7 @@
       <ul class="nav nav-tabs" role="tablist">
         <%= content_tag :li, link_to('Identity', '#identity', aria: {controls: 'identity'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: 'active' %>
         <%= content_tag :li, link_to("Comments <span class='badge'>#{@subject.root_comments.count}</span>".html_safe, '#comments', aria: {controls: 'comments'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
-        <%= content_tag :li, link_to('Sharing', '#sharing', aria: {controls: 'sharing'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
+        <%= content_tag :li, link_to(fa_icon('share-alt', text: "Sharing"), '#sharing', aria: {controls: 'sharing'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
       </ul>
 
       <div class="tab-content">
@@ -189,7 +189,11 @@
               <% end %>
               <tr>
                 <th>self</th>
-                <td><%= @subject.slug %></td>
+                <td><%= @subject.url_code %></td>
+              </tr>
+              <tr>
+                <th>cite</th>
+                <td><%= @subject.citation %></td>
               </tr>        
             </tbody>
           <% end %>
@@ -200,7 +204,7 @@
         <% end %>
 
         <%= content_tag :div, id: 'sharing', role: 'tabpanel', class: 'tab-pane' do %>
-        sharing
+          <%= shared_with(@subject) %>
         <% end %>
       </div>
     </div>

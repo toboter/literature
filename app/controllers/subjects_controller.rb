@@ -1,35 +1,36 @@
 class SubjectsController < ApplicationController
-  before_action :set_subject, only: [:show, :edit, :update, :destroy]
+  #before_action :set_subject, only: [:show, :edit, :update, :destroy]
   before_action :set_type, except: :new
-  before_action :authorize, except: [:index, :show]
+
+  load_and_authorize_resource
+  skip_load_resource only: :index
+  skip_authorize_resource only: :index
 
   # GET /subjects
   # GET /subjects.json
   def index
     @filterrific = initialize_filterrific(
-      Subject,
+      Subject.visible_for(current_user),
       params[:filterrific],
       select_options: {
         sorted_by: Subject.options_for_sorted_by
       }
     ) or return
-    @subjects = @filterrific.find.page(params[:page]).per_page(session[:per_page])
-    @send_data = @filterrific.find
-
+    @subjects = @filterrific.find.page(params[:page]).per_page(session[:per_page]).eager_load(:creators, :publisher, :place)
     
     respond_to do |format|
       format.html
       format.js
       format.csv { 
         send_data(
-          @send_data.to_csv,
+          @filterrific.find.to_csv,
           disposition: "attachment; filename=literature.csv",
           type: 'text/csv',
           stream: 'true', 
           buffer_size: '4096' 
         )
        }
-      format.xls
+      format.xls { render locals: { subjects: @filterrific.find.eager_load(:creators, :publisher, :place, :identifiers, :parent) }}
     end
   end
 

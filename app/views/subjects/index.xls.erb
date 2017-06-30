@@ -23,7 +23,7 @@
         <Cell><Data ss:Type="String">FullEntry</Data></Cell>
         <Cell><Data ss:Type="String">BabylonOnlineId</Data></Cell>
       </Row>
-    <% @send_data.each do |subject| %>
+    <% subjects.each do |subject| %>
       <Row>
         <Cell><Data ss:Type="String"><%= subject.cite %></Data></Cell>
         <Cell><Data ss:Type="String"><%= subject.type %></Data></Cell>

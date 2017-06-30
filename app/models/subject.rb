@@ -2,17 +2,18 @@ class Subject < ApplicationRecord
   extend FriendlyId
   include SearchCop
   include Nabu
+  include Enki
   
   before_validation :create_url_code, on: :create
   before_validation :create_citation
   after_save :update_citation_sequence  
-  
+
   self.inheritance_column = :type
   friendly_id :url_code #, use: :slugged
   has_closure_tree dependent: :destroy
   acts_as_sequenced scope: :citation, column: :cite_seq_id
   acts_as_taggable
-      
+
   validates :type, :url_code, presence: true
   validates :citation, :uniqueness => { :scope => :cite_seq_id, :message => "This should not happen because of the unique sequence abc etc." }
 
@@ -127,7 +128,6 @@ class Subject < ApplicationRecord
   end
 
   # import/export
-  
   def creator_list
     creators.map(&:rname).join("; ")
   end

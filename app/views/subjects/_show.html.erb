@@ -5,7 +5,7 @@
       <%= content_tag :p, fa_icon('link')+' '+link_to(subject_url(subject), subject_url(subject)) %>
       <%= content_tag :p, fa_icon('book')+' '+link_to(subject.type, subjects_path('filterrific[search]': "type='#{subject.type}'")) %>
 
-      <%= link_to(fa_icon("edit", text: 'Edit'), sti_subject_path(subject.type, subject, :edit), class: 'btn btn-sm btn-warning pull-right', style: 'margin-top: 5px;') if current_user %>
+      <%= link_to(fa_icon("edit", text: 'Edit'), sti_subject_path(subject.type, subject, :edit), class: 'btn btn-sm btn-warning pull-right', style: 'margin-top: 5px;') if can? :edit, subject %>
       <%= content_tag :h3, link_to("#{subject.cite}", sti_subject_path(subject.type, subject)) %>
 
       <%= content_tag :p, "<strong>#{subject.full_entry}</strong>".html_safe %>
