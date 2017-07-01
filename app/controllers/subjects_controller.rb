@@ -1,5 +1,4 @@
 class SubjectsController < ApplicationController
-  #before_action :set_subject, only: [:show, :edit, :update, :destroy]
   before_action :set_type, except: :new
 
   load_and_authorize_resource
@@ -109,11 +108,6 @@ class SubjectsController < ApplicationController
     
     def type_class
       type.constantize
-    end
-  
-    # Use callbacks to share common setup or constraints between actions.
-    def set_subject
-      @subject = type_class.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

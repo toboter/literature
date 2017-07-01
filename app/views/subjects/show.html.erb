@@ -158,56 +158,56 @@
     <% end %>
 
     <div class="panel panel-default">
-    <div class="panel-body">
-      <!-- Nav tabs -->
-      <ul class="nav nav-tabs" role="tablist">
-        <%= content_tag :li, link_to('Identity', '#identity', aria: {controls: 'identity'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: 'active' %>
-        <%= content_tag :li, link_to("Comments <span class='badge'>#{@subject.root_comments.count}</span>".html_safe, '#comments', aria: {controls: 'comments'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
-        <%= content_tag :li, link_to(fa_icon('share-alt', text: "Sharing"), '#sharing', aria: {controls: 'sharing'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
-      </ul>
+      <div class="panel-body">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+          <%= content_tag :li, link_to('Identity', '#identity', aria: {controls: 'identity'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: 'active' %>
+          <%= content_tag :li, link_to("Comments <span class='badge'>#{@subject.root_comments.count}</span>".html_safe, '#comments', aria: {controls: 'comments'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
+          <%= content_tag :li, link_to(fa_icon('share-alt', text: "Sharing"), '#sharing', aria: {controls: 'sharing'}, role: 'tab', data: {toggle: 'tab'}), role: 'presentation', class: '' %>
+        </ul>
 
-      <div class="tab-content">
-        <%= content_tag :div, id: 'identity', role: 'tabpanel', class: 'tab-pane active' do %>
-          <%= content_tag :div, class: "thumbnail" do %>
-            <%= image_tag @subject.g_image_thumbnail, class: 'img-responsive', style: 'width: 100%' if @subject.g_image_thumbnail %>
-            <div class="caption">
-              <h4><%= @subject.g_volume_id %></h4>
-              <%= content_tag :p, truncate(@subject.g_description, length: 240, separator: ' ') %>
-              <p>Description for <%= @subject.g_volume_id %></p>
-              <p><%= link_to 'Auf Google Books ansehen', @subject.g_canonical_link %>
-              </p>
-            </div>
-          <% end if @subject.g_volume_id %>
+        <div class="tab-content">
+          <%= content_tag :div, id: 'identity', role: 'tabpanel', class: 'tab-pane active' do %>
+            <%= content_tag :div, class: "thumbnail" do %>
+              <%= image_tag @subject.g_image_thumbnail, class: 'img-responsive', style: 'width: 100%' if @subject.g_image_thumbnail %>
+              <div class="caption">
+                <h4><%= @subject.g_volume_id %></h4>
+                <%= content_tag :p, truncate(@subject.g_description, length: 240, separator: ' ') %>
+                <p>Description for <%= @subject.g_volume_id %></p>
+                <p><%= link_to 'Auf Google Books ansehen', @subject.g_canonical_link %>
+                </p>
+              </div>
+            <% end if @subject.g_volume_id %>
 
-          <%= content_tag :table, class: 'table table-bordered' do %>
-            <tbody>
-              <% for id in @subject.identifiers do %>
+            <%= content_tag :table, class: 'table table-bordered' do %>
+              <tbody>
+                <% for id in @subject.identifiers do %>
+                  <tr>
+                    <th><%= id.ident_name %></th>
+                    <td><%= id.ident_value %></td>
+                  </tr>
+                <% end %>
                 <tr>
-                  <th><%= id.ident_name %></th>
-                  <td><%= id.ident_value %></td>
+                  <th>self</th>
+                  <td><%= @subject.url_code %></td>
                 </tr>
-              <% end %>
-              <tr>
-                <th>self</th>
-                <td><%= @subject.url_code %></td>
-              </tr>
-              <tr>
-                <th>cite</th>
-                <td><%= @subject.citation %></td>
-              </tr>        
-            </tbody>
+                <tr>
+                  <th>cite</th>
+                  <td><%= @subject.citation %></td>
+                </tr>        
+              </tbody>
+            <% end %>
           <% end %>
-        <% end %>
 
-        <%= content_tag :div, id: 'comments', role: 'tabpanel', class: 'tab-pane' do %>
-          <%= commentables_for(@subject) %>
-        <% end %>
+          <%= content_tag :div, id: 'comments', role: 'tabpanel', class: 'tab-pane' do %>
+            <%= commentables_for(@subject) %>
+          <% end %>
 
-        <%= content_tag :div, id: 'sharing', role: 'tabpanel', class: 'tab-pane' do %>
-          <%= shared_with(@subject) %>
-        <% end %>
+          <%= content_tag :div, id: 'sharing', role: 'tabpanel', class: 'tab-pane' do %>
+            <%= shared_with(@subject) %>
+          <% end %>
+        </div>
       </div>
-    </div>
     </div>
 
     <%= content_tag :div, id: "show-target", data: {spy: 'affix', 'offset-top': "400"} do %>
