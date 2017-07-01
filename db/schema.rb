@@ -113,6 +113,7 @@ ActiveRecord::Schema.define(version: 20170629225503) do
     t.string   "activity_type"
     t.datetime "created_at",    null: false
     t.datetime "updated_at",    null: false
+    t.index ["resource_id", "resource_type", "activity_type"], name: "index_record_activities_on_resource_and_activity", unique: true, using: :btree
     t.index ["resource_type", "resource_id"], name: "index_record_activities_on_resource_type_and_resource_id", using: :btree
   end
 

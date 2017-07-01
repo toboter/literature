@@ -1,3 +1,5 @@
+# CanCan config for compatibility with FriendlyId
+
 if defined?(CanCan)
   class Object
     def metaclass
