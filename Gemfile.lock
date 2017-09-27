@@ -14,9 +14,9 @@ GIT
 
 GIT
   remote: https://github.com/toboter/marduk.git
-  revision: 33e674cb87a1a15c56582edd7f937340eb46bd66
+  revision: c4da8ac582f9e092f937f6e56679c00b7496a032
   specs:
-    marduk (0.1.4.beta)
+    marduk (0.1.6.beta)
       active_model_serializers (~> 0.10.0)
       omniauth-oauth2
       rails (~> 5.0.0)
