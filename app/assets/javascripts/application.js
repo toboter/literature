@@ -18,6 +18,8 @@
 //= require cocoon
 //= require filterrific/filterrific-jquery
 //= require bootstrap-markdown-bundle
+//= require Chart.bundle
+//= require chartkick
 //= require turbolinks
 //= require turbolinks-compatibility
 //= require_tree .

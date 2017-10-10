@@ -62,6 +62,7 @@ gem 'active_model_serializers', '~> 0.10.0'
 gem 'search_cop'
 # Seems like original filterrific doesn't work with multiple select.
 gem 'filterrific', git: 'https://github.com/ayaman/filterrific.git'
+gem "chartkick"
 
 gem 'acts_as_list'
 gem 'closure_tree'
