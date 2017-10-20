@@ -6,7 +6,7 @@ GIT
 
 GIT
   remote: https://github.com/toboter/enki.git
-  revision: 3f75ba98114fe12e6069db36c6816af648d29c37
+  revision: f3d48a257ca63b24f59449ff5b50cac218b983bc
   specs:
     enki (0.0.7.beta)
       rails (~> 5.0.0)
@@ -178,7 +178,7 @@ GEM
       omniauth (~> 1.2)
     pg (0.18.4)
     polyglot (0.3.5)
-    puma (3.6.0)
+    puma (3.10.0)
     rack (2.0.3)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -310,7 +310,7 @@ DEPENDENCIES
   marduk!
   nabu!
   pg (~> 0.18)
-  puma (~> 3.0)
+  puma (~> 3.10)
   rails (~> 5.0.0)
   rails-bootstrap-markdown
   roo

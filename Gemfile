@@ -6,7 +6,7 @@ gem 'rails', '~> 5.0.0'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18'
 # Use Puma as the app server
-gem 'puma', '~> 3.0'
+gem 'puma', '~> 3.10'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -75,7 +75,7 @@ gem 'cancancan', '~> 1.10'
 gem 'marduk', git: 'https://github.com/toboter/marduk.git'
 
 # Record Sharing
-# gem 'enki', path: '/home/tschmidt/dev/babylon/gem_dev/enki'
+# gem 'enki', path: '/home/tschmidt/dev/gem_dev/enki'
 gem 'enki', git: 'https://github.com/toboter/enki.git'
 
 # Comments
