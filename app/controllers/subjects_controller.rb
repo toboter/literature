@@ -30,6 +30,7 @@ class SubjectsController < ApplicationController
         )
        }
       format.xls { render locals: { subjects: @filterrific.find.eager_load(:creators, :publisher, :place, :identifiers, :parent) }}
+      format.bibtex { render text: (BibTeX::Bibliography.new << @filterrific.find.map(&:to_bib)) }
     end
   end
 

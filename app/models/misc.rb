@@ -29,4 +29,20 @@ class Misc < Subject
   def creator_type
     "Author"
   end
+
+  def to_bib
+    BibTeX::Entry.new({
+      :bibtex_type => 'booklet',
+      :bibtex_key => cite.gsub(/[,()]/ ,""),
+      :author => creatorships.order(id: :asc).map{|cs| cs.creator.rname}.join(' and '),
+      :title => "#{title} #{subtitle}",
+      :year => published_date,
+      :note => "#{language}",
+      :howpublished => '',
+      :address => place.try(:name),
+      :url => g_canonical_link,
+      :abstract => "#{g_description}",
+      :keywords => tag_list.join('; ')
+    })
+  end
 end

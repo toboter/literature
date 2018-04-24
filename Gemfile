@@ -69,9 +69,10 @@ gem 'closure_tree'
 gem 'acts-as-taggable-on', '~> 4.0'
 gem 'browser'
 gem 'cancancan', '~> 1.10'
+gem 'bibtex-ruby'
 
 # Auth & Babili
-# gem 'marduk', path: '/home/tschmidt/dev/babylon/gem_dev/marduk'
+# gem 'marduk', path: '/home/tschmidt/dev/gem_dev/marduk'
 gem 'marduk', git: 'https://github.com/toboter/marduk.git'
 
 # Record Sharing

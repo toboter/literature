@@ -24,4 +24,8 @@ class Reference < Subject
   def creator_type
     "Editor"
   end
+
+  def to_bib
+    nil
+  end
 end

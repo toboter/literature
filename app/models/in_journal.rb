@@ -24,4 +24,22 @@ class InJournal < Subject
     "Author"
   end
   
+  def to_bib
+    BibTeX::Entry.new({
+      :bibtex_type => 'article',
+      :bibtex_key => cite.gsub(/[,()]/ ,""),
+      :author => creatorships.order(id: :asc).map{|cs| cs.creator.rname}.join(' and '),
+      :title => "#{title} #{subtitle}",
+      :year => published_date,
+      :pages => "#{pages}#{', '+extra_pages if extra_pages.present?}",
+      :note => "#{language}",
+      :journal => parent.serie.try(:name),
+      :volume => parent.volume,
+      :issn => parent.identifiers.where(identifiers: {ident_name: 'ISSN'}).first.try(:ident_value),
+      :url => g_canonical_link,
+      :abstract => "#{g_description}",
+      :keywords => tag_list.join('; ')
+    })
+  end
+
 end
